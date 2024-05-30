@@ -1,0 +1,5 @@
+export { default as LoginPage } from './Login'
+export { default as RegisterPage } from './Register'
+export { default as ForgetPasswordPage } from './Forget'
+export { default as VerifyPage } from './Verify'
+export { default as ResetPasswordPage } from './Reset'
