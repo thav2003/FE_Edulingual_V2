@@ -1,4 +1,3 @@
-import { BASE_PATH } from './../../../generated-api-client/base'
 import { StateCreator, create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 import { AuthenticationApi } from '~/api'

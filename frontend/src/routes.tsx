@@ -79,7 +79,8 @@ export function projectLoader({ params }: LoaderFunctionArgs) {
 }
 
 export function Project() {
-  const { project } = useLoaderData()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { project } = useLoaderData() as any
 
   return (
     <>
