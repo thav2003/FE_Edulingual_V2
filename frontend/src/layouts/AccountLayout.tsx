@@ -1,41 +1,62 @@
-import React, { useState } from 'react'
-import { StyleProvider } from '@ant-design/cssinjs'
-import { CheckSquareOutlined, UserOutlined, EditOutlined, CloudDownloadOutlined } from '@ant-design/icons'
-import {
-  Layout,
-  Menu,
-  theme,
-  ConfigProvider,
-  Avatar,
-  Typography,
-  Card,
-  Flex,
-  Button,
-  Radio,
-  Divider,
-  Statistic
-} from 'antd'
+import { UserOutlined, EditOutlined } from '@ant-design/icons'
+import { Layout, Menu, ConfigProvider, Avatar, Typography, MenuProps } from 'antd'
 import { Space } from 'antd'
-const { Title, Text } = Typography
-const { Header, Content, Footer, Sider } = Layout
-const cardStyle = {
-  width: '100%',
-  // background: "#287B62",
-  border: 'solid #D1D5DB',
-  borderWidth: 0.5,
-  overflow: 'hidden',
-  borderRadius: 30
-}
-const imgStyle = {
-  display: 'block',
-  width: 128
-}
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '~/stores'
+const { Text } = Typography
+const { Sider } = Layout
 const AccountLayout: React.FC = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG }
-  } = theme.useToken()
-  const [mode, setMode] = useState(1)
-
+  const location = useLocation()
+  const navigate = useNavigate()
+  const logoutUser = useAuthStore((state) => state.logoutUser)
+  const user = useAuthStore((state) => state.user)
+  const pathSegments = location.pathname.split('/')
+  const lastSegment = pathSegments[pathSegments.length - 1]
+  const items: MenuProps['items'] = [
+    ...(user?.role === 'STUDENT'
+      ? [
+          {
+            key: '1',
+            label: 'My Journey'
+          },
+          {
+            key: '2',
+            label: 'Kiểm tra & Kết quả'
+          }
+        ]
+      : []),
+    ...(user?.role === 'TEACHER'
+      ? [
+          {
+            key: '1',
+            label: 'Học sinh'
+          },
+          {
+            key: '2',
+            label: 'Tạo bộ đề'
+          }
+        ]
+      : []),
+    {
+      key: 'mycourses',
+      label: <Link to='mycourses'>Khóa học</Link>
+    },
+    {
+      key: '4',
+      label: 'Tin nhắn'
+    },
+    {
+      key: '5',
+      label: 'Đăng xuất'
+    }
+  ]
+  const onClick: MenuProps['onClick'] = (e) => {
+    console.log('click ', e)
+    if (e.key === '5') {
+      logoutUser()
+      navigate('/login')
+    }
+  }
   return (
     <ConfigProvider
       theme={{
@@ -44,7 +65,11 @@ const AccountLayout: React.FC = () => {
         },
         components: {
           Layout: {
-            siderBg: '#F7F7F7'
+            siderBg: '#F7F7F7',
+            triggerColor: 'black',
+            headerBg: '#FFFFFF',
+            headerHeight: 60,
+            footerBg: '#FFFFFF'
           },
           Menu: {
             itemBg: '#F7F7F7',
@@ -59,13 +84,13 @@ const AccountLayout: React.FC = () => {
         }
       }}
     >
-      <Layout>
+      <Layout hasSider>
         <Sider
           className={'text-center'}
-          width={400}
-          style={{ paddingLeft: 100, paddingTop: 30 }}
+          width={350}
+          style={{ paddingTop: 30 }}
           breakpoint='lg'
-          collapsedWidth='0'
+          collapsedWidth={0}
           onBreakpoint={(broken) => {
             console.log(broken)
           }}
@@ -85,46 +110,21 @@ const AccountLayout: React.FC = () => {
           </Space>
 
           <Menu
+            onClick={onClick}
             style={{ marginTop: 30 }}
             className='menuItem'
             mode='inline'
-            defaultSelectedKeys={['2']}
-            items={[
-              {
-                key: '1',
-                label: 'My Journey'
-              },
-              {
-                key: '2',
-                label: 'Kiểm tra & Kết quả'
-              },
-              {
-                key: '3',
-                label: 'Tin Nhắn'
-              },
-              {
-                key: '4',
-                label: 'Cài đặt'
-              },
-              {
-                key: '5',
-                label: 'Đăng xuất'
-              }
-            ]}
+            selectedKeys={[`${lastSegment}`]}
+            items={items}
           />
         </Sider>
         <Layout
           style={{
-            background: '#FFFFFF'
+            background: '#FFFFFF',
+            minHeight: '100vh'
           }}
         >
-          <div
-            style={{
-              height: '100%'
-            }}
-          >
-            test
-          </div>
+          <Outlet />
         </Layout>
       </Layout>
     </ConfigProvider>

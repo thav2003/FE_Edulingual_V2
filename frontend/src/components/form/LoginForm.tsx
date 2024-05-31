@@ -1,18 +1,31 @@
 import React from 'react'
-import { Typography, Button, Form, Input, Space, Divider, Flex } from 'antd'
+import { Typography, Button, Form, Input, Space, Divider, Flex, App } from 'antd'
 import type { FormProps } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuthStore } from '~/stores'
 
 const { Title, Text } = Typography
 
 type FieldType = {
-  email?: string
-  password?: string
+  email: string
+  password: string
 }
 
 const LoginForm: React.FC = () => {
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  const { notification } = App.useApp()
+  const navigate = useNavigate()
+  const loginUser = useAuthStore((state) => state.loginUser)
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
+    const { email, password } = values
+
+    try {
+      await loginUser(email, password)
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
   }
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -22,7 +35,8 @@ const LoginForm: React.FC = () => {
     <div className='mt-2'>
       <Space direction='vertical' className='w-full'>
         <Title className='drop-shadow-lg'>
-          Chào mứng đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
+          Chào mứng đến với <br />
+          <span className='drop-shadow-lg !text-primary'>Edu Lingual</span>
         </Title>
 
         <Text className='text-[#171618] text-[18px]'>Where the best begin your journey</Text>

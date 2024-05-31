@@ -9,10 +9,16 @@ import {
   LoginPage,
   RegisterPage,
   ResetPasswordPage,
-  VerifyPage
+  VerifyPage,
+  MyCoursesPage,
+  CheckoutPage,
+  AdminStudentPage,
+  AdminTeacherPage,
+  AdminOrderPage
 } from './pages'
 import CommonLayout from './layouts/CommonLayout'
 import AccountLayout from './layouts/AccountLayout'
+import AdminLayout from './layouts/AdminLayout'
 
 const router = createBrowserRouter([
   {
@@ -29,6 +35,10 @@ const router = createBrowserRouter([
             element: <HomePage />
           },
           {
+            path: 'checkout/:courseId',
+            element: <CheckoutPage />
+          },
+          {
             path: 'courses',
             element: <CoursesPage />
           },
@@ -38,7 +48,13 @@ const router = createBrowserRouter([
           },
           {
             path: 'account',
-            element: <AccountLayout />
+            element: <AccountLayout />,
+            children: [
+              {
+                path: 'mycourses',
+                element: <MyCoursesPage />
+              }
+            ]
           },
           {
             path: 'projects/:projectId',
@@ -69,6 +85,28 @@ const router = createBrowserRouter([
   {
     path: '/resetpassword',
     element: <ResetPasswordPage />
+  },
+  {
+    path: '/admin',
+    element: <AdminLayout />,
+    children: [
+      {
+        path: 'dashboard',
+        element: <div>dashboard</div>
+      },
+      {
+        path: 'students',
+        element: <AdminStudentPage />
+      },
+      {
+        path: 'teachers',
+        element: <AdminTeacherPage />
+      },
+      {
+        path: 'orders',
+        element: <AdminOrderPage />
+      }
+    ]
   }
 ])
 

@@ -1,8 +1,10 @@
 import { CaretRightOutlined, ProfileOutlined, StarFilled } from '@ant-design/icons'
-import { Tabs, Avatar, List, Space } from 'antd'
+import { Tabs, Avatar, List, Space, Button } from 'antd'
 import type { TabsProps } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 const CourseDetailPage: React.FC = () => {
+  const navigate = useNavigate()
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -112,12 +114,9 @@ const CourseDetailPage: React.FC = () => {
             </div>
             <div className='sm:flex items-center justify-between space-y-[20px] sm:space-y-[0]'>
               <div>
-                <button
-                  type='submit'
-                  className='bg-[#717FF8] text-[#fff] text-[16px] font-semibold inline-block py-[15px] sm:py-[17px] px-[21px] sm:px-[35px] leading-none border border-[#717FF8] transition duration-500 ease-in-out hover:bg-[#000] hover:border-[#000] hover:text-[#fff]'
-                >
+                <Button type='primary' size='large' onClick={() => navigate('/checkout/1/')}>
                   Now Buy Course <i className='ri-arrow-right-up-line'></i>
-                </button>
+                </Button>
               </div>
               <div className='flex items-center space-x-[10px] rtl:space-x-reverse'>
                 <p className='text-black text-[16px] lg:text-[20px]'>Share On:</p>
@@ -201,7 +200,7 @@ const CourseDetailPage: React.FC = () => {
   ]
 
   return (
-    <div className='bg-[#E1F8E6]'>
+    <div className='bg-[#FFFFFF]'>
       <div className='py-[50px]'>
         <div className='container mx-auto'>
           <div className='grid gap-[30px] grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3'>

@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
-import { Flex, Layout, Typography, ConfigProvider, Button, Menu, Dropdown, MenuProps, Avatar } from 'antd'
+import { Flex, Layout, Typography, ConfigProvider, Button, Menu, Dropdown, MenuProps, Avatar, Space } from 'antd'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '~/stores'
-import { BellOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { BellOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import Sider from 'antd/es/layout/Sider'
 
 const { Header, Content, Footer } = Layout
 const { Text } = Typography
@@ -10,7 +11,7 @@ type CommonLayoutTypes = {
   children?: React.ReactNode
 }
 
-const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
+const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const authStatus = useAuthStore((state) => state.status)
@@ -19,49 +20,22 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
   const pathSegments = location.pathname.split('/')
   const lastSegment = pathSegments[pathSegments.length - 1]
   const items: MenuProps['items'] = [
-    ...(user?.role === 'ADMIN'
-      ? [
-          {
-            key: 'dashboard',
-            label: <Link to={'/admin/dashboard'}>Dashboard</Link>
-          },
-          {
-            key: 'students',
-            label: <Link to={'/admin/students'}>Student</Link>
-          },
-          {
-            key: 'teachers',
-            label: <Link to={'/admin/teachers'}>Teacher</Link>
-          },
-          {
-            key: 'orders',
-            label: <Link to={'/admin/orders'}>Orders</Link>
-          }
-        ]
-      : []),
-    ...(user?.role === 'STUDENT'
-      ? [
-          {
-            label: <Link to='/account/mycourses'>Khóa học</Link>,
-            key: 'mycourses'
-          }
-        ]
-      : []),
-    ...(user?.role === 'TEACHER'
-      ? [
-          {
-            label: <Link to='/account/mycourses'>Khóa học</Link>,
-            key: 'mycourses'
-          }
-        ]
-      : []),
     {
-      type: 'divider'
+      label: <Link to='/admin/dashboard'>Dashboard</Link>,
+      key: 'dashboard'
+    },
+
+    {
+      label: <Link to='/admin/students'>Học sinh</Link>,
+      key: 'students'
     },
     {
-      label: 'Đăng xuất',
-      key: '4',
-      icon: <LogoutOutlined />
+      label: <Link to='/admin/teachers'>Giáo viên</Link>,
+      key: 'teachers'
+    },
+    {
+      label: <Link to='/admin/orders'>Orders</Link>,
+      key: 'orders'
     }
   ]
   const onClick: MenuProps['onClick'] = (e) => {
@@ -77,11 +51,26 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
   return (
     <ConfigProvider
       theme={{
+        token: {
+          lineWidth: 0
+        },
         components: {
           Layout: {
+            siderBg: '#F7F7F7',
+            triggerColor: 'black',
             headerBg: '#FFFFFF',
             headerHeight: 60,
             footerBg: '#FFFFFF'
+          },
+          Menu: {
+            itemBg: '#F7F7F7',
+            itemActiveBg: '#FFFFFF',
+            itemSelectedBg: '#FFFFFF',
+            itemHoverBg: '#FFFFFF',
+
+            itemColor: '#42464D',
+            itemHoverColor: '#42464D',
+            itemSelectedColor: '#42464D'
           }
         }
       }}
@@ -106,30 +95,7 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
                 </Text>
               </Link>
             </Flex>
-            <Menu
-              mode='horizontal'
-              selectedKeys={[`${lastSegment}`]}
-              items={[
-                {
-                  key: 'courses',
-                  label: <Link to='/courses'>Tìm kiếm</Link>
-                },
-                {
-                  key: '2',
-                  label: `Blog`
-                },
-                {
-                  key: '3',
-                  label: `Khác`,
-                  children: [
-                    { key: '3a', label: 'Tài liệu' },
-                    { key: '3b', label: 'Trở thành đối tác' },
-                    { key: '3c', label: 'Hỗ trợ' }
-                  ]
-                }
-              ]}
-              style={{ flex: 1, minWidth: 0, justifyContent: 'center' }}
-            />
+
             {authStatus === 'unauthorized' && (
               <Flex align='center' justify='flex-end' gap={15} style={{ flex: 1 }}>
                 <Button
@@ -155,7 +121,38 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
               <Flex align='center' justify='flex-end' gap={15} style={{ flex: 1 }}>
                 <BellOutlined className='text-[24px]' />
                 <Text>{user?.name}</Text>
-                <Dropdown menu={{ items, onClick }} trigger={['click']}>
+                <Dropdown
+                  menu={{
+                    items: [
+                      {
+                        key: 'dashboard',
+                        label: <Link to={'/admin/dashboard'}>Dashboard</Link>
+                      },
+                      {
+                        key: 'students',
+                        label: <Link to={'/admin/students'}>Student</Link>
+                      },
+                      {
+                        key: 'teachers',
+                        label: <Link to={'/admin/teachers'}>Teacher</Link>
+                      },
+                      {
+                        key: 'orders',
+                        label: <Link to={'/admin/orders'}>Orders</Link>
+                      },
+                      {
+                        type: 'divider'
+                      },
+                      {
+                        label: 'Đăng xuất',
+                        key: '4',
+                        icon: <LogoutOutlined />
+                      }
+                    ],
+                    onClick
+                  }}
+                  trigger={['click']}
+                >
                   <a onClick={(e) => e.preventDefault()}>
                     <Avatar size={'large'} icon={<UserOutlined />} />
                   </a>
@@ -164,16 +161,38 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
             )}
           </Flex>
         </Header>
-        <Content>
-          <div
-            style={{
-              height: '100%',
-              width: '100%'
+        <Layout>
+          <Sider
+            width={350}
+            breakpoint='lg'
+            collapsedWidth={0}
+            onBreakpoint={(broken) => {
+              console.log(broken)
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type)
             }}
           >
-            {children ? children : <Outlet />}
-          </div>
-        </Content>
+            <Menu
+              selectedKeys={[`${lastSegment}`]}
+              style={{ marginTop: 30 }}
+              className='menuItem'
+              mode='inline'
+              items={items}
+            />
+          </Sider>
+          <Content>
+            <div
+              style={{
+                height: '100%',
+                width: '100%'
+              }}
+            >
+              {children ? children : <Outlet />}
+            </div>
+          </Content>
+        </Layout>
+
         <Footer>
           <Flex align='center' justify='space-between'>
             <Flex align='flex-start' vertical gap={10} style={{ flex: 1 }}>
@@ -208,4 +227,4 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
   )
 }
 
-export default CommonLayout
+export default AdminLayout
