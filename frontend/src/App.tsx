@@ -1,6 +1,6 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom'
 
-import { Fallback, Layout, RootErrorBoundary, Project, ProjectErrorBoundary, projectLoader } from './routes'
+import { Fallback, RootErrorBoundary, Project, ProjectErrorBoundary, projectLoader } from './routes'
 import {
   CourseDetailPage,
   CoursesPage,
@@ -12,6 +12,7 @@ import {
   VerifyPage
 } from './pages'
 import CommonLayout from './layouts/CommonLayout'
+import AccountLayout from './layouts/AccountLayout'
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
           {
             path: 'courses/course-detail/:courseId',
             element: <CourseDetailPage />
+          },
+          {
+            path: 'account',
+            element: <AccountLayout />
           },
           {
             path: 'projects/:projectId',
