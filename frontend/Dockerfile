@@ -9,7 +9,7 @@ COPY frontend/package.json /app/package.json
 
 RUN pnpm install
 
-COPY . /app
+COPY frontend /app
 
 RUN pnpm run build
 
