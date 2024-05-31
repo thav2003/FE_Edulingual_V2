@@ -11,7 +11,8 @@ import {
   Space,
   Tag,
   Typography,
-  Carousel
+  Carousel,
+  Input
 } from 'antd'
 import {
   EyeFilled,
@@ -24,7 +25,6 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 const { Title, Text } = Typography
 
 const { Meta } = Card
@@ -53,8 +53,7 @@ const text = (
     in many households across the world.
   </p>
 )
-const HomePage: React.FC = () => {
-  const navigate = useNavigate()
+const CoursesPage: React.FC = () => {
   const [initLoading, setInitLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<DataType[]>([])
@@ -209,13 +208,7 @@ const HomePage: React.FC = () => {
                     onChange={handleChange}
                     options={options.map((d) => ({ value: d, label: d }))}
                   />
-                  <Button
-                    type='primary'
-                    className='h-[60px]'
-                    onClick={() => {
-                      navigate('/search')
-                    }}
-                  >
+                  <Button type='primary' className='h-[60px]'>
                     Tìm kiếm
                   </Button>
                 </Flex>
@@ -225,106 +218,110 @@ const HomePage: React.FC = () => {
         </div>
       </div>
       {/* <img src='/banner.png' className='w-full' /> */}
-      <div className='py-10 px-12 lg:px-20 bg-[#FFFFFF]'>
+      <div className='py-10 px-12 lg:px-40 bg-[#FFFFFF]'>
         <Space direction='vertical' className='w-full' size={'large'}>
-          <div className='text-center'>
-            <Title>
-              Những khoá học <span className='!text-primary'>nổi bật</span>
-            </Title>
-          </div>
-          {/* <Flex align='center' gap={10} justify='space-between' wrap>
-            <Space>
-              <Select
-                size='large'
-                className='!text-left'
-                allowClear
-                optionLabelProp='label'
-                placeholder={<Text strong>Tất cả ngôn ngữ</Text>}
-                style={{ width: 150 }}
-                onChange={handleChange}
-                options={options.map((d) => ({ value: d, label: d }))}
-              />
-              <Select
-                size='large'
-                className='!text-left'
-                allowClear
-                optionLabelProp='label'
-                placeholder={<Text strong>Tất cả giá</Text>}
-                style={{ width: 150 }}
-                onChange={handleChange}
-                options={options.map((d) => ({ value: d, label: d }))}
-              />
-              <Select
-                size='large'
-                className='!text-left'
-                allowClear
-                optionLabelProp='label'
-                placeholder={<Text strong>Tất cả địa điểm</Text>}
-                style={{ width: 200 }}
-                onChange={handleChange}
-                options={options.map((d) => ({ value: d, label: d }))}
-              />
-            </Space>
+          <Flex align='center' justify='space-between' gap={20}>
             <Select
               size='large'
               className='!text-left'
               allowClear
               optionLabelProp='label'
-              placeholder={
-                <Space>
-                  <svg
-                    className='inline'
-                    width='18'
-                    height='13'
-                    viewBox='0 0 18 13'
-                    fill='none'
-                    xmlns='http://www.w3.org/2000/svg'
-                  >
-                    <path
-                      fill-rule='evenodd'
-                      clip-rule='evenodd'
-                      d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                      fill='#A5A9AD'
-                    />
-                  </svg>
-                  Lọc theo
-                  <Text strong>Đánh giá cao</Text>
-                </Space>
-              }
-              style={{ width: 250 }}
+              placeholder={<Text strong>Ngôn ngữ</Text>}
+              style={{ width: '100%' }}
               onChange={handleChange}
-            >
-              {options.map((data) => (
-                <Select.Option
-                  key={data}
-                  value={data}
-                  label={
-                    <Space className='text-[#00000040]'>
-                      <svg
-                        className='inline'
-                        width='18'
-                        height='13'
-                        viewBox='0 0 18 13'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          fill-rule='evenodd'
-                          clip-rule='evenodd'
-                          d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                          fill='#A5A9AD'
-                        />
-                      </svg>
-                      Lọc theo
-                      <Text strong>{data}</Text>
-                    </Space>
-                  }
-                >
-                  {data}
-                </Select.Option>
-              ))}
-            </Select>
-          </Flex> */}
+              options={options.map((d) => ({ value: d, label: d }))}
+            />
+            <Select
+              size='large'
+              className='!text-left'
+              allowClear
+              optionLabelProp='label'
+              placeholder={<Text strong>Địa điểm</Text>}
+              style={{ width: '100%' }}
+              onChange={handleChange}
+              options={options.map((d) => ({ value: d, label: d }))}
+            />
+            <Select
+              size='large'
+              className='!text-left'
+              allowClear
+              optionLabelProp='label'
+              placeholder={<Text strong>Khóa học</Text>}
+              style={{ width: '100%' }}
+              onChange={handleChange}
+              options={options.map((d) => ({ value: d, label: d }))}
+            />
+            <Button type='primary' size='large'>
+              Tìm kiếm
+            </Button>
+          </Flex>
+
+          <Flex align='center' justify='space-between' gap={20} wrap>
+            <Text strong>1,133 Kết quả</Text>
+            <Flex align='center' gap={20}>
+              <Input.Search size='large' />
+              <Select
+                size='large'
+                className='!text-left'
+                allowClear
+                optionLabelProp='label'
+                placeholder={
+                  <Space>
+                    <svg
+                      className='inline'
+                      width='18'
+                      height='13'
+                      viewBox='0 0 18 13'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path
+                        fill-rule='evenodd'
+                        clip-rule='evenodd'
+                        d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                        fill='#A5A9AD'
+                      />
+                    </svg>
+                    Lọc theo
+                    <Text strong>Đánh giá cao</Text>
+                  </Space>
+                }
+                style={{ width: 250 }}
+                onChange={handleChange}
+              >
+                {options.map((data) => (
+                  <Select.Option
+                    key={data}
+                    value={data}
+                    label={
+                      <Space className='text-[#00000040]'>
+                        <svg
+                          className='inline'
+                          width='18'
+                          height='13'
+                          viewBox='0 0 18 13'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            fill-rule='evenodd'
+                            clip-rule='evenodd'
+                            d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                            fill='#A5A9AD'
+                          />
+                        </svg>
+                        Lọc theo
+                        <Text strong>{data}</Text>
+                      </Space>
+                    }
+                  >
+                    {data}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Flex>
+          </Flex>
+
           <div>
             <List
               grid={{
@@ -337,7 +334,7 @@ const HomePage: React.FC = () => {
                 xxl: 3
               }}
               loading={initLoading}
-              // loadMore={loadMore}
+              loadMore={loadMore}
               dataSource={list}
               renderItem={(item) => (
                 <List.Item>
@@ -861,4 +858,4 @@ const HomePage: React.FC = () => {
   )
 }
 
-export default HomePage
+export default CoursesPage
