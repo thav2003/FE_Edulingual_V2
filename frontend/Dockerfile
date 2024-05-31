@@ -11,4 +11,6 @@ RUN pnpm install
 
 COPY frontend /app
 
-RUN pnpm run dev
+EXPOSE 3000
+
+CMD ["pnpm", "run", "dev"]
