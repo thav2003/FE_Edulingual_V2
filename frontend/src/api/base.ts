@@ -15,10 +15,10 @@
 import type { Configuration } from './configuration'
 // Some imports not used depending on template conditions
 // @ts-ignore
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios'
 import globalAxios from 'axios'
 
-export const BASE_PATH = 'http://34.16.153.203:80'.replace(/\/+$/, '')
+export const BASE_PATH = 'http://34.16.153.203'.replace(/\/+$/, '')
 
 /**
  *
@@ -38,7 +38,7 @@ export const COLLECTION_FORMATS = {
  */
 export interface RequestArgs {
   url: string
-  options: AxiosRequestConfig
+  options: RawAxiosRequestConfig
 }
 
 /**

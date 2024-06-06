@@ -3,6 +3,7 @@ import { Flex, Layout, Typography, ConfigProvider, Button, Menu, Dropdown, MenuP
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '~/stores'
 import { BellOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons'
+import { Role } from '~/interfaces'
 
 const { Header, Content, Footer } = Layout
 const { Text } = Typography
@@ -19,7 +20,7 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
   const pathSegments = location.pathname.split('/')
   const lastSegment = pathSegments[pathSegments.length - 1]
   const items: MenuProps['items'] = [
-    ...(user?.role === 'ADMIN'
+    ...(user?.role === Role.ADMIN
       ? [
           {
             key: 'dashboard',
@@ -39,7 +40,7 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
           }
         ]
       : []),
-    ...(user?.role === 'STUDENT'
+    ...(user?.role === Role.USER
       ? [
           {
             label: <Link to='/account/mycourses'>Khóa học</Link>,
@@ -47,7 +48,7 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
           }
         ]
       : []),
-    ...(user?.role === 'TEACHER'
+    ...(user?.role === Role.TEACHER
       ? [
           {
             label: <Link to='/account/mycourses'>Khóa học</Link>,

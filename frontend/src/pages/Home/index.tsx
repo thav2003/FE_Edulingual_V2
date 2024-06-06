@@ -24,29 +24,76 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { formatCurrencyVND } from '~/utils/numberUtils'
 const { Title, Text } = Typography
 
 const { Meta } = Card
 
-interface DataType {
-  gender?: string
-  name: {
-    title?: string
-    first?: string
-    last?: string
-  }
-  email?: string
-  picture: {
-    large?: string
-    medium?: string
-    thumbnail?: string
-  }
-  nat?: string
-  loading: boolean
+interface CourseArea {
+  name: string
+  courseAreaStatus: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
 }
-const count = 3
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`
+
+interface CourseLanguage {
+  name: string
+  courseLanguageStatus: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseCategory {
+  name: string
+  courseCategoryStatus: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface Center {
+  userName: string
+  password: string
+  fullName: string
+  description: string
+  userStatus: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
+}
+
+interface Course {
+  courseArea: CourseArea
+  courseLanguage: CourseLanguage
+  courseCategory: CourseCategory
+  center: Center
+  title: string
+  description: string
+  duration: string
+  tuitionfee: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
+}
+
 const text = (
   <p style={{ paddingLeft: 24 }}>
     A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest
@@ -54,59 +101,19 @@ const text = (
   </p>
 )
 const HomePage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { courses, areas } = useLoaderData() as any
+
   const navigate = useNavigate()
-  const [initLoading, setInitLoading] = useState(true)
-  const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<DataType[]>([])
-  const [list, setList] = useState<DataType[]>([])
+  console.log(areas)
+  console.log(courses)
+  const list = courses.data.items as Course[]
+
   function handleChange(value: any) {
     console.log(`selected ${value}`)
   }
 
   const options = ['option 1', 'options 2']
-
-  const onLoadMore = () => {
-    setLoading(true)
-    setList(data.concat([...new Array(count)].map(() => ({ loading: true, name: {}, picture: {} }))))
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        const newData = data.concat(res.results)
-        setData(newData)
-        setList(newData)
-        setLoading(false)
-        // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-        // In real scene, you can using public method of react-virtualized:
-        // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-        window.dispatchEvent(new Event('resize'))
-      })
-  }
-
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 12,
-          height: 32,
-          lineHeight: '32px'
-        }}
-      >
-        <Button type='primary' onClick={onLoadMore}>
-          Xem thêm
-        </Button>
-      </div>
-    ) : null
-
-  useEffect(() => {
-    fetch(`https://randomuser.me/api/?results=${6}&inc=name,gender,email,nat,picture&noinfo`)
-      .then((res) => res.json())
-      .then((res) => {
-        setInitLoading(false)
-        setData(res.results)
-        setList(res.results)
-      })
-  }, [])
 
   return (
     <div>
@@ -170,16 +177,16 @@ const HomePage: React.FC = () => {
                             <path
                               d='M12.5 21C16 17.4 19.5 14.1764 19.5 10.2C19.5 6.22355 16.366 3 12.5 3C8.63401 3 5.5 6.22355 5.5 10.2C5.5 14.1764 9 17.4 12.5 21Z'
                               stroke='#171618'
-                              stroke-width='2'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
+                              strokeWidth='2'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
                             />
                             <path
                               d='M12.5 13C14.1569 13 15.5 11.6569 15.5 10C15.5 8.34315 14.1569 7 12.5 7C10.8431 7 9.5 8.34315 9.5 10C9.5 11.6569 10.8431 13 12.5 13Z'
                               stroke='#171618'
-                              stroke-width='2'
-                              stroke-linecap='round'
-                              stroke-linejoin='round'
+                              strokeWidth='2'
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
                             />
                           </svg>
                         </Text>
@@ -336,19 +343,23 @@ const HomePage: React.FC = () => {
                 xl: 3,
                 xxl: 3
               }}
-              loading={initLoading}
-              // loadMore={loadMore}
               dataSource={list}
               renderItem={(item) => (
                 <List.Item>
-                  <Skeleton avatar title={false} loading={item.loading} active>
+                  <Skeleton avatar loading={false} title={false} active>
                     <Card hoverable className='!bg-[#F7F7F7]' onClick={() => navigate('/courses/course-detail/1')}>
                       <Meta
-                        avatar={<Avatar shape='square' src={item.picture.medium} size={128} />}
+                        avatar={
+                          <Avatar
+                            shape='square'
+                            src={'https://randomuser.me/api/portraits/med/women/52.jpg'}
+                            size={128}
+                          />
+                        }
                         title={
                           <div className='flex flex-col'>
-                            <Flex align='center' justify='space-between'>
-                              <Text>{`${item.name.last} ${item.name.first}`}</Text>
+                            <Flex align='center' justify='space-between' wrap>
+                              <Text>{item.center.fullName}</Text>
                               <Space>
                                 <Text>
                                   <svg
@@ -365,7 +376,7 @@ const HomePage: React.FC = () => {
                                     />
                                   </svg>
                                 </Text>
-                                <Text className='font-normal'>English</Text>
+                                <Text className='font-normal'>{item.courseLanguage.name}</Text>
                               </Space>
                             </Flex>
 
@@ -373,10 +384,10 @@ const HomePage: React.FC = () => {
                               Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
                             </Text>
                             <Text>
-                              Khoa học: <Text className='font-normal'>Khóa học IELTS 6.0</Text>
+                              Khóa học: <Text className='font-normal'>{item.courseCategory.name}</Text>
                             </Text>
                             <Text>
-                              Học phí: <Text className='font-normal'>10 Triệu VND</Text>
+                              Học phí: <Text className='font-normal'>{formatCurrencyVND(item.tuitionfee)}</Text>
                             </Text>
                           </div>
                         }
@@ -407,20 +418,20 @@ const HomePage: React.FC = () => {
                                 <path
                                   d='M12.5 21C16 17.4 19.5 14.1764 19.5 10.2C19.5 6.22355 16.366 3 12.5 3C8.63401 3 5.5 6.22355 5.5 10.2C5.5 14.1764 9 17.4 12.5 21Z'
                                   stroke='#171618'
-                                  stroke-width='2'
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
+                                  strokeWidth='2'
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
                                 />
                                 <path
                                   d='M12.5 13C14.1569 13 15.5 11.6569 15.5 10C15.5 8.34315 14.1569 7 12.5 7C10.8431 7 9.5 8.34315 9.5 10C9.5 11.6569 10.8431 13 12.5 13Z'
                                   stroke='#171618'
-                                  stroke-width='2'
-                                  stroke-linecap='round'
-                                  stroke-linejoin='round'
+                                  strokeWidth='2'
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
                                 />
                               </svg>
                             </Text>
-                            <Text>Hà Nội</Text>
+                            <Text>{item.courseArea.name}</Text>
                           </Space>
                         </Tag>
                         <Tag color='#FFFFFF' style={{ marginInlineEnd: 0 }}>
@@ -1053,7 +1064,7 @@ const HomePage: React.FC = () => {
               <div className='mr-auto mt-6 lg:col-span-7 w-full'>
                 <Collapse
                   expandIcon={(panelProps) => {
-                    console.log(panelProps)
+                    // console.log(panelProps)
                     return panelProps.isActive ? <MinusOutlined /> : <PlusOutlined />
                   }}
                   expandIconPosition={'end'}

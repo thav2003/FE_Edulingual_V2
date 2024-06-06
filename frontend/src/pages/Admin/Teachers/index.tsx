@@ -1,34 +1,53 @@
-import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
+import { Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
-const { Text } = Typography
+import { useState } from 'react'
+import { useLoaderData } from 'react-router-dom'
+import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
+const { Text, Paragraph } = Typography
 
 interface DataType {
-  key: string
-  name: string
-  email: string
-  note: string
-  isDone: boolean
+  userName: string
+  password: string
+  fullName: string
+  description: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
 }
 
 const AdminTeacherPage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { users } = useLoaderData() as any
+
+  const [open, setOpen] = useState(false)
+  const [form] = Form.useForm()
+
   const options = ['option 1', 'options 2']
+
+  const data = users.data.items as DataType[]
 
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
-      dataIndex: 'key',
-      key: 'key'
+      dataIndex: 'id',
+      key: 'id'
     },
     {
       title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>
+      dataIndex: 'fullName',
+      key: 'fullName'
     },
     {
       title: 'Ngày tạo',
-      // dataIndex: 'email',
-      key: 'craetedAt'
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (_, { createdAt }) => {
+        return formatDateToDDMMYYWithTime(new Date(createdAt))
+      }
     },
     {
       title: 'Bộ môn',
@@ -37,14 +56,23 @@ const AdminTeacherPage: React.FC = () => {
     },
     {
       title: 'Mô tả',
-      // dataIndex: 'note',
-      key: 'description'
+      dataIndex: 'description',
+      key: 'description',
+      width: 300,
+      render: (_, { description }) => {
+        return (
+          <Paragraph ellipsis={{ rows: 2, expandable: 'collapsible', symbol: '', tooltip: true }}>
+            {description}
+          </Paragraph>
+        )
+      }
     },
     {
       title: 'Trạng thái',
       key: 'isDone',
       dataIndex: 'isDone',
-      render: (_, { isDone }) => {
+      render: () => {
+        const isDone = true
         if (isDone) {
           return (
             <ConfigProvider
@@ -59,7 +87,7 @@ const AdminTeacherPage: React.FC = () => {
               }}
             >
               <Button type='primary' className='cursor-auto'>
-                Hoàn thành
+                Đang duyệt
               </Button>
             </ConfigProvider>
           )
@@ -77,7 +105,7 @@ const AdminTeacherPage: React.FC = () => {
               }}
             >
               <Button type='primary' className='cursor-auto'>
-                Đang duyệt
+                Hoàn thành
               </Button>
             </ConfigProvider>
           )
@@ -86,29 +114,6 @@ const AdminTeacherPage: React.FC = () => {
     }
   ]
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: true
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    }
-  ]
   return (
     <div
       style={{
@@ -186,11 +191,41 @@ const AdminTeacherPage: React.FC = () => {
                     </Select.Option>
                   ))}
                 </Select>
+                <Button type='primary' size='large' onClick={() => setOpen(true)}>
+                  Thêm giáo viên
+                </Button>
               </Flex>
             </Flex>
+
             <Table<DataType> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={data} />
           </Space>
         </div>
+        <Modal
+          title='Thêm giáo viên'
+          open={open}
+          onOk={() => setOpen(false)}
+          onCancel={() => setOpen(false)}
+          width={1000}
+          style={{ top: 20 }}
+        >
+          <Form layout={'vertical'} form={form}>
+            <Form.Item label='User Name'>
+              <Input placeholder='Username' />
+            </Form.Item>
+            <Form.Item label='Password'>
+              <Input.Password placeholder='Password' />
+            </Form.Item>
+            <Form.Item label='Full Name'>
+              <Input placeholder='Full Name' />
+            </Form.Item>
+            <Form.Item label='Description'>
+              <Input placeholder='Description' />
+            </Form.Item>
+            <Form.Item>
+              <Button type='primary'>Submit</Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </ConfigProvider>
     </div>
   )

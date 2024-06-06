@@ -1,28 +1,40 @@
 import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
+import { useLoaderData } from 'react-router-dom'
+import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
 interface DataType {
-  key: string
-  name: string
-  email: string
-  note: string
-  isDone: boolean
+  userName: string
+  password: string
+  fullName: string
+  description: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
 }
 
 const AdminStudentPage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { users } = useLoaderData() as any
   const options = ['option 1', 'options 2']
+
+  const data = users.data.items as DataType[]
 
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
-      dataIndex: 'key',
-      key: 'key'
+      dataIndex: 'id',
+      key: 'id'
     },
     {
       title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'fullName',
+      key: 'fullName',
       render: (text) => <a>{text}</a>
     },
     {
@@ -32,40 +44,20 @@ const AdminStudentPage: React.FC = () => {
     },
     {
       title: 'Ngày tạo',
-      // dataIndex: 'createdAt',
-      key: 'createdAt'
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (_, { createdAt }) => {
+        return formatDateToDDMMYYWithTime(new Date(createdAt))
+      }
     },
     {
       // title: 'Trạng thái',
       key: 'actions',
       // dataIndex: 'isDone',
-      render: (_, { isDone }) => <Button type='primary'>Chi tiết</Button>
+      render: () => <Button type='primary'>Chi tiết</Button>
     }
   ]
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: true
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    }
-  ]
   return (
     <div
       style={{

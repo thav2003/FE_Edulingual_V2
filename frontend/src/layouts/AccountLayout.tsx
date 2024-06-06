@@ -1,7 +1,9 @@
 import { UserOutlined, EditOutlined } from '@ant-design/icons'
 import { Layout, Menu, ConfigProvider, Avatar, Typography, MenuProps } from 'antd'
 import { Space } from 'antd'
-import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Outlet, redirect, useLocation, useNavigate } from 'react-router-dom'
+import { Role } from '~/interfaces'
 import { useAuthStore } from '~/stores'
 const { Text } = Typography
 const { Sider } = Layout
@@ -9,11 +11,12 @@ const AccountLayout: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const logoutUser = useAuthStore((state) => state.logoutUser)
+
   const user = useAuthStore((state) => state.user)
   const pathSegments = location.pathname.split('/')
   const lastSegment = pathSegments[pathSegments.length - 1]
   const items: MenuProps['items'] = [
-    ...(user?.role === 'STUDENT'
+    ...(user?.role === Role.USER
       ? [
           {
             key: '1',
@@ -22,10 +25,18 @@ const AccountLayout: React.FC = () => {
           {
             key: '2',
             label: 'Kiểm tra & Kết quả'
+          },
+          {
+            key: 'mycourses',
+            label: <Link to='mycourses'>Khóa học</Link>
+          },
+          {
+            key: '4',
+            label: 'Tin nhắn'
           }
         ]
       : []),
-    ...(user?.role === 'TEACHER'
+    ...(user?.role === Role.TEACHER
       ? [
           {
             key: '1',
@@ -34,17 +45,18 @@ const AccountLayout: React.FC = () => {
           {
             key: '2',
             label: 'Tạo bộ đề'
+          },
+          {
+            key: '3',
+            label: 'Khóa học'
+          },
+          {
+            key: '4',
+            label: 'Tin nhắn'
           }
         ]
       : []),
-    {
-      key: 'mycourses',
-      label: <Link to='mycourses'>Khóa học</Link>
-    },
-    {
-      key: '4',
-      label: 'Tin nhắn'
-    },
+
     {
       key: '5',
       label: 'Đăng xuất'
@@ -57,6 +69,21 @@ const AccountLayout: React.FC = () => {
       navigate('/login')
     }
   }
+
+  useEffect(() => {
+    if (location.pathname === '/account') {
+      if (user?.role === Role.USER) {
+        navigate('/account/mycourses')
+      }
+      if (user?.role === Role.TEACHER) {
+        // navigate('/account')
+      }
+      if (user?.role === Role.ADMIN) {
+        navigate('/admin/dashboard')
+      }
+    }
+  }, [location])
+
   return (
     <ConfigProvider
       theme={{
@@ -100,10 +127,12 @@ const AccountLayout: React.FC = () => {
         >
           <Space direction='vertical'>
             <Avatar size={128} icon={<UserOutlined />} />
+
             <Text strong style={{ fontSize: 24 }}>
-              Linh
+              {user?.name}
             </Text>
-            <Text>English</Text>
+            {user?.role === Role.TEACHER && <Text>English</Text>}
+
             <Text type='success'>
               <EditOutlined /> Chỉnh sửa
             </Text>

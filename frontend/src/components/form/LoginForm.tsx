@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
 
     try {
       await loginUser(email, password)
-      navigate('/')
+      navigate('/account')
     } catch (error) {
       console.log(error)
       notification.error({ message: 'Sorry! Something went wrong. App server error' })

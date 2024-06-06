@@ -24,7 +24,10 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
       label: <Link to='/admin/dashboard'>Dashboard</Link>,
       key: 'dashboard'
     },
-
+    {
+      label: <Link to='/admin/courses'>Khóa học</Link>,
+      key: 'course'
+    },
     {
       label: <Link to='/admin/students'>Học sinh</Link>,
       key: 'students'

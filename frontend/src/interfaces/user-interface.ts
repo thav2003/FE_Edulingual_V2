@@ -1,6 +1,12 @@
 export interface User {
-  _id: string
-  email: string
+  id: string
   name: string
-  role: string
+  username: string
+  role: Role
+}
+
+export enum Role {
+  ADMIN = 0,
+  USER = 1,
+  TEACHER = 2
 }

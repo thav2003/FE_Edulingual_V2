@@ -22,53 +22,18 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   user: undefined,
   loginUser: async (email: string, password: string) => {
     // try {
-    // const res = await authApi.apiV1LoginPut({ username: email, password: password })
-    // const data = res.data.data!
-    // set({
-    //   status: 'authorized',
-    //   token: data.accessToken!,
-    //   user: {
-    //     _id: data.id!,
-    //     name: data.name!,
-    //     email: data.username!
-    //   }
-    // })
-    if (email === 'student') {
-      set({
-        status: 'authorized',
-        token: 'accessToken',
-        user: {
-          _id: 'id',
-          name: 'Name 1',
-          email: 'Email 1',
-          role: 'STUDENT'
-        }
-      })
-    }
-    if (email === 'teacher') {
-      set({
-        status: 'authorized',
-        token: 'accessToken',
-        user: {
-          _id: 'id',
-          name: 'Name 1',
-          email: 'Email 1',
-          role: 'TEACHER'
-        }
-      })
-    }
-    if (email === 'admin') {
-      set({
-        status: 'authorized',
-        token: 'accessToken',
-        user: {
-          _id: 'id',
-          name: 'Name 1',
-          email: 'Email 1',
-          role: 'ADMIN'
-        }
-      })
-    }
+    const res = await authApi.apiV1LoginPut({ username: email, password: password })
+    const data = res.data.data!
+    set({
+      status: 'authorized',
+      token: data.accessToken!,
+      user: {
+        id: data.id!,
+        name: data.name!,
+        username: data.username!,
+        role: data.role!
+      }
+    })
     // } catch (error) {
     //   set({ status: 'unauthorized', token: undefined, user: undefined })
     //   console.log('Credenciales incorrectas')
@@ -80,7 +45,7 @@ const storeApi: StateCreator<AuthState> = (set) => ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   registerUser: async (data: RegisterUser) => {
     try {
-      // await AuthService.registerUser(data)
+      // await authApi.registerUser(data)
     } catch (error) {
       throw new Error(`${error}`)
     }
