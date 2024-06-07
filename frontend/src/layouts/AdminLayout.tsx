@@ -133,6 +133,10 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
                       },
                       {
                         key: 'students',
+                        label: <Link to={'/admin/courses'}>Course</Link>
+                      },
+                      {
+                        key: 'students',
                         label: <Link to={'/admin/students'}>Student</Link>
                       },
                       {

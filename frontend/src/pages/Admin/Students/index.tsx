@@ -16,6 +16,10 @@ interface DataType {
   createdBy: string
   updatedBy: string
   isDeleted: boolean
+  role: {
+    id: string
+    roleName: string
+  }
 }
 
 const AdminStudentPage: React.FC = () => {
@@ -137,7 +141,11 @@ const AdminStudentPage: React.FC = () => {
                 </Select>
               </Flex>
             </Flex>
-            <Table<DataType> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={data} />
+            <Table<DataType>
+              pagination={{ position: ['bottomLeft'] }}
+              columns={columns}
+              dataSource={data.filter((d) => d.role.roleName === 'Candidate')}
+            />
           </Space>
         </div>
       </ConfigProvider>

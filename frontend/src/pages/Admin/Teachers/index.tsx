@@ -1,7 +1,8 @@
-import { Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Typography } from 'antd'
-import type { TableProps } from 'antd'
+import { App, Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Typography } from 'antd'
+import type { TableProps, TabsProps, FormProps } from 'antd'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
+import { UserApi } from '~/api'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text, Paragraph } = Typography
 
@@ -17,19 +18,40 @@ interface DataType {
   createdBy: string
   updatedBy: string
   isDeleted: boolean
+  role: {
+    id: string
+    roleName: string
+  }
+}
+type FieldType = {
+  userName: string
+  password: string
+  fullName: string
+  description: string
+  userStatus: 0 | 1
+  roleId: string
 }
 
+const userApi = new UserApi()
 const AdminTeacherPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { users } = useLoaderData() as any
-
+  const { notification } = App.useApp()
   const [open, setOpen] = useState(false)
   const [form] = Form.useForm()
-
+  const [loading, setLoading] = useState(false)
   const options = ['option 1', 'options 2']
 
   const data = users.data.items as DataType[]
-
+  const roles = [
+    ...new Set(
+      data.map((user) => {
+        if (user.role.roleName === 'Teacher') {
+          return user.role
+        }
+      })
+    )
+  ]
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
@@ -113,7 +135,21 @@ const AdminTeacherPage: React.FC = () => {
       }
     }
   ]
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
+    console.log('Success:', values)
+    try {
+      setLoading(true)
+      await userApi.apiV1UsersPost({ ...values, roleId: roles.find((role) => role?.roleName === 'Teacher')!.id })
+    } catch {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
   return (
     <div
       style={{
@@ -197,7 +233,11 @@ const AdminTeacherPage: React.FC = () => {
               </Flex>
             </Flex>
 
-            <Table<DataType> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={data} />
+            <Table<DataType>
+              pagination={{ position: ['bottomLeft'] }}
+              columns={columns}
+              dataSource={data.filter((d) => d.role.roleName === 'Teacher')}
+            />
           </Space>
         </div>
         <Modal
@@ -207,22 +247,31 @@ const AdminTeacherPage: React.FC = () => {
           onCancel={() => setOpen(false)}
           width={1000}
           style={{ top: 20 }}
+          footer={null}
         >
-          <Form layout={'vertical'} form={form}>
-            <Form.Item label='User Name'>
+          <Form
+            layout={'vertical'}
+            form={form}
+            initialValues={{ userStatus: 1 }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+          >
+            <Form.Item<FieldType> name='userName' label='User Name'>
               <Input placeholder='Username' />
             </Form.Item>
-            <Form.Item label='Password'>
+            <Form.Item<FieldType> name='password' label='Password'>
               <Input.Password placeholder='Password' />
             </Form.Item>
-            <Form.Item label='Full Name'>
+            <Form.Item<FieldType> name='fullName' label='Full Name'>
               <Input placeholder='Full Name' />
             </Form.Item>
-            <Form.Item label='Description'>
+            <Form.Item<FieldType> name='description' label='Description'>
               <Input placeholder='Description' />
             </Form.Item>
             <Form.Item>
-              <Button type='primary'>Submit</Button>
+              <Button loading={loading} type='primary' htmlType='submit'>
+                Submit
+              </Button>
             </Form.Item>
           </Form>
         </Modal>

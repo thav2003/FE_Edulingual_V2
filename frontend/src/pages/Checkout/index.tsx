@@ -15,17 +15,103 @@ import {
   ConfigProvider,
   Checkbox
 } from 'antd'
+import { useState } from 'react'
 import { PatternFormat } from 'react-number-format'
+import { useLoaderData } from 'react-router-dom'
+import { PayOsApi } from '~/api'
 import CreditCardInput from '~/components/CreditCardInput'
+import { useAuthStore } from '~/stores'
+import { formatCurrencyVND } from '~/utils/numberUtils'
 
 const { Title, Text } = Typography
 
 const { Meta } = Card
+
+interface Course {
+  courseArea: {
+    name: string
+    courseAreaStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseLanguage: {
+    name: string
+    courseLanguageStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseCategory: {
+    name: string
+    courseCategoryStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  center: {
+    userName: string
+    password: string
+    fullName: string
+    description: string
+    userStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string
+    updatedBy: string
+    isDeleted: boolean
+  }
+  title: string
+  description: string
+  duration: string
+  tuitionfee: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
+}
+
+const payOsApi = new PayOsApi()
 const CheckoutPage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { course } = useLoaderData() as any
+  const data_course = course.data as Course
+  const user = useAuthStore((state) => state.user)
+  const [paymentMethod, setPaymentMethod] = useState('card')
+  const [loading, setLoading] = useState(false)
+  const handleSubmit = async () => {
+    try {
+      setLoading(true)
+      console.log(data_course)
+      console.log(paymentMethod, data_course.tuitionfee, data_course.id, user!.id)
+      payOsApi.apiV1PayOsPost(
+        paymentMethod,
+        Number(data_course.tuitionfee ? data_course.tuitionfee : 0),
+        data_course.id,
+        user!.id
+      )
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <div>
       <div className='py-10 px-12 lg:px-20 bg-[#FFFFFF]'>
-        <Row gutter={32}>
+        <Row gutter={[32, 32]}>
           <Col flex={2}>
             <Card className='!bg-[#F7F7F7]'>
               <Meta
@@ -33,7 +119,7 @@ const CheckoutPage: React.FC = () => {
                 title={
                   <div className='flex flex-col'>
                     <Flex align='center' justify='space-between'>
-                      <Text>{`Anh Vu`}</Text>
+                      <Text>{data_course.center.fullName}</Text>
                       <Space>
                         <Text>
                           <svg
@@ -50,7 +136,7 @@ const CheckoutPage: React.FC = () => {
                             />
                           </svg>
                         </Text>
-                        <Text className='font-normal'>English</Text>
+                        <Text className='font-normal'>{data_course.courseLanguage.name}</Text>
                       </Space>
                     </Flex>
 
@@ -58,10 +144,10 @@ const CheckoutPage: React.FC = () => {
                       Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
                     </Text>
                     <Text>
-                      Khoa học: <Text className='font-normal'>Khóa học IELTS 6.0</Text>
+                      Khóa học: <Text className='font-normal'>{data_course.courseCategory.name}</Text>
                     </Text>
                     <Text>
-                      Học phí: <Text className='font-normal'>10 Triệu VND</Text>
+                      Học phí: <Text className='font-normal'>{formatCurrencyVND(data_course.tuitionfee)}</Text>
                     </Text>
                   </div>
                 }
@@ -85,16 +171,16 @@ const CheckoutPage: React.FC = () => {
                   </Text>
                   <div>
                     <Text strong>Tên</Text>
-                    <Text className='float-right'>Khóa học IELTS 6.0 đến 7.5</Text>
+                    <Text className='float-right'>{data_course.title}</Text>
                   </div>
                   <div>
                     <Text strong>Học phí</Text>
-                    <Text className='float-right'>6.000.000 VNĐ</Text>
+                    <Text className='float-right'>{formatCurrencyVND(data_course.tuitionfee)}</Text>
                   </div>
                   <Divider />
                   <div>
                     <Text strong>Tổng cộng</Text>
-                    <Text className='float-right'>6.000.000 VNĐ</Text>
+                    <Text className='float-right'>{formatCurrencyVND(data_course.tuitionfee)}</Text>
                   </div>
                 </Flex>
               </Card>
@@ -119,7 +205,12 @@ const CheckoutPage: React.FC = () => {
                 }
               }}
             >
-              <Radio.Group buttonStyle='solid' defaultValue={'card'} className='w-full'>
+              <Radio.Group
+                buttonStyle='solid'
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className='w-full'
+              >
                 <Flex gap='middle'>
                   <Radio.Button value='card' className='w-full font-semibold rounded-lg'>
                     <Flex gap='middle' align='center' justify='center'>
@@ -160,17 +251,19 @@ const CheckoutPage: React.FC = () => {
               </Radio.Group>
               <Card className='!bg-[#F7F7F7] mt-7'>
                 <Flex vertical gap={20}>
-                  <CreditCardInput />
+                  <Input placeholder='Họ tên' />
+                  <Input placeholder='Địa chỉ' />
+                  <Input placeholder='Số điện thoại' />
+                  {/* <CreditCardInput />
                   <Flex gap={20}>
                     <PatternFormat customInput={Input} size='large' placeholder='MM' format='##' />
                     <PatternFormat customInput={Input} size='large' placeholder='YY' format='##' />
                     <PatternFormat customInput={Input} size='large' placeholder='CVC' format='###' />
-                  </Flex>
-                  <Checkbox>Lưu thông tin</Checkbox>
-                  <Button type='primary' size='large'>
-                    Xác nhận
+                  </Flex> */}
+                  <Button type='primary' size='large' loading={loading} onClick={handleSubmit}>
+                    Thanh toán
                   </Button>
-                  <Text>Chọn Xác nhận là bạn đã xác nhận các điều khoản của Edu Lingual</Text>
+                  <Text>Chọn thanh toán là bạn đã xác nhận các điều khoản của Edu Lingual</Text>
                 </Flex>
               </Card>
             </ConfigProvider>

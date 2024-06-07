@@ -27,6 +27,10 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
             label: <Link to={'/admin/dashboard'}>Dashboard</Link>
           },
           {
+            key: 'courses',
+            label: <Link to={'/admin/courses'}>Course</Link>
+          },
+          {
             key: 'students',
             label: <Link to={'/admin/students'}>Student</Link>
           },

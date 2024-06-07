@@ -147,6 +147,10 @@ interface User {
   createdBy: string
   updatedBy: string
   isDeleted: boolean
+  role: {
+    id: string
+    roleName: string
+  }
 }
 const courseLanguageApi = new CourseLanguageApi()
 const courseCategoryApi = new CourseCategoryApi()
@@ -418,9 +422,11 @@ const AdminCoursePage: React.FC = () => {
                     rules={[{ required: true, message: 'Please input your username!' }]}
                   >
                     <Select placeholder='Area' allowClear>
-                      {data_users.map((cl) => (
-                        <Option value={cl.id}>{cl.fullName}</Option>
-                      ))}
+                      {data_users
+                        .filter((d) => d.role.roleName === 'Teacher')
+                        .map((cl) => (
+                          <Option value={cl.id}>{cl.fullName}</Option>
+                        ))}
                     </Select>
                   </Form.Item>
                 </Col>
@@ -582,6 +588,7 @@ const AdminCoursePage: React.FC = () => {
             onCancel={() => setOpenModalCourseCategory(false)}
             width={1000}
             centered
+            footer={null}
           >
             <Form
               layout='vertical'

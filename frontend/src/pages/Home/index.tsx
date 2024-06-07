@@ -27,61 +27,53 @@ import React, { useEffect, useState } from 'react'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { formatCurrencyVND } from '~/utils/numberUtils'
 const { Title, Text } = Typography
-
+const { Option } = Select
 const { Meta } = Card
 
-interface CourseArea {
-  name: string
-  courseAreaStatus: number
-  id: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string | null
-  updatedBy: string | null
-  isDeleted: boolean
-}
-
-interface CourseLanguage {
-  name: string
-  courseLanguageStatus: number
-  id: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string | null
-  updatedBy: string | null
-  isDeleted: boolean
-}
-
-interface CourseCategory {
-  name: string
-  courseCategoryStatus: number
-  id: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string | null
-  updatedBy: string | null
-  isDeleted: boolean
-}
-
-interface Center {
-  userName: string
-  password: string
-  fullName: string
-  description: string
-  userStatus: number
-  id: string
-  createdAt: string
-  updatedAt: string
-  createdBy: string
-  updatedBy: string
-  isDeleted: boolean
-}
-
 interface Course {
-  courseArea: CourseArea
-  courseLanguage: CourseLanguage
-  courseCategory: CourseCategory
-  center: Center
+  courseArea: {
+    name: string
+    courseAreaStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseLanguage: {
+    name: string
+    courseLanguageStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseCategory: {
+    name: string
+    courseCategoryStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  center: {
+    userName: string
+    password: string
+    fullName: string
+    description: string
+    userStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string
+    updatedBy: string
+    isDeleted: boolean
+  }
   title: string
   description: string
   duration: string
@@ -93,6 +85,50 @@ interface Course {
   updatedBy: string
   isDeleted: boolean
 }
+interface CourseCategory {
+  language: string | null
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseLanguage {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseArea {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseArea {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
 
 const text = (
   <p style={{ paddingLeft: 24 }}>
@@ -102,18 +138,16 @@ const text = (
 )
 const HomePage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { courses, areas } = useLoaderData() as any
-
+  const { courses, courseCategory, courseLanguage, courseArea } = useLoaderData() as any
+  const [selectedArea, setSelectedArea] = useState<string | undefined>(undefined)
+  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(undefined)
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
-  console.log(areas)
-  console.log(courses)
-  const list = courses.data.items as Course[]
 
-  function handleChange(value: any) {
-    console.log(`selected ${value}`)
-  }
-
-  const options = ['option 1', 'options 2']
+  const data_courses = courses.data.items as Course[]
+  const data_courseCategory = courseCategory.data.items as CourseCategory[]
+  const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
+  const data_courseArea = courseArea.data.items as CourseArea[]
 
   return (
     <div>
@@ -143,7 +177,6 @@ const HomePage: React.FC = () => {
                     size='large'
                     className='!text-left'
                     allowClear
-                    optionLabelProp='label'
                     placeholder={
                       <Space>
                         <Text strong>
@@ -154,15 +187,18 @@ const HomePage: React.FC = () => {
                       </Space>
                     }
                     style={{ width: 150, height: 60 }}
-                    onChange={handleChange}
-                    options={options.map((d) => ({ value: d, label: d }))}
-                  />
+                    value={selectedLanguage}
+                    onChange={setSelectedLanguage}
+                  >
+                    {data_courseLanguage.map((cl) => (
+                      <Option value={cl.id}>{cl.name}</Option>
+                    ))}
+                  </Select>
 
                   <Select
                     size='large'
                     className='!text-left'
                     allowClear
-                    optionLabelProp='label'
                     placeholder={
                       <Space>
                         <Text strong>
@@ -195,14 +231,17 @@ const HomePage: React.FC = () => {
                       </Space>
                     }
                     style={{ width: 200, height: 60 }}
-                    onChange={handleChange}
-                    options={options.map((d) => ({ value: d, label: d }))}
-                  />
+                    value={selectedArea}
+                    onChange={setSelectedArea}
+                  >
+                    {data_courseArea.map((cl) => (
+                      <Option value={cl.id}>{cl.name}</Option>
+                    ))}
+                  </Select>
                   <Select
                     size='large'
                     className='!text-left'
                     allowClear
-                    optionLabelProp='label'
                     placeholder={
                       <Space>
                         <Text strong>
@@ -213,14 +252,23 @@ const HomePage: React.FC = () => {
                       </Space>
                     }
                     style={{ width: 200, height: 60 }}
-                    onChange={handleChange}
-                    options={options.map((d) => ({ value: d, label: d }))}
-                  />
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                  >
+                    {data_courseCategory.map((cl) => (
+                      <Option value={cl.id}>{cl.name}</Option>
+                    ))}
+                  </Select>
                   <Button
                     type='primary'
                     className='h-[60px]'
                     onClick={() => {
-                      navigate('/courses')
+                      const queryParams = new URLSearchParams({
+                        area: selectedArea || '',
+                        language: selectedLanguage || '',
+                        category: selectedCategory || ''
+                      }).toString()
+                      navigate(`/courses?${queryParams}`)
                     }}
                   >
                     Tìm kiếm
@@ -343,11 +391,15 @@ const HomePage: React.FC = () => {
                 xl: 3,
                 xxl: 3
               }}
-              dataSource={list}
+              dataSource={data_courses}
               renderItem={(item) => (
                 <List.Item>
                   <Skeleton avatar loading={false} title={false} active>
-                    <Card hoverable className='!bg-[#F7F7F7]' onClick={() => navigate('/courses/course-detail/1')}>
+                    <Card
+                      hoverable
+                      className='!bg-[#F7F7F7]'
+                      onClick={() => navigate(`/courses/course-detail/${item.id}`)}
+                    >
                       <Meta
                         avatar={
                           <Avatar

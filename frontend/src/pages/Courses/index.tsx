@@ -24,84 +24,168 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
+import { formatCurrencyVND } from '~/utils/numberUtils'
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
 const { Title, Text } = Typography
 
 const { Meta } = Card
 
-interface DataType {
-  gender?: string
-  name: {
-    title?: string
-    first?: string
-    last?: string
+interface Course {
+  courseArea: {
+    name: string
+    courseAreaStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
   }
-  email?: string
-  picture: {
-    large?: string
-    medium?: string
-    thumbnail?: string
+  courseLanguage: {
+    name: string
+    courseLanguageStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
   }
-  nat?: string
-  loading: boolean
+  courseCategory: {
+    name: string
+    courseCategoryStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  center: {
+    userName: string
+    password: string
+    fullName: string
+    description: string
+    userStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string
+    updatedBy: string
+    isDeleted: boolean
+  }
+  title: string
+  description: string
+  duration: string
+  tuitionfee: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
 }
-const count = 3
-const fakeDataUrl = `https://randomuser.me/api/?results=${count}&inc=name,gender,email,nat,picture&noinfo`
-const text = (
-  <p style={{ paddingLeft: 24 }}>
-    A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest
-    in many households across the world.
-  </p>
-)
+interface CourseCategory {
+  language: string | null
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseLanguage {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseArea {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
+
+interface CourseArea {
+  name: string
+  status: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string | null
+  updatedBy: string | null
+  isDeleted: boolean
+}
 const CoursesPage: React.FC = () => {
-  const [initLoading, setInitLoading] = useState(true)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { courseArea, courseCategory, courseLanguage, courses } = useLoaderData() as any
+  const [searchParams, setSearchParams] = useSearchParams()
+  const [selectedArea, setSelectedArea] = useState<string | undefined>(searchParams.get('area') as string)
+  const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(searchParams.get('language') as string)
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(searchParams.get('category') as string)
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<DataType[]>([])
-  const [list, setList] = useState<DataType[]>([])
+  const navigate = useNavigate()
 
   const options = ['option 1', 'options 2']
 
+  const data_courses = courses.data.items as Course[]
+  const data_courseCategory = courseCategory.data.items as CourseCategory[]
+  const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
+  const data_courseArea = courseArea.data.items as CourseArea[]
   const onLoadMore = () => {
     setLoading(true)
-    setList(data.concat([...new Array(count)].map(() => ({ loading: true, name: {}, picture: {} }))))
-    fetch(fakeDataUrl)
-      .then((res) => res.json())
-      .then((res) => {
-        const newData = data.concat(res.results)
-        setData(newData)
-        setList(newData)
-        setLoading(false)
-        // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-        // In real scene, you can using public method of react-virtualized:
-        // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-        window.dispatchEvent(new Event('resize'))
-      })
+    // setList(data.concat([...new Array(3)].map(() => ({ loading: true }))))
+    // fetch(fakeDataUrl)
+    //   .then((res) => res.json())
+    //   .then((res) => {
+    //     const newData = data.concat(res.results)
+    //     setData(newData)
+    //     setList(newData)
+    //     setLoading(false)
+    //     // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
+    //     // In real scene, you can using public method of react-virtualized:
+    //     // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
+    //     window.dispatchEvent(new Event('resize'))
+    //   })
   }
 
-  const loadMore =
-    !initLoading && !loading ? (
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 12,
-          height: 32,
-          lineHeight: '32px'
-        }}
-      >
-        <Button type='primary' onClick={onLoadMore}>
-          Xem thêm
-        </Button>
-      </div>
-    ) : null
+  const loadMore = !loading ? (
+    <div
+      style={{
+        textAlign: 'center',
+        marginTop: 12,
+        height: 32,
+        lineHeight: '32px'
+      }}
+    >
+      <Button type='primary' onClick={onLoadMore}>
+        Xem thêm
+      </Button>
+    </div>
+  ) : null
 
-  useEffect(() => {
-    fetch(`https://randomuser.me/api/?results=${6}&inc=name,gender,email,nat,picture&noinfo`)
-      .then((res) => res.json())
-      .then((res) => {
-        setInitLoading(false)
-        setData(res.results)
-        setList(res.results)
-      })
-  }, [])
+  // useEffect(() => {
+  //   fetch(`https://randomuser.me/api/?results=${6}&inc=name,gender,email,nat,picture&noinfo`)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       setInitLoading(false)
+  //       setData(res.results)
+  //       setList(res.results)
+  //     })
+  // }, [])
 
   return (
     <div>
@@ -214,37 +298,60 @@ const CoursesPage: React.FC = () => {
         </div>
       </div>
       {/* <img src='/banner.png' className='w-full' /> */}
-      <div className='py-10 px-12 lg:px-80 bg-[#FFFFFF]'>
+      <div className='py-10 px-12 xl:px-80 bg-[#FFFFFF]'>
         <Space direction='vertical' className='w-full' size={'large'}>
           <Flex align='center' justify='space-between' gap={20}>
             <Select
               size='large'
               className='!text-left'
               allowClear
-              optionLabelProp='label'
               placeholder={<Text strong>Ngôn ngữ</Text>}
               style={{ width: '100%' }}
-              options={options.map((d) => ({ value: d, label: d }))}
-            />
+              value={selectedLanguage}
+              onChange={setSelectedLanguage}
+            >
+              {data_courseLanguage.map((cl) => (
+                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              ))}
+            </Select>
             <Select
               size='large'
               className='!text-left'
               allowClear
-              optionLabelProp='label'
               placeholder={<Text strong>Địa điểm</Text>}
               style={{ width: '100%' }}
-              options={options.map((d) => ({ value: d, label: d }))}
-            />
+              value={selectedArea}
+              onChange={setSelectedArea}
+            >
+              {data_courseArea.map((cl) => (
+                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              ))}
+            </Select>
             <Select
               size='large'
               className='!text-left'
               allowClear
-              optionLabelProp='label'
               placeholder={<Text strong>Khóa học</Text>}
               style={{ width: '100%' }}
-              options={options.map((d) => ({ value: d, label: d }))}
-            />
-            <Button type='primary' size='large'>
+              value={selectedCategory}
+              onChange={setSelectedCategory}
+            >
+              {data_courseCategory.map((cl) => (
+                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              ))}
+            </Select>
+            <Button
+              type='primary'
+              size='large'
+              onClick={() => {
+                const queryParams = new URLSearchParams({
+                  area: selectedArea || '',
+                  language: selectedLanguage || '',
+                  category: selectedCategory || ''
+                }).toString()
+                setSearchParams(queryParams)
+              }}
+            >
               Tìm kiếm
             </Button>
           </Flex>
@@ -325,19 +432,28 @@ const CoursesPage: React.FC = () => {
                 xl: 1,
                 xxl: 1
               }}
-              loading={initLoading}
               loadMore={loadMore}
-              dataSource={list}
+              dataSource={data_courses}
               renderItem={(item) => (
                 <List.Item>
-                  <Skeleton avatar title={false} loading={item.loading} active>
-                    <Card hoverable className='!bg-[#F7F7F7]'>
+                  <Skeleton avatar title={false} loading={false} active>
+                    <Card
+                      hoverable
+                      className='!bg-[#F7F7F7]'
+                      onClick={() => navigate(`/courses/course-detail/${item.id}`)}
+                    >
                       <Meta
-                        avatar={<Avatar shape='square' src={item.picture.medium} size={128} />}
+                        avatar={
+                          <Avatar
+                            shape='square'
+                            src={'https://randomuser.me/api/portraits/med/women/76.jpg'}
+                            size={128}
+                          />
+                        }
                         title={
                           <div className='flex flex-col'>
                             <Flex align='center' justify='space-between'>
-                              <Text>{`${item.name.last} ${item.name.first}`}</Text>
+                              <Text>{item.center?.fullName}</Text>
                               <Space>
                                 <Text>
                                   <svg
@@ -362,10 +478,10 @@ const CoursesPage: React.FC = () => {
                               Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
                             </Text>
                             <Text>
-                              Khoa học: <Text className='font-normal'>Khóa học IELTS 6.0</Text>
+                              Khóa học: <Text className='font-normal'>{item.courseCategory?.name}</Text>
                             </Text>
                             <Text>
-                              Học phí: <Text className='font-normal'>10 Triệu VND</Text>
+                              Học phí: <Text className='font-normal'>{formatCurrencyVND(item.tuitionfee)}</Text>
                             </Text>
                           </div>
                         }

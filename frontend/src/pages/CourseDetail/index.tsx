@@ -1,9 +1,70 @@
 import { CaretRightOutlined, ProfileOutlined, StarFilled } from '@ant-design/icons'
 import { Tabs, Avatar, List, Space, Button } from 'antd'
 import type { TabsProps } from 'antd'
-import { useNavigate } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
+import { formatCurrencyVND } from '~/utils/numberUtils'
+
+interface Course {
+  courseArea: {
+    name: string
+    courseAreaStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseLanguage: {
+    name: string
+    courseLanguageStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  courseCategory: {
+    name: string
+    courseCategoryStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
+  center: {
+    userName: string
+    password: string
+    fullName: string
+    description: string
+    userStatus: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string
+    updatedBy: string
+    isDeleted: boolean
+  }
+  title: string
+  description: string
+  duration: string
+  tuitionfee: number
+  id: string
+  createdAt: string
+  updatedAt: string
+  createdBy: string
+  updatedBy: string
+  isDeleted: boolean
+}
 
 const CourseDetailPage: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { course } = useLoaderData() as any
+
+  const data_course = course.data as Course
   const navigate = useNavigate()
   const onChange = (key: string) => {
     console.log(key)
@@ -74,47 +135,19 @@ const CourseDetailPage: React.FC = () => {
                       className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
                       href='#'
                     >
-                      Daimul Samiul
+                      {data_course.center.fullName}
                     </a>
                   </h3>
                 </div>
               </div>
             </div>
-            <div className='details-content space-y-[20px]'>
-              <h1>Nutrition Plans: Our experienced nutritionists will create personalized.</h1>
-              <p>
-                Our online courses cover a wide range of topics, from personal development and wellness to professional
-                skills like leadership, communication, and for the entrepreneurship Our online courses cover a wide
-                range of topics, from person and wellness to professional skills like leadership.
-              </p>
-              <p>
-                The goal of this course is to take you, you beautiful front end developer you, from someone with very
-                little or no jQuery or JavaScript knowledge and up you to someone who is quite comfortable.
-              </p>
-              <div className='py-[15px]'>
-                <div className="relative h-[450px] bg-cover bg-center bg-[url('https://branco-react.hibootstrap.com/images/promo-video-thumb.jpg')]">
-                  <div className='bg-[#717FF8] w-[100px] md:w-[145px] h-[100px] md:h-[145px] leading-[100px] md:leading-[145px] text-center rounded-full text-white text-[60px] md:text-[70px] absolute top-1/2 -translate-y-2/4 left-0 right-0 mx-auto cursor-pointer transition duration-500 ease-in-out hover:bg-[#CD201F]'>
-                    <CaretRightOutlined />
-                  </div>
-                </div>
-              </div>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt.
-              </p>
-              <p>
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
-                rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt
-                explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia
-                consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-              </p>
-            </div>
+            <div
+              className='details-content space-y-[20px]'
+              dangerouslySetInnerHTML={{ __html: data_course.description }}
+            ></div>
             <div className='sm:flex items-center justify-between space-y-[20px] sm:space-y-[0]'>
               <div>
-                <Button type='primary' size='large' onClick={() => navigate('/checkout/1/')}>
+                <Button type='primary' size='large' onClick={() => navigate(`/checkout/${data_course.id}`)}>
                   Now Buy Course <i className='ri-arrow-right-up-line'></i>
                 </Button>
               </div>
@@ -218,10 +251,10 @@ const CourseDetailPage: React.FC = () => {
                     src='/anh1.jpg'
                   />
                   <div className='headingFontFamily absolute bottom-[20px] left-[20px] rtl:left-auto rtl:right-[20px] z-1 bg-primaryBg text-white font-semibold text-[16px] lg:text-[22px] pt-[14px] pb-[10px] px-[16px] leading-none'>
-                    <span className='discount-price line-through text-[13px] lg:text-[18px] mr-2 rtl:mr-0 rtl:ml-2'>
+                    {/* <span className='discount-price line-through text-[13px] lg:text-[18px] mr-2 rtl:mr-0 rtl:ml-2'>
                       $778.00
-                    </span>
-                    $678.00
+                    </span> */}
+                    {formatCurrencyVND(data_course.tuitionfee)}
                   </div>
                 </div>
                 <div>
