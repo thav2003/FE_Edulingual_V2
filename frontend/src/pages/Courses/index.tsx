@@ -141,7 +141,7 @@ const CoursesPage: React.FC = () => {
 
   const options = ['option 1', 'options 2']
 
-  const data_courses = courses.data.items as Course[]
+  const data_courses = courses.data as Course[]
   const data_courseCategory = courseCategory.data.items as CourseCategory[]
   const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
   const data_courseArea = courseArea.data.items as CourseArea[]
@@ -357,7 +357,7 @@ const CoursesPage: React.FC = () => {
           </Flex>
 
           <Flex align='center' justify='space-between' gap={20} wrap>
-            <Text strong>1,133 Kết quả</Text>
+            <Text strong>{data_courses.length} Kết quả</Text>
             <Flex align='center' gap={20}>
               <Input.Search size='large' />
               <Select

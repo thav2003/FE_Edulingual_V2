@@ -65,6 +65,7 @@ const CourseDetailPage: React.FC = () => {
   const { course } = useLoaderData() as any
 
   const data_course = course.data as Course
+  console.log(data_course)
   const navigate = useNavigate()
   const onChange = (key: string) => {
     console.log(key)
@@ -135,7 +136,7 @@ const CourseDetailPage: React.FC = () => {
                       className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
                       href='#'
                     >
-                      {data_course.center.fullName}
+                      {data_course?.center?.fullName}
                     </a>
                   </h3>
                 </div>
@@ -143,7 +144,7 @@ const CourseDetailPage: React.FC = () => {
             </div>
             <div
               className='details-content space-y-[20px]'
-              dangerouslySetInnerHTML={{ __html: data_course.description }}
+              dangerouslySetInnerHTML={{ __html: data_course?.description }}
             ></div>
             <div className='sm:flex items-center justify-between space-y-[20px] sm:space-y-[0]'>
               <div>
@@ -254,7 +255,7 @@ const CourseDetailPage: React.FC = () => {
                     {/* <span className='discount-price line-through text-[13px] lg:text-[18px] mr-2 rtl:mr-0 rtl:ml-2'>
                       $778.00
                     </span> */}
-                    {formatCurrencyVND(data_course.tuitionfee)}
+                    {formatCurrencyVND(data_course?.tuitionfee)}
                   </div>
                 </div>
                 <div>
@@ -403,211 +404,6 @@ const CourseDetailPage: React.FC = () => {
                       </button>
                     </div>
                   </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className='pb-[50px] md:pb-[60px] lg:pb-[140px]'>
-        <div className='container mx-auto'>
-          <h2 className='text-black text-[25px] md:text-[30px] lg:text-[40px] xl:text-[42px] mb-[30px] leading-none'>
-            Related Courses
-          </h2>
-          <div className='grid gap-[25px] grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3'>
-            <div className='relative group'>
-              <a href='#'>
-                <img
-                  alt='course'
-                  loading='lazy'
-                  width='900'
-                  height='790'
-                  decoding='async'
-                  data-nimg='1'
-                  style={{ color: 'transparent' }}
-                  src='/anh3.jpg'
-                />
-              </a>
-              <div className='headingFontFamily absolute top-[20px] left-[20px] z-1 bg-primaryBg text-white font-semibold text-[16px] lg:text-[22px] pt-[14px] pb-[10px] px-[16px] leading-none'>
-                <span className='discount-price line-through text-[13px] lg:text-[18px] mr-2 rtl:mr-0 rtl:ml-2'>
-                  $778.00
-                </span>
-                $678.00
-              </div>
-              <div className='bg-[#E1F8E6] py-[30px] sm:py-[35px] px-[20px] sm:px-[25px] -mt-[1px] border border-[#051F0D] group-hover:bg-[#717FF8] transition duration-500 ease-in-out group-hover:border-[#717FF8]'>
-                <ul className='mb-[20px] space-x-[10px] lg:space-x-[20px] rtl:space-x-reverse'>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    4.5
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    Medium
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    53(Lessons)
-                  </li>
-                </ul>
-                <h3 className='text-[20px] lg:text-[22px] leading-[1.3] mb-[20px]'>
-                  <a
-                    className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                    href='#'
-                  >
-                    Hand Shape: career business according people towards For an this
-                  </a>
-                </h3>
-                <div className='flex items-center space-x-[15px] rtl:space-x-reverse border-t border-[#051F0D] pt-[25px]'>
-                  <img
-                    alt='user'
-                    loading='lazy'
-                    width='83'
-                    height='84'
-                    decoding='async'
-                    data-nimg='1'
-                    className='w-[40px] h-[40px] rounded-full'
-                    style={{ color: 'transparent' }}
-                    src='/anh2.png'
-                  />
-                  <div>
-                    <h3 className='text-[17px] lg:text-[19px]'>
-                      <a
-                        className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                        href='#'
-                      >
-                        Samuel Jonson
-                      </a>
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='relative group'>
-              <a href='#'>
-                <img
-                  alt='course'
-                  loading='lazy'
-                  width='900'
-                  height='790'
-                  decoding='async'
-                  data-nimg='1'
-                  style={{ color: 'transparent' }}
-                  src='/anh3.jpg'
-                />
-              </a>
-              <div className='headingFontFamily absolute top-[20px] left-[20px] z-1 bg-primaryBg text-white font-semibold text-[16px] lg:text-[22px] pt-[14px] pb-[10px] px-[16px] leading-none'>
-                $500.00
-              </div>
-              <div className='bg-[#E1F8E6] py-[30px] sm:py-[35px] px-[20px] sm:px-[25px] -mt-[1px] border border-[#051F0D] group-hover:bg-[#717FF8] transition duration-500 ease-in-out group-hover:border-[#717FF8]'>
-                <ul className='mb-[20px] space-x-[10px] lg:space-x-[20px] rtl:space-x-reverse'>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    4.0
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    Medium
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    50(Lessons)
-                  </li>
-                </ul>
-                <h3 className='text-[20px] lg:text-[22px] leading-[1.3] mb-[20px]'>
-                  <a
-                    className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                    href='#'
-                  >
-                    Health Education We provide you with the knowledge and resources to make.
-                  </a>
-                </h3>
-                <div className='flex items-center space-x-[15px] rtl:space-x-reverse border-t border-[#051F0D] pt-[25px]'>
-                  <img
-                    alt='user'
-                    loading='lazy'
-                    width='84'
-                    height='84'
-                    decoding='async'
-                    data-nimg='1'
-                    className='w-[40px] h-[40px] rounded-full'
-                    style={{ color: 'transparent' }}
-                    src='/anh2.png'
-                  />
-                  <div>
-                    <h3 className='text-[17px] lg:text-[19px]'>
-                      <a
-                        className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                        href='#'
-                      >
-                        William Jenson
-                      </a>
-                    </h3>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className='relative group'>
-              <a href='#'>
-                <img
-                  alt='course'
-                  loading='lazy'
-                  width='900'
-                  height='790'
-                  decoding='async'
-                  data-nimg='1'
-                  style={{ color: 'transparent' }}
-                  src='/anh3.jpg'
-                />
-              </a>
-              <div className='headingFontFamily absolute top-[20px] left-[20px] z-1 bg-primaryBg text-white font-semibold text-[16px] lg:text-[22px] pt-[14px] pb-[10px] px-[16px] leading-none'>
-                $399.00
-              </div>
-              <div className='bg-[#E1F8E6] py-[30px] sm:py-[35px] px-[20px] sm:px-[25px] -mt-[1px] border border-[#051F0D] group-hover:bg-[#717FF8] transition duration-500 ease-in-out group-hover:border-[#717FF8]'>
-                <ul className='mb-[20px] space-x-[10px] lg:space-x-[20px] rtl:space-x-reverse'>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    4.9
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <i className='ri-stack-fill primaryText text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white'></i>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    Medium
-                  </li>
-                  <li className='inline-block text-[13px] lg:text-[16px] transition duration-500 ease-in-out group-hover:text-white'>
-                    <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                    65(Lessons)
-                  </li>
-                </ul>
-                <h3 className='text-[20px] lg:text-[22px] leading-[1.3] mb-[20px]'>
-                  <a
-                    className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                    href='#'
-                  >
-                    Nutrition Plans: Our experienced nutritionists will create personalized.
-                  </a>
-                </h3>
-                <div className='flex items-center space-x-[15px] rtl:space-x-reverse border-t border-[#051F0D] pt-[25px]'>
-                  <img
-                    alt='user'
-                    loading='lazy'
-                    width='84'
-                    height='84'
-                    decoding='async'
-                    data-nimg='1'
-                    className='w-[40px] h-[40px] rounded-full'
-                    style={{ color: 'transparent' }}
-                    src='/anh2.png'
-                  />
-                  <div>
-                    <h3 className='text-[17px] lg:text-[19px]'>
-                      <a
-                        className='transition duration-500 ease-in-out hover:text-[#717FF8] group-hover:text-white'
-                        href='#'
-                      >
-                        Daimul Samiul
-                      </a>
-                    </h3>
-                  </div>
                 </div>
               </div>
             </div>

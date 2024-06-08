@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { StarFilled, EyeFilled, HeartOutlined } from '@ant-design/icons'
 import {
   Card,
@@ -17,7 +18,7 @@ import {
 } from 'antd'
 import { useState } from 'react'
 import { PatternFormat } from 'react-number-format'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 import { PayOsApi } from '~/api'
 import CreditCardInput from '~/components/CreditCardInput'
 import { useAuthStore } from '~/stores'
@@ -87,6 +88,7 @@ const payOsApi = new PayOsApi()
 const CheckoutPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { course } = useLoaderData() as any
+  const navigate = useNavigate()
   const data_course = course.data as Course
   const user = useAuthStore((state) => state.user)
   const [paymentMethod, setPaymentMethod] = useState('card')
@@ -96,12 +98,16 @@ const CheckoutPage: React.FC = () => {
       setLoading(true)
       console.log(data_course)
       console.log(paymentMethod, data_course.tuitionfee, data_course.id, user!.id)
-      payOsApi.apiV1PayOsPost(
+      const res = (await payOsApi.apiV1PayOsPost(
         paymentMethod,
         Number(data_course.tuitionfee ? data_course.tuitionfee : 0),
         data_course.id,
         user!.id
-      )
+      )) as any
+      if (res.data.url) {
+        window.open(res.data.url, '_blank') // Open the URL in a new tab
+        navigate('/')
+      }
     } catch (err) {
       console.log(err)
     } finally {
@@ -119,7 +125,7 @@ const CheckoutPage: React.FC = () => {
                 title={
                   <div className='flex flex-col'>
                     <Flex align='center' justify='space-between'>
-                      <Text>{data_course.center.fullName}</Text>
+                      <Text>{data_course?.center?.fullName}</Text>
                       <Space>
                         <Text>
                           <svg
@@ -136,7 +142,7 @@ const CheckoutPage: React.FC = () => {
                             />
                           </svg>
                         </Text>
-                        <Text className='font-normal'>{data_course.courseLanguage.name}</Text>
+                        <Text className='font-normal'>{data_course?.courseLanguage?.name}</Text>
                       </Space>
                     </Flex>
 
@@ -144,7 +150,7 @@ const CheckoutPage: React.FC = () => {
                       Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
                     </Text>
                     <Text>
-                      Khóa học: <Text className='font-normal'>{data_course.courseCategory.name}</Text>
+                      Khóa học: <Text className='font-normal'>{data_course?.courseCategory?.name}</Text>
                     </Text>
                     <Text>
                       Học phí: <Text className='font-normal'>{formatCurrencyVND(data_course.tuitionfee)}</Text>

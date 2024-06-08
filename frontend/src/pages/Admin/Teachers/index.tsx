@@ -91,48 +91,8 @@ const AdminTeacherPage: React.FC = () => {
     },
     {
       title: 'Trạng thái',
-      key: 'isDone',
       dataIndex: 'isDone',
-      render: () => {
-        const isDone = true
-        if (isDone) {
-          return (
-            <ConfigProvider
-              theme={{
-                components: {
-                  Button: {
-                    colorPrimary: `#FFA869`,
-                    colorPrimaryHover: `#FFA869`,
-                    colorPrimaryActive: `#FFA869`
-                  }
-                }
-              }}
-            >
-              <Button type='primary' className='cursor-auto'>
-                Đang duyệt
-              </Button>
-            </ConfigProvider>
-          )
-        } else {
-          return (
-            <ConfigProvider
-              theme={{
-                components: {
-                  Button: {
-                    colorPrimary: `#58CC02`,
-                    colorPrimaryHover: `#58CC02`,
-                    colorPrimaryActive: `#58CC02`
-                  }
-                }
-              }}
-            >
-              <Button type='primary' className='cursor-auto'>
-                Hoàn thành
-              </Button>
-            </ConfigProvider>
-          )
-        }
-      }
+      render: () => <Button type='primary'>Chi tiết</Button>
     }
   ]
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
