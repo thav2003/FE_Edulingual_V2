@@ -99,7 +99,13 @@ const AdminTeacherPage: React.FC = () => {
     console.log('Success:', values)
     try {
       setLoading(true)
-      await userApi.apiV1UsersPost({ ...values, roleId: roles.find((role) => role?.roleName === 'Teacher')!.id })
+      await userApi.apiV1UsersPost({
+        ...values,
+        roleId: roles.find((role) => role?.roleName === 'Teacher')!.id,
+        email: 'email',
+        imageUrl: 'imageUrl'
+      })
+      notification.info({ message: 'Tạo thành công' })
     } catch {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
     } finally {

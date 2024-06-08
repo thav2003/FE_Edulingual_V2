@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   App,
   Button,
@@ -174,6 +175,14 @@ const AdminCoursePage: React.FC = () => {
   const data_courseArea = courseArea.data.items as CourseArea[]
   const data_users = users.data.items as User[]
 
+  const handleDelete = async (id: any) => {
+    try {
+      await courseAreaApi.apiV1KhuVucIdDelete(id)
+      notification.info({ message: 'Tạo thành công' })
+    } catch (e) {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
+  }
   const options = ['option 1', 'options 2']
 
   const columns_courses: TableProps<Course>['columns'] = [
@@ -215,7 +224,11 @@ const AdminCoursePage: React.FC = () => {
     {
       title: 'Trạng thái',
       key: 'actions',
-      render: () => <Button type='primary'>Chi tiết</Button> // Nút hành động
+      render: (_, { id }) => (
+        <Button danger type='primary' onClick={() => handleDelete(id)}>
+          Delete
+        </Button>
+      ) // Nút hành động
     }
   ]
   const columns_courseCategory: TableProps<CourseCategory>['columns'] = [
@@ -366,6 +379,7 @@ const AdminCoursePage: React.FC = () => {
     try {
       setCreateCourseAreaLoading(true)
       await courseAreaApi.apiV1KhuVucPost(values)
+      notification.info({ message: 'Tạo thành công' })
     } catch {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
     } finally {
