@@ -453,7 +453,7 @@ const CoursesPage: React.FC = () => {
                         title={
                           <div className='flex flex-col'>
                             <Flex align='center' justify='space-between'>
-                              <Text>{item.center?.fullName}</Text>
+                              <Text>{item.title}</Text>
                               <Space>
                                 <Text>
                                   <svg
@@ -474,9 +474,6 @@ const CoursesPage: React.FC = () => {
                               </Space>
                             </Flex>
 
-                            <Text>
-                              Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
-                            </Text>
                             <Text>
                               Khóa học: <Text className='font-normal'>{item.courseCategory?.name}</Text>
                             </Text>

@@ -177,8 +177,8 @@ const AdminCoursePage: React.FC = () => {
 
   const handleDelete = async (id: any) => {
     try {
-      await courseAreaApi.apiV1KhuVucIdDelete(id)
-      notification.info({ message: 'Tạo thành công' })
+      await courseApi.apiV1KhoaHocIdDelete(id)
+      notification.info({ message: 'Delete thành công' })
     } catch (e) {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
     }
