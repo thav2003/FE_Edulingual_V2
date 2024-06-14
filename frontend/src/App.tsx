@@ -42,24 +42,6 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            loader: async ({ request }) => {
-              const course_res = await courseApi.apiV1KhoaHocNoiBatGet({ signal: request.signal })
-              const courseCategory_res = await courseCategoryApi.apiV1LoaiKhoaHocGet(1, 10, { signal: request.signal })
-              const courseLanguage_res = await courseLanguageApi.apiV1NgonNguGet(1, 10, { signal: request.signal })
-              const courseArea_res = await courseAreaApi.apiV1KhuVucGet(1, 10, { signal: request.signal })
-              console.log(course_res)
-              const courses = course_res.data
-
-              const courseCategory = courseCategory_res.data
-              const courseLanguage = courseLanguage_res.data
-              const courseArea = courseArea_res.data
-              return {
-                courses: courses,
-                courseArea: courseArea,
-                courseCategory: courseCategory,
-                courseLanguage: courseLanguage
-              }
-            },
             element: <HomePage />
           },
           {

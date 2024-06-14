@@ -42,7 +42,7 @@ const CourseLanguageView: React.FC = () => {
   )
 
   const data_courseLanguage = responseCourseLanguage?.data?.data?.items as CourseLanguage[]
-
+  const data_total_courseLanguage = responseCourseLanguage?.data?.data.total as number
   const handleDelete = async (id: string) => {
     try {
       await courseLanguageApi.apiV1NgonNguIdDelete(id)
@@ -146,7 +146,8 @@ const CourseLanguageView: React.FC = () => {
         pagination={{
           current: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
           position: ['bottomLeft'],
-          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5
+          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5,
+          total: data_total_courseLanguage
         }}
         columns={columns_courseLanguage}
         dataSource={data_courseLanguage}

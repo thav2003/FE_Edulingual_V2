@@ -66,7 +66,7 @@ const CourseCategoryView: React.FC = () => {
   )
 
   const data_courseCategory = responseCourseCategory?.data?.data?.items as CourseCategory[]
-
+  const data_total_courseCategory = responseCourseCategory?.data?.data.total as number
   const handleDelete = async (id: string) => {
     try {
       await courseCategoryApi.apiV1LoaiKhoaHocIdDelete(id)
@@ -189,7 +189,8 @@ const CourseCategoryView: React.FC = () => {
         pagination={{
           current: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
           position: ['bottomLeft'],
-          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5
+          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5,
+          total: data_total_courseCategory
         }}
         columns={columns_courseCategory}
         dataSource={data_courseCategory}

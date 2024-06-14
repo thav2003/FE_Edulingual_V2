@@ -205,6 +205,7 @@ const CoursesView: React.FC = () => {
     searchParams.get('title')
   )
   const data_courses = responseCourses?.data?.data?.items as Course[]
+  const data_total_courses = responseCourses?.data?.data.total as number
   console.log(responseCourses)
   const onFinishCourse: FormProps<FieldCourseType>['onFinish'] = async (values) => {
     console.log('Success:', values)
@@ -674,7 +675,8 @@ const CoursesView: React.FC = () => {
         pagination={{
           current: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
           position: ['bottomLeft'],
-          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5
+          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5,
+          total: data_total_courses
         }}
         columns={columns_courses}
         dataSource={data_courses}

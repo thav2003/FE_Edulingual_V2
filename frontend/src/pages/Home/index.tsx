@@ -26,6 +26,8 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { formatCurrencyVND } from '~/utils/numberUtils'
+import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
 const { Title, Text } = Typography
 const { Option } = Select
 const { Meta } = Card
@@ -136,19 +138,42 @@ const text = (
     in many households across the world.
   </p>
 )
+const courseLanguageApi = new CourseLanguageApi()
+const courseCategoryApi = new CourseCategoryApi()
+const courseAreaApi = new CourseAreaApi()
+const courseApi = new CourseApi()
 const HomePage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { courses, courseCategory, courseLanguage, courseArea } = useLoaderData() as any
   const [selectedArea, setSelectedArea] = useState<string | undefined>(undefined)
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(undefined)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
 
-  const data_courses = courses.data as Course[]
-  const data_courseCategory = courseCategory.data.items as CourseCategory[]
-  const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
-  const data_courseArea = courseArea.data.items as CourseArea[]
+  const fetchCourseLanguage = () => {
+    return courseLanguageApi.apiV1NgonNguGet(1, 10000)
+  }
+  const [loadingCourseLanguage, errorCourseLanguage, responseCourseLanguage] = useFetchData(fetchCourseLanguage)
 
+  const data_courseLanguage = responseCourseLanguage?.data?.data?.items as CourseLanguage[]
+
+  const fetchCourseCategory = () => {
+    return courseCategoryApi.apiV1LoaiKhoaHocGet(1, 10000)
+  }
+  const [loadingCourseCategory, errorCourseCategory, responseCourseCategory] = useFetchData(fetchCourseCategory)
+
+  const data_courseCategory = responseCourseCategory?.data?.data?.items as CourseCategory[]
+
+  const fetchCourseArea = () => {
+    return courseAreaApi.apiV1KhuVucGet(1, 10000)
+  }
+  const [loadingCourseArea, errorCourseArea, responseCourseArea] = useFetchData(fetchCourseArea)
+
+  const data_courseArea = responseCourseArea?.data?.data?.items as CourseArea[]
+
+  const fetchCourses = () => {
+    return courseApi.apiV1KhoaHocNoiBatGet()
+  }
+  const [loadingCourses, errorCourses, responseCourses] = useFetchData(fetchCourses)
+  const data_courses = responseCourses?.data?.data as Course[]
   return (
     <div>
       <div className='bg-home relative overflow-hidden rounded-lg bg-cover bg-no-repeat p-12 text-center h-[400px]'>
@@ -190,8 +215,10 @@ const HomePage: React.FC = () => {
                     value={selectedLanguage}
                     onChange={setSelectedLanguage}
                   >
-                    {data_courseLanguage.map((cl) => (
-                      <Option value={cl.id}>{cl.name}</Option>
+                    {data_courseLanguage?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
                     ))}
                   </Select>
 
@@ -234,8 +261,10 @@ const HomePage: React.FC = () => {
                     value={selectedArea}
                     onChange={setSelectedArea}
                   >
-                    {data_courseArea.map((cl) => (
-                      <Option value={cl.id}>{cl.name}</Option>
+                    {data_courseArea?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
                     ))}
                   </Select>
                   <Select
@@ -255,8 +284,10 @@ const HomePage: React.FC = () => {
                     value={selectedCategory}
                     onChange={setSelectedCategory}
                   >
-                    {data_courseCategory.map((cl) => (
-                      <Option value={cl.id}>{cl.name}</Option>
+                    {data_courseCategory?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
                     ))}
                   </Select>
                   <Button
@@ -396,6 +427,7 @@ const HomePage: React.FC = () => {
                 xl: 3,
                 xxl: 3
               }}
+              loading={loadingCourses}
               dataSource={data_courses}
               renderItem={(item) => (
                 <List.Item>

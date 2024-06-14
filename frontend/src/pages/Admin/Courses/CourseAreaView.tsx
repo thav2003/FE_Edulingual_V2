@@ -43,7 +43,7 @@ const CourseAreaView: React.FC = () => {
   )
 
   const data_courseArea = responseCourseArea?.data?.data?.items as CourseArea[]
-
+  const data_total_courseArea = responseCourseArea?.data?.data.total as number
   const handleDelete = async (id: string) => {
     try {
       await courseAreaApi.apiV1KhuVucIdDelete(id)
@@ -149,7 +149,8 @@ const CourseAreaView: React.FC = () => {
         pagination={{
           current: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
           position: ['bottomLeft'],
-          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5
+          pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5,
+          total: data_total_courseArea
         }}
         columns={columns_courseArea}
         dataSource={data_courseArea}
