@@ -16,5 +16,13 @@ export default defineConfig({
     alias: {
       '~': path.resolve(__dirname, './src')
     }
+  },
+  optimizeDeps: {
+    include: ['@workspace/ckeditor5-custom-build']
+  },
+  build: {
+    commonjsOptions: {
+      include: [/@workspace\/ckeditor5-custom-build/, /node_modules/]
+    }
   }
 })

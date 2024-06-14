@@ -3,6 +3,8 @@ import type { TableProps, TabsProps, FormProps } from 'antd'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { UserApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
+import { useAppStore } from '~/stores'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text, Paragraph } = Typography
 
@@ -34,18 +36,22 @@ type FieldType = {
 
 const userApi = new UserApi()
 const AdminTeacherPage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { users } = useLoaderData() as any
+  const refetchApp = useAppStore((state) => state.refetchApp)
   const { notification } = App.useApp()
   const [open, setOpen] = useState(false)
   const [form] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const options = ['option 1', 'options 2']
 
-  const data = users.data.items as DataType[]
+  const fetchUsers = () => {
+    return userApi.apiV1UsersGet(1, 10000)
+  }
+  const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
+
+  const data_users = responseUsers?.data?.data?.items as DataType[]
   const roles = [
     ...new Set(
-      data.map((user) => {
+      data_users?.map((user) => {
         if (user.role.roleName === 'Teacher') {
           return user.role
         }
@@ -56,7 +62,8 @@ const AdminTeacherPage: React.FC = () => {
     {
       title: '#ID',
       dataIndex: 'id',
-      key: 'id'
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
     },
     {
       title: 'Tên',
@@ -70,11 +77,6 @@ const AdminTeacherPage: React.FC = () => {
       render: (_, { createdAt }) => {
         return formatDateToDDMMYYWithTime(new Date(createdAt))
       }
-    },
-    {
-      title: 'Bộ môn',
-      // dataIndex: 'note',
-      key: 'course'
     },
     {
       title: 'Mô tả',
@@ -106,6 +108,7 @@ const AdminTeacherPage: React.FC = () => {
         imageUrl: 'imageUrl'
       })
       notification.info({ message: 'Tạo thành công' })
+      refetchApp()
     } catch {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
     } finally {
@@ -163,7 +166,7 @@ const AdminTeacherPage: React.FC = () => {
                   }
                   style={{ width: 250 }}
                 >
-                  {options.map((data) => (
+                  {options?.map((data) => (
                     <Select.Option
                       key={data}
                       value={data}
@@ -200,9 +203,10 @@ const AdminTeacherPage: React.FC = () => {
             </Flex>
 
             <Table<DataType>
+              loading={loadingUsers}
               pagination={{ position: ['bottomLeft'] }}
               columns={columns}
-              dataSource={data.filter((d) => d.role.roleName === 'Teacher')}
+              dataSource={data_users?.filter((d) => d.role.roleName === 'Teacher')}
             />
           </Space>
         </div>
@@ -232,6 +236,7 @@ const AdminTeacherPage: React.FC = () => {
               <Input placeholder='Full Name' />
             </Form.Item>
             <Form.Item<FieldType> name='description' label='Description'>
+              {/* <EditorComponent /> */}
               <Input placeholder='Description' />
             </Form.Item>
             <Form.Item>

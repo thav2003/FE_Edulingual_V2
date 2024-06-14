@@ -14,10 +14,16 @@
     "prettier:fix": "prettier --write \"src/**/(*.tsx|*.ts|*.css|*.scss)\""
   },
   "dependencies": {
+    "@ant-design/charts": "^2.1.1",
     "@ant-design/icons": "^5.3.7",
+    "@ant-design/plots": "^2.2.2",
+    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+    "@ckeditor/ckeditor5-react": "^7.0.0",
     "antd": "^5.17.3",
     "axios": "^1.7.2",
+    "ckeditor5-custom-build": "file:ckeditor5",
     "react": "^18.2.0",
+    "react-countup": "^6.5.3",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.3.4",
     "react-router-dom": "^6.23.1",

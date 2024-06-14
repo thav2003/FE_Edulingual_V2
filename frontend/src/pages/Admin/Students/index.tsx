@@ -1,6 +1,8 @@
 import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
 import { useLoaderData } from 'react-router-dom'
+import { UserApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
@@ -21,19 +23,25 @@ interface DataType {
     roleName: string
   }
 }
-
+const userApi = new UserApi()
 const AdminStudentPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { users } = useLoaderData() as any
+
   const options = ['option 1', 'options 2']
 
-  const data = users.data.items as DataType[]
+  const fetchUsers = () => {
+    return userApi.apiV1UsersGet(1, 10000)
+  }
+  const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
+
+  const data_users = responseUsers?.data?.data?.items as DataType[]
 
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
       dataIndex: 'id',
-      key: 'id'
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
     },
     {
       title: 'Tên',
@@ -43,8 +51,8 @@ const AdminStudentPage: React.FC = () => {
     },
     {
       title: 'Email',
-      dataIndex: 'email',
-      key: 'email'
+      dataIndex: 'userName',
+      key: 'userName'
     },
     {
       title: 'Ngày tạo',
@@ -142,9 +150,10 @@ const AdminStudentPage: React.FC = () => {
               </Flex>
             </Flex>
             <Table<DataType>
+              loading={loadingUsers}
               pagination={{ position: ['bottomLeft'] }}
               columns={columns}
-              dataSource={data.filter((d) => d.role.roleName === 'Candidate')}
+              dataSource={data_users?.filter((d) => d.role.roleName === 'Candidate')}
             />
           </Space>
         </div>

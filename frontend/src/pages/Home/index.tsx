@@ -144,7 +144,7 @@ const HomePage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
   const navigate = useNavigate()
 
-  const data_courses = courses.data.items as Course[]
+  const data_courses = courses.data as Course[]
   const data_courseCategory = courseCategory.data.items as CourseCategory[]
   const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
   const data_courseArea = courseArea.data.items as CourseArea[]
@@ -263,12 +263,17 @@ const HomePage: React.FC = () => {
                     type='primary'
                     className='h-[60px]'
                     onClick={() => {
-                      const queryParams = new URLSearchParams({
-                        area: selectedArea || '',
-                        language: selectedLanguage || '',
-                        category: selectedCategory || ''
-                      }).toString()
-                      navigate(`/courses?${queryParams}`)
+                      const queryParams = new URLSearchParams()
+                      if (selectedArea) {
+                        queryParams.set('area', selectedArea)
+                      }
+                      if (selectedLanguage) {
+                        queryParams.set('language', selectedLanguage)
+                      }
+                      if (selectedCategory) {
+                        queryParams.set('category', selectedCategory)
+                      }
+                      navigate(`/courses?${queryParams.toString()}`)
                     }}
                   >
                     Tìm kiếm

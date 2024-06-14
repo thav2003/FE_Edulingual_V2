@@ -93,16 +93,21 @@ const CheckoutPage: React.FC = () => {
   const user = useAuthStore((state) => state.user)
   const [paymentMethod, setPaymentMethod] = useState('card')
   const [loading, setLoading] = useState(false)
+  const [fullName, setFullName] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+
   const handleSubmit = async () => {
     try {
       setLoading(true)
       console.log(data_course)
       console.log(paymentMethod, data_course.tuitionfee, data_course.id, user!.id)
       const res = (await payOsApi.apiV1PayOsPost(
+        user!.id,
+        data_course.id,
         paymentMethod,
         Number(data_course.tuitionfee ? data_course.tuitionfee : 0),
-        data_course.id,
-        user!.id
+        fullName,
+        phoneNumber
       )) as any
       if (res.data.url) {
         window.open(res.data.url, '_blank') // Open the URL in a new tab
@@ -146,9 +151,6 @@ const CheckoutPage: React.FC = () => {
                       </Space>
                     </Flex>
 
-                    <Text>
-                      Kinh nghiệm: <Text className='font-normal'>6 năm</Text>
-                    </Text>
                     <Text>
                       Khóa học: <Text className='font-normal'>{data_course?.courseCategory?.name}</Text>
                     </Text>
@@ -257,9 +259,8 @@ const CheckoutPage: React.FC = () => {
               </Radio.Group>
               <Card className='!bg-[#F7F7F7] mt-7'>
                 <Flex vertical gap={20}>
-                  <Input placeholder='Họ tên' />
-                  <Input placeholder='Địa chỉ' />
-                  <Input placeholder='Số điện thoại' />
+                  <Input placeholder='Họ tên' onChange={(e) => setFullName(e.target.value)} />
+                  <Input placeholder='Số điện thoại' onChange={(e) => setPhoneNumber(e.target.value)} />
                   {/* <CreditCardInput />
                   <Flex gap={20}>
                     <PatternFormat customInput={Input} size='large' placeholder='MM' format='##' />

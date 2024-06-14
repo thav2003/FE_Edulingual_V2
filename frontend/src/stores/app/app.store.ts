@@ -2,15 +2,15 @@ import { StateCreator, create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
 
 export interface AppState {
-  refetch: boolean
+  isRefecth: boolean
   refetchApp: () => void
 }
 
 const storeApi: StateCreator<AppState> = (set) => ({
-  refetch: false,
+  isRefecth: false,
 
   refetchApp: () => {
-    set((state) => ({ refetch: !state.refetch }))
+    set((state) => ({ isRefecth: !state.isRefecth }))
   }
 })
 

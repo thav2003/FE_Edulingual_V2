@@ -23,9 +23,12 @@ import {
   StarFilled,
   UserOutlined
 } from '@ant-design/icons'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { formatCurrencyVND } from '~/utils/numberUtils'
 import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
+import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi, UserApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
+import debounce from '~/utils'
 const { Title, Text } = Typography
 
 const { Meta } = Card
@@ -129,63 +132,81 @@ interface CourseArea {
   updatedBy: string | null
   isDeleted: boolean
 }
+const courseLanguageApi = new CourseLanguageApi()
+const courseCategoryApi = new CourseCategoryApi()
+const courseAreaApi = new CourseAreaApi()
+const courseApi = new CourseApi()
 const CoursesPage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { courseArea, courseCategory, courseLanguage, courses } = useLoaderData() as any
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedArea, setSelectedArea] = useState<string | undefined>(searchParams.get('area') as string)
   const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(searchParams.get('language') as string)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(searchParams.get('category') as string)
-  const [loading, setLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('title') ? searchParams.get('title')! : '')
   const navigate = useNavigate()
 
   const options = ['option 1', 'options 2']
 
-  const data_courses = courses.data as Course[]
-  const data_courseCategory = courseCategory.data.items as CourseCategory[]
-  const data_courseLanguage = courseLanguage.data.items as CourseLanguage[]
-  const data_courseArea = courseArea.data.items as CourseArea[]
-  const onLoadMore = () => {
-    setLoading(true)
-    // setList(data.concat([...new Array(3)].map(() => ({ loading: true }))))
-    // fetch(fakeDataUrl)
-    //   .then((res) => res.json())
-    //   .then((res) => {
-    //     const newData = data.concat(res.results)
-    //     setData(newData)
-    //     setList(newData)
-    //     setLoading(false)
-    //     // Resetting window's offsetTop so as to display react-virtualized demo underfloor.
-    //     // In real scene, you can using public method of react-virtualized:
-    //     // https://stackoverflow.com/questions/46700726/how-to-use-public-method-updateposition-of-react-virtualized
-    //     window.dispatchEvent(new Event('resize'))
-    //   })
+  const fetchCourseLanguage = () => {
+    return courseLanguageApi.apiV1NgonNguGet(1, 10000)
   }
+  const [loadingCourseLanguage, errorCourseLanguage, responseCourseLanguage] = useFetchData(fetchCourseLanguage)
 
-  const loadMore = !loading ? (
-    <div
-      style={{
-        textAlign: 'center',
-        marginTop: 12,
-        height: 32,
-        lineHeight: '32px'
-      }}
-    >
-      <Button type='primary' onClick={onLoadMore}>
-        Xem thêm
-      </Button>
-    </div>
-  ) : null
+  const data_courseLanguage = responseCourseLanguage?.data?.data?.items as CourseLanguage[]
 
-  // useEffect(() => {
-  //   fetch(`https://randomuser.me/api/?results=${6}&inc=name,gender,email,nat,picture&noinfo`)
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setInitLoading(false)
-  //       setData(res.results)
-  //       setList(res.results)
-  //     })
-  // }, [])
+  const fetchCourseCategory = () => {
+    return courseCategoryApi.apiV1LoaiKhoaHocGet(1, 10000)
+  }
+  const [loadingCourseCategory, errorCourseCategory, responseCourseCategory] = useFetchData(fetchCourseCategory)
+
+  const data_courseCategory = responseCourseCategory?.data?.data?.items as CourseCategory[]
+
+  const fetchCourseArea = () => {
+    return courseAreaApi.apiV1KhuVucGet(1, 10000)
+  }
+  const [loadingCourseArea, errorCourseArea, responseCourseArea] = useFetchData(fetchCourseArea)
+
+  const data_courseArea = responseCourseArea?.data?.data?.items as CourseArea[]
+
+  const handleSearchCourses = useCallback(
+    debounce((query) => {
+      console.log(query)
+      const queryParams = new URLSearchParams()
+      if (searchParams.get('area')) {
+        queryParams.set('area', searchParams.get('area')!)
+      }
+      if (searchParams.get('language')) {
+        queryParams.set('language', searchParams.get('language')!)
+      }
+      if (searchParams.get('category')) {
+        queryParams.set('category', searchParams.get('category')!)
+      }
+
+      if (query) {
+        queryParams.set('title', query)
+      }
+      setSearchParams(queryParams.toString())
+    }, 500),
+    [searchParams, setSearchParams]
+  )
+  const fetchCourses = () => {
+    return courseApi.apiV1KhoaHocGet(
+      searchParams.get('title') ? searchParams.get('title')! : undefined,
+      searchParams.get('area') ? searchParams.get('area')! : undefined,
+      searchParams.get('language') ? searchParams.get('language')! : undefined,
+      searchParams.get('category') ? searchParams.get('category')! : undefined,
+      undefined,
+      1,
+      10000
+    )
+  }
+  const [loadingCourses, errorCourses, responseCourses] = useFetchData(
+    fetchCourses,
+    searchParams.get('title'),
+    searchParams.get('area'),
+    searchParams.get('language'),
+    searchParams.get('category')
+  )
+  const data_courses = responseCourses?.data?.data?.items as Course[]
 
   return (
     <div>
@@ -310,8 +331,10 @@ const CoursesPage: React.FC = () => {
               value={selectedLanguage}
               onChange={setSelectedLanguage}
             >
-              {data_courseLanguage.map((cl) => (
-                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              {data_courseLanguage?.map((cl) => (
+                <Select.Option key={cl.id} value={cl.id}>
+                  {cl.name}
+                </Select.Option>
               ))}
             </Select>
             <Select
@@ -323,8 +346,10 @@ const CoursesPage: React.FC = () => {
               value={selectedArea}
               onChange={setSelectedArea}
             >
-              {data_courseArea.map((cl) => (
-                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              {data_courseArea?.map((cl) => (
+                <Select.Option key={cl.id} value={cl.id}>
+                  {cl.name}
+                </Select.Option>
               ))}
             </Select>
             <Select
@@ -336,8 +361,10 @@ const CoursesPage: React.FC = () => {
               value={selectedCategory}
               onChange={setSelectedCategory}
             >
-              {data_courseCategory.map((cl) => (
-                <Select.Option value={cl.id}>{cl.name}</Select.Option>
+              {data_courseCategory?.map((cl) => (
+                <Select.Option key={cl.id} value={cl.id}>
+                  {cl.name}
+                </Select.Option>
               ))}
             </Select>
             <Button
@@ -357,9 +384,16 @@ const CoursesPage: React.FC = () => {
           </Flex>
 
           <Flex align='center' justify='space-between' gap={20} wrap>
-            <Text strong>{data_courses.length} Kết quả</Text>
+            <Text strong>{data_courses?.length} Kết quả</Text>
             <Flex align='center' gap={20}>
-              <Input.Search size='large' />
+              <Input.Search
+                size='large'
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  handleSearchCourses(e.target.value)
+                }}
+              />
               <Select
                 size='large'
                 className='!text-left'
@@ -432,7 +466,7 @@ const CoursesPage: React.FC = () => {
                 xl: 1,
                 xxl: 1
               }}
-              loadMore={loadMore}
+              loading={loadingCourses}
               dataSource={data_courses}
               renderItem={(item) => (
                 <List.Item>

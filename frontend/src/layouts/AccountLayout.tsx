@@ -2,7 +2,7 @@ import { UserOutlined, EditOutlined } from '@ant-design/icons'
 import { Layout, Menu, ConfigProvider, Avatar, Typography, MenuProps } from 'antd'
 import { Space } from 'antd'
 import { useEffect } from 'react'
-import { Link, Outlet, redirect, useLocation, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Role } from '~/interfaces'
 import { useAuthStore } from '~/stores'
 const { Text } = Typography
@@ -39,16 +39,16 @@ const AccountLayout: React.FC = () => {
     ...(user?.role === Role.TEACHER
       ? [
           {
-            key: '1',
-            label: 'Học sinh'
+            key: 'mystudents',
+            label: <Link to='mystudents'>Học sinh</Link>
           },
           {
-            key: '2',
-            label: 'Tạo bộ đề'
+            key: 'createexam',
+            label: <Link to='createexam'>Tạo bộ đề</Link>
           },
           {
-            key: '3',
-            label: 'Khóa học'
+            key: 'mycourses',
+            label: <Link to='mycourses'>Khóa học</Link>
           },
           {
             key: '4',
@@ -76,7 +76,7 @@ const AccountLayout: React.FC = () => {
         navigate('/account/mycourses')
       }
       if (user?.role === Role.TEACHER) {
-        // navigate('/account')
+        navigate('/account/mycourses')
       }
       if (user?.role === Role.ADMIN) {
         navigate('/admin/dashboard')
