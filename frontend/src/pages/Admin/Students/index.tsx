@@ -153,7 +153,7 @@ const AdminStudentPage: React.FC = () => {
               loading={loadingUsers}
               pagination={{ position: ['bottomLeft'] }}
               columns={columns}
-              dataSource={data_users?.filter((d) => d.role.roleName === 'Candidate')}
+              dataSource={data_users?.filter((d) => d.role.roleName === 'User')}
             />
           </Space>
         </div>
