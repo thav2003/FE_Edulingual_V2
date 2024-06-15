@@ -18,7 +18,8 @@ import {
   AdminCoursePage,
   DashboardPage,
   MyStudentPage,
-  CreateExamPage
+  CreateExamPage,
+  CreateDetailPage
 } from './pages'
 import CommonLayout from './layouts/CommonLayout'
 import AccountLayout from './layouts/AccountLayout'
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
               {
                 path: 'createexam',
                 element: <CreateExamPage />
+              },
+              {
+                path: 'createexam/:id',
+                element: <CreateDetailPage />
               }
             ]
           },
@@ -128,42 +133,10 @@ const router = createBrowserRouter([
       },
       {
         path: 'students',
-        loader: async ({ request }) => {
-          const user_res = await userApi.apiV1UsersGet(1, 10000, { signal: request.signal })
-          console.log(user_res)
-          const users = user_res.data
-          return { users: users }
-        },
         element: <AdminStudentPage />
       },
       {
         path: 'teachers',
-        loader: async ({ request }) => {
-          const url = new URL(request.url)
-          let size
-          let page
-          const pageParams = url.searchParams.get('page')
-          const sizeParams = url.searchParams.get('size')
-
-          if (pageParams !== null) {
-            page = Number(pageParams)
-          } else {
-            page = 1
-          }
-
-          if (sizeParams !== null) {
-            size = Number(sizeParams)
-          } else {
-            size = 10
-          }
-
-          console.log('page: ' + page)
-          console.log('size: ' + size)
-          const user_res = await userApi.apiV1UsersGet(page, size, { signal: request.signal })
-
-          const users = user_res.data
-          return { users: users }
-        },
         element: <AdminTeacherPage />
       },
       {

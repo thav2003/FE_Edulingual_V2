@@ -4,8 +4,11 @@ import { Card, Col, ConfigProvider, Row, Space, Statistic } from 'antd'
 import CountUp from 'react-countup'
 import { DualAxes } from '@ant-design/plots'
 import { Line } from '@ant-design/plots'
+import useFetchData from '~/hooks/useFetch'
+import { DashboardApi } from '~/api'
 const formatter: StatisticProps['formatter'] = (value) => <CountUp end={value as number} separator=',' />
 
+const dashboardApi = new DashboardApi()
 const DashboardPage: React.FC = () => {
   const configLine = {
     data: {
@@ -65,6 +68,23 @@ const DashboardPage: React.FC = () => {
       }
     ]
   }
+  const fetchUsers = () => {
+    return dashboardApi.apiV1DashboardUserGet()
+  }
+  const fetchTeachers = () => {
+    return dashboardApi.apiV1DashboardTeacherGet()
+  }
+  const fetchExams = () => {
+    return dashboardApi.apiV1DashboardExamGet()
+  }
+  const fetchFinances = () => {
+    return dashboardApi.apiV1DashboardFinanceGet()
+  }
+  const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
+  const [loadingTeachers, errorTeachers, responseTeachers] = useFetchData(fetchTeachers)
+  const [loadingExams, errorExams, responseExams] = useFetchData(fetchExams)
+  const [loadingFinances, errorFinances, responseFinances] = useFetchData(fetchFinances)
+
   return (
     <div
       style={{
@@ -82,22 +102,58 @@ const DashboardPage: React.FC = () => {
           <Row gutter={[16, 16]}>
             <Col span={6}>
               <Card bordered>
-                <Statistic title='Bài kiểm tra' value={112893} formatter={formatter} />
+                <Statistic
+                  title='Bài kiểm tra tháng này'
+                  value={responseExams?.data?.data?.dataThisMonth}
+                  formatter={formatter}
+                />
+                <Statistic
+                  title='Bài kiểm tra tháng trước'
+                  value={responseExams?.data?.data?.dataLastMonth}
+                  formatter={formatter}
+                />
               </Card>
             </Col>
             <Col span={6}>
               <Card bordered>
-                <Statistic title='Thu nhập' value={112893} formatter={formatter} />
+                <Statistic
+                  title='Thu nhập tháng này'
+                  value={responseFinances.data?.data?.dataThisMonth}
+                  formatter={formatter}
+                />
+                <Statistic
+                  title='Thu nhập tháng trước'
+                  value={responseFinances.data?.data?.dataLastMonth}
+                  formatter={formatter}
+                />
               </Card>
             </Col>
             <Col span={6}>
               <Card bordered>
-                <Statistic title='Giáo viên' value={112893} formatter={formatter} />
+                <Statistic
+                  title='Giáo viên tháng này'
+                  value={responseTeachers.data?.data?.dataThisMonth}
+                  formatter={formatter}
+                />
+                <Statistic
+                  title='Giáo viên tháng trước'
+                  value={responseTeachers.data?.data?.dataLastMonth}
+                  formatter={formatter}
+                />
               </Card>
             </Col>
             <Col span={6}>
               <Card bordered>
-                <Statistic title='Người dùng' value={112893} formatter={formatter} />
+                <Statistic
+                  title='Người dùng tháng này'
+                  value={responseUsers?.data?.data?.dataThisMonth}
+                  formatter={formatter}
+                />
+                <Statistic
+                  title='Người dùng tháng trước'
+                  value={responseUsers?.data?.data?.dataLastMonth}
+                  formatter={formatter}
+                />
               </Card>
             </Col>
             <Col span={12}>

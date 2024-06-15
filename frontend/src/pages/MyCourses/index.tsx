@@ -150,6 +150,7 @@ const userApi = new UserApi()
 const MyCoursesPage: React.FC = () => {
   const refetchApp = useAppStore((state) => state.refetchApp)
   const userId = useAuthStore((state) => state.user?.id)
+  const userRole = useAuthStore((state) => state.user?.role)
   const [searchParams, setSearchParams] = useSearchParams()
   const [createCourseLoading, setCreateCourseLoading] = useState(false)
   const [openModalCourse, setOpenModalCourse] = useState(false)
@@ -202,6 +203,8 @@ const MyCoursesPage: React.FC = () => {
     [searchParams, setSearchParams]
   )
   const fetchCourses = () => {
+    if (userRole === 1) return userApi.apiV1NguoiHocIdKhoaHocGet(userId!)
+
     return userApi.apiV1TrungTamIdKhoaHocGet(userId!)
   }
   const [loadingCourses, errorCourses, responseCourses] = useFetchData(fetchCourses)

@@ -8,6 +8,7 @@ import { useAppStore, useAuthStore } from '~/stores'
 import { ExamApi, UserApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
+import { useNavigate } from 'react-router-dom'
 const { Dragger } = Upload
 
 interface Course {
@@ -71,6 +72,7 @@ const userApi = new UserApi()
 const examApi = new ExamApi()
 const CreateExamPage: React.FC = () => {
   const { notification } = App.useApp()
+  const navigate = useNavigate()
   const userId = useAuthStore((state) => state.user?.id)
   const [defaultFileList, setDefaultFileList] = useState([])
   const [progress, setProgress] = useState(0)
@@ -168,6 +170,16 @@ const CreateExamPage: React.FC = () => {
       dataIndex: 'createdAt',
       key: 'createdAt',
       render: (item, record, index) => <Typography.Text>{formatDateToDDMMYYWithTime(new Date(item))}</Typography.Text>
+    },
+    {
+      // title: 'Trạng thái',
+      key: 'actions',
+      // dataIndex: 'isDone',
+      render: (_, { id }) => (
+        <Button type='primary' onClick={() => navigate(`${id}`)}>
+          Chi tiết
+        </Button>
+      )
     }
   ]
   return (

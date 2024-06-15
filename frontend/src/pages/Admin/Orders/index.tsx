@@ -1,5 +1,10 @@
 import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
+import { useSearchParams } from 'react-router-dom'
+import { PaymentApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
+import { useAppStore } from '~/stores'
+import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
 interface DataType {
@@ -9,21 +14,43 @@ interface DataType {
   note: string
   isDone: boolean
 }
-
+const paymentApi = new PaymentApi()
 const AdminOrderPage: React.FC = () => {
-  const options = ['option 1', 'options 2']
+  const [searchParams, setSearchParams] = useSearchParams()
+  const refetchApp = useAppStore((state) => state.refetchApp)
 
+  const options = ['option 1', 'options 2']
+  const fetchPayments = () => {
+    return paymentApi.apiV1ThanhToanGet(
+      undefined,
+      undefined,
+      searchParams.get('page') ? Number(searchParams.get('page')) : 1,
+      searchParams.get('size') ? Number(searchParams.get('size')) : 5
+    )
+  }
+  const [loadingPayments, errorPayments, responsePayments] = useFetchData(
+    fetchPayments,
+    searchParams.get('size'),
+    searchParams.get('title')
+  )
+  const data_payments = responsePayments?.data?.data?.items as any[]
+  const data_total_data_payments = responsePayments?.data?.data.total as number
   const columns: TableProps<DataType>['columns'] = [
     {
       title: 'Ngày',
       // dataIndex: 'key',
-      key: 'createdAt'
+      key: 'createdAt',
+      render: (_, { createdAt }) => {
+        return formatDateToDDMMYYWithTime(new Date(createdAt))
+      }
     },
     {
       title: 'Học sinh',
       // dataIndex: 'name',
-      key: 'student'
-      // render: (text) => <a>{text}</a>
+      key: 'student',
+      render: (_, { user }) => {
+        return user.fullName
+      }
     },
     {
       title: 'Giáo viên',
@@ -33,7 +60,10 @@ const AdminOrderPage: React.FC = () => {
     {
       title: 'Môn',
       // dataIndex: 'note',
-      key: 'course'
+      key: 'course',
+      render: (_, { course }) => {
+        return course.title
+      }
     },
     {
       // title: 'Trạng thái',
@@ -43,29 +73,6 @@ const AdminOrderPage: React.FC = () => {
     }
   ]
 
-  const data: DataType[] = [
-    {
-      key: '1',
-      name: 'John Brown',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: true
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      email: 'abcd115@gmail.com',
-      note: '...',
-      isDone: false
-    }
-  ]
   return (
     <div
       style={{
@@ -145,7 +152,26 @@ const AdminOrderPage: React.FC = () => {
                 </Select>
               </Flex>
             </Flex>
-            <Table<DataType> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={data} />
+            <Table
+              pagination={{
+                current: searchParams.get('page') ? Number(searchParams.get('page')) : 1,
+                position: ['bottomLeft'],
+                pageSize: searchParams.get('size') ? Number(searchParams.get('size')) : 5,
+                total: data_total_data_payments
+              }}
+              loading={loadingPayments}
+              onChange={(pagination) => {
+                const queryParams = new URLSearchParams({
+                  page: pagination.current!.toString(),
+                  size: pagination.pageSize!.toString()
+                })
+
+                setSearchParams(queryParams.toString())
+              }}
+              pagination={{ position: ['bottomLeft'] }}
+              columns={columns}
+              dataSource={data_payments}
+            />
           </Space>
         </div>
       </ConfigProvider>

@@ -14,12 +14,13 @@ import {
   Input,
   Button,
   ConfigProvider,
-  Checkbox
+  Checkbox,
+  App
 } from 'antd'
 import { useState } from 'react'
 import { PatternFormat } from 'react-number-format'
 import { useLoaderData, useNavigate } from 'react-router-dom'
-import { PayOsApi } from '~/api'
+import { PayOsApi, UserCourseApi } from '~/api'
 import CreditCardInput from '~/components/CreditCardInput'
 import { useAuthStore } from '~/stores'
 import { formatCurrencyVND } from '~/utils/numberUtils'
@@ -85,9 +86,11 @@ interface Course {
 }
 
 const payOsApi = new PayOsApi()
+const userCourseApi = new UserCourseApi()
 const CheckoutPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { course } = useLoaderData() as any
+  const { notification } = App.useApp()
   const navigate = useNavigate()
   const data_course = course.data as Course
   const user = useAuthStore((state) => state.user)
@@ -101,6 +104,16 @@ const CheckoutPage: React.FC = () => {
       setLoading(true)
       console.log(data_course)
       console.log(paymentMethod, data_course.tuitionfee, data_course.id, user!.id)
+      const r = await userCourseApi.apiV1UserCourseJoinGet(
+        user!.id,
+        data_course.id,
+        paymentMethod,
+        Number(data_course.tuitionfee ? data_course.tuitionfee : 0),
+        fullName,
+        phoneNumber,
+        undefined
+      )
+      console.log(r)
       const res = (await payOsApi.apiV1PayOsPost(
         user!.id,
         data_course.id,
@@ -111,7 +124,7 @@ const CheckoutPage: React.FC = () => {
       )) as any
       if (res.data.url) {
         window.open(res.data.url, '_blank') // Open the URL in a new tab
-        navigate('/')
+        notification.info({ message: 'Vui lòng thanh toán' })
       }
     } catch (err) {
       console.log(err)
