@@ -132,8 +132,8 @@ const CreateExamPage: React.FC = () => {
     return userApi.apiV1TrungTamIdKhoaHocGet(userId!)
   }
   const [loadingCourses, errorCourses, responseCourses] = useFetchData(fetchCourses)
-  const data_courses = responseCourses?.data?.data as Course[]
-
+  const data_courses = responseCourses?.data?.data.items as Course[]
+  console.log(responseCourses)
   const fetchExams = () => {
     if (selectedCourseId) return examApi.apiV1ExamCourseIdIdGet(selectedCourseId, 10000)
     else return Promise.resolve()

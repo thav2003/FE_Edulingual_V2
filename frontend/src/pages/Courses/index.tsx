@@ -76,6 +76,7 @@ interface Course {
     createdBy: string
     updatedBy: string
     isDeleted: boolean
+    imageUrl: string
   }
   title: string
   description: string
@@ -477,13 +478,7 @@ const CoursesPage: React.FC = () => {
                       onClick={() => navigate(`/courses/course-detail/${item.id}`)}
                     >
                       <Meta
-                        avatar={
-                          <Avatar
-                            shape='square'
-                            src={'https://randomuser.me/api/portraits/med/women/76.jpg'}
-                            size={128}
-                          />
-                        }
+                        avatar={<Avatar shape='square' src={item.center.imageUrl} size={128} />}
                         title={
                           <div className='flex flex-col'>
                             <Flex align='center' justify='space-between'>

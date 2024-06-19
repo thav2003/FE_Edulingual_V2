@@ -1,8 +1,24 @@
-import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
+import {
+  App,
+  Button,
+  ConfigProvider,
+  Flex,
+  Form,
+  Input,
+  Modal,
+  Select,
+  Space,
+  Table,
+  Typography,
+  notification
+} from 'antd'
 import type { TableProps } from 'antd'
-import { useLoaderData } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { FormProps, useLoaderData } from 'react-router-dom'
 import { UserApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
+import { useAppStore } from '~/stores'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
@@ -23,19 +39,40 @@ interface DataType {
     roleName: string
   }
 }
+type FieldType = {
+  userName: string
+  password: string
+  fullName: string
+  description: string
+  userStatus: 0 | 1
+  roleId: string
+}
 const userApi = new UserApi()
 const AdminStudentPage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
+  const refetchApp = useAppStore((state) => state.refetchApp)
+  const [loading, setLoading] = useState(false)
+  const { notification } = App.useApp()
   const options = ['option 1', 'options 2']
+  const [updateForm] = Form.useForm()
 
   const fetchUsers = () => {
     return userApi.apiV1UsersGet(1, 10000)
   }
   const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
+  const [updateModal, setUpdateModal] = useState(false)
 
+  const [selected, setSelected] = useState<DataType>()
   const data_users = responseUsers?.data?.data?.items as DataType[]
-
+  const handleDelete = async (id: string) => {
+    try {
+      await userApi.apiV1UsersIdDelete(id)
+      notification.info({ message: 'Delete thành công' })
+      refetchApp()
+    } catch (e) {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
+  }
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
@@ -63,13 +100,43 @@ const AdminStudentPage: React.FC = () => {
       }
     },
     {
-      // title: 'Trạng thái',
+      title: '',
       key: 'actions',
-      // dataIndex: 'isDone',
-      render: () => <Button type='primary'>Chi tiết</Button>
+      render: (_, record) => (
+        <Space>
+          <Button
+            onClick={() => {
+              setUpdateModal(true)
+              setSelected(record)
+            }}
+            icon={<EditOutlined />}
+          />
+          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+        </Space>
+      )
     }
   ]
+  const onFinishUpdate: FormProps<FieldType>['onFinish'] = async (values) => {
+    console.log('Success:', values)
+    try {
+      setLoading(true)
+      await userApi.apiV1UsersIdPut(selected!.id, values)
+      notification.info({ message: 'Cập nhật thành công' })
+      refetchApp()
+    } catch {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } finally {
+      setLoading(false)
+    }
+  }
 
+  const onFinishFailedUpdate: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+
+  useEffect(() => {
+    updateForm.setFieldsValue(selected)
+  }, [selected, updateForm])
   return (
     <div
       style={{
@@ -86,8 +153,8 @@ const AdminStudentPage: React.FC = () => {
         <div className='h-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
             <Flex align='center' justify='space-between' gap={20} wrap>
-              <Text strong>1,133 Học sinh</Text>
-              <Flex align='center' gap={20}>
+              <Text strong>{data_users?.filter((d) => d.role.roleName === 'User').length} Học sinh</Text>
+              {/* <Flex align='center' gap={20}>
                 <Input.Search size='large' />
                 <Select
                   size='large'
@@ -147,16 +214,47 @@ const AdminStudentPage: React.FC = () => {
                     </Select.Option>
                   ))}
                 </Select>
-              </Flex>
+              </Flex> */}
             </Flex>
             <Table<DataType>
               loading={loadingUsers}
-              pagination={{ position: ['bottomLeft'] }}
+              pagination={{ position: ['bottomLeft'], pageSize: 5 }}
               columns={columns}
               dataSource={data_users?.filter((d) => d.role.roleName === 'User')}
             />
           </Space>
         </div>
+        <Modal
+          title='Chi tiết học sinh'
+          open={updateModal}
+          onOk={() => setUpdateModal(false)}
+          onCancel={() => setUpdateModal(false)}
+          width={1000}
+          style={{ top: 20 }}
+          footer={null}
+        >
+          <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
+            <Form.Item<FieldType> name='userName' label='Email'>
+              <Input placeholder='Email' />
+            </Form.Item>
+
+            <Form.Item<FieldType> name='password' label='Password'>
+              <Input.Password placeholder='Password' />
+            </Form.Item>
+            <Form.Item<FieldType> name='fullName' label='Full Name'>
+              <Input placeholder='Full Name' />
+            </Form.Item>
+            <Form.Item<FieldType> name='description' label='Description'>
+              {/* <EditorComponent /> */}
+              <Input placeholder='Description' />
+            </Form.Item>
+            <Form.Item>
+              <Button loading={loading} type='primary' htmlType='submit'>
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </ConfigProvider>
     </div>
   )

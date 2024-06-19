@@ -1,5 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Space, Modal, Input, Row, Col, Select, InputNumber, Button, Flex, Table, Form, App, Typography } from 'antd'
+import {
+  Space,
+  Modal,
+  Input,
+  Row,
+  Col,
+  Select,
+  InputNumber,
+  Button,
+  Flex,
+  Table,
+  Form,
+  App,
+  Typography,
+  Tag
+} from 'antd'
 import { useCallback, useEffect, useState } from 'react'
 import type { FormProps, TableProps } from 'antd'
 import { useSearchParams } from 'react-router-dom'
@@ -7,6 +22,8 @@ import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi, UserApi
 import { useAppStore } from '~/stores'
 import useFetchData from '~/hooks/useFetch'
 import debounce from '~/utils'
+import EditorComponent from '~/components/EditorComponent'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 const { Text } = Typography
 const { Option } = Select
 
@@ -145,7 +162,6 @@ const CoursesView: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState(searchParams.get('title') ? searchParams.get('title')! : '')
 
   const [selectedCourse, setSelectedCourse] = useState<Course>()
-  const options = ['option 1', 'options 2']
 
   const fetchUsers = () => {
     return userApi.apiV1UsersGet(1, 10000)
@@ -189,10 +205,11 @@ const CoursesView: React.FC = () => {
     }, 500),
     [searchParams, setSearchParams]
   )
+
   const fetchCourses = () => {
     return courseApi.apiV1KhoaHocAdminGet(
       searchParams.get('title') ? searchParams.get('title')! : undefined,
-      undefined,
+      searchParams.get('status') ? (Number(searchParams.get('status')!) as 0 | 1) : undefined,
       undefined,
       searchParams.get('page') ? Number(searchParams.get('page')) : 1,
       searchParams.get('size') ? Number(searchParams.get('size')) : 5
@@ -202,7 +219,8 @@ const CoursesView: React.FC = () => {
     fetchCourses,
     searchParams.get('page'),
     searchParams.get('size'),
-    searchParams.get('title')
+    searchParams.get('title'),
+    searchParams.get('status')
   )
   const data_courses = responseCourses?.data?.data?.items as Course[]
   const data_total_courses = responseCourses?.data?.data.total as number
@@ -291,9 +309,17 @@ const CoursesView: React.FC = () => {
       key: 'status',
       render: (_, { status }) => {
         if (status) {
-          return 'Hoạt động'
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
         } else {
-          return 'Chờ duyệt'
+          return (
+            <Tag color='orange' className='px-4 py-1'>
+              CHỜ DUYỆT
+            </Tag>
+          )
         }
       }
     },
@@ -303,17 +329,13 @@ const CoursesView: React.FC = () => {
       render: (_, record) => (
         <Space>
           <Button
-            type='primary'
             onClick={() => {
               setOpenModalCourseDetail(true)
               setSelectedCourse(record)
             }}
-          >
-            Chi tiết
-          </Button>
-          <Button danger type='primary' onClick={() => handleDelete(record.id)}>
-            Xóa
-          </Button>
+            icon={<EditOutlined />}
+          />
+          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
         </Space>
       )
     }
@@ -364,7 +386,8 @@ const CoursesView: React.FC = () => {
             name='description'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input.TextArea />
+            {/* <Input.TextArea /> */}
+            <EditorComponent />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>
@@ -491,7 +514,7 @@ const CoursesView: React.FC = () => {
             name='description'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Input.TextArea />
+            <EditorComponent />
           </Form.Item>
           <Row gutter={16}>
             <Col span={12}>
@@ -598,7 +621,7 @@ const CoursesView: React.FC = () => {
         </Form>
       </Modal>
       <Flex align='center' justify='space-between' gap={20} wrap>
-        <Text strong>{data_courses?.length} Courses</Text>
+        <Text strong>{data_total_courses} khóa học</Text>
         <Flex align='center' gap={20}>
           <Input.Search
             size='large'
@@ -613,6 +636,18 @@ const CoursesView: React.FC = () => {
             className='!text-left'
             allowClear
             optionLabelProp='label'
+            onChange={(status) => {
+              const queryParams = new URLSearchParams({
+                page: searchParams.get('page') || '1',
+                size: searchParams.get('size') || '5'
+              })
+              if (searchParams.get('title')) {
+                queryParams.set('title', searchParams.get('title')!)
+              }
+              if (status !== undefined) queryParams.set('status', status)
+
+              setSearchParams(queryParams.toString())
+            }}
             placeholder={
               <Space>
                 <svg
@@ -631,40 +666,63 @@ const CoursesView: React.FC = () => {
                   />
                 </svg>
                 Lọc theo
-                <Text strong>Đánh giá cao</Text>
+                <Text strong>Trạng thái</Text>
               </Space>
             }
             style={{ width: 250 }}
           >
-            {options.map((data) => (
-              <Select.Option
-                key={data}
-                value={data}
-                label={
-                  <Space className='text-[#00000040]'>
-                    <svg
-                      className='inline'
-                      width='18'
-                      height='13'
-                      viewBox='0 0 18 13'
-                      fill='none'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path
-                        fillRule='evenodd'
-                        clipRule='evenodd'
-                        d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                        fill='#A5A9AD'
-                      />
-                    </svg>
-                    Lọc theo
-                    <Text strong>{data}</Text>
-                  </Space>
-                }
-              >
-                {data}
-              </Select.Option>
-            ))}
+            <Select.Option
+              value={0}
+              label={
+                <Space className='text-[#00000040]'>
+                  <svg
+                    className='inline'
+                    width='18'
+                    height='13'
+                    viewBox='0 0 18 13'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      fillRule='evenodd'
+                      clipRule='evenodd'
+                      d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                      fill='#A5A9AD'
+                    />
+                  </svg>
+                  Lọc theo
+                  <Text strong>Chờ duyệt</Text>
+                </Space>
+              }
+            >
+              Chờ duyệt
+            </Select.Option>
+            <Select.Option
+              value={1}
+              label={
+                <Space className='text-[#00000040]'>
+                  <svg
+                    className='inline'
+                    width='18'
+                    height='13'
+                    viewBox='0 0 18 13'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      fillRule='evenodd'
+                      clipRule='evenodd'
+                      d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                      fill='#A5A9AD'
+                    />
+                  </svg>
+                  Lọc theo
+                  <Text strong>Hoạt động</Text>
+                </Space>
+              }
+            >
+              Hoạt động
+            </Select.Option>
           </Select>
           <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
             Thêm khóa học
@@ -688,6 +746,9 @@ const CoursesView: React.FC = () => {
           })
           if (searchParams.get('title')) {
             queryParams.set('title', searchParams.get('title')!)
+          }
+          if (searchParams.get('status')) {
+            queryParams.set('status', searchParams.get('status')!)
           }
           setSearchParams(queryParams.toString())
         }}

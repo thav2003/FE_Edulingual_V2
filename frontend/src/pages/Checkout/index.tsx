@@ -104,16 +104,7 @@ const CheckoutPage: React.FC = () => {
       setLoading(true)
       console.log(data_course)
       console.log(paymentMethod, data_course.tuitionfee, data_course.id, user!.id)
-      const r = await userCourseApi.apiV1UserCourseJoinGet(
-        user!.id,
-        data_course.id,
-        paymentMethod,
-        Number(data_course.tuitionfee ? data_course.tuitionfee : 0),
-        fullName,
-        phoneNumber,
-        undefined
-      )
-      console.log(r)
+
       const res = (await payOsApi.apiV1PayOsPost(
         user!.id,
         data_course.id,

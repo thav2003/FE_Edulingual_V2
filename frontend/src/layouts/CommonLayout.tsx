@@ -102,8 +102,8 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
         >
           <Flex align='center' justify='space-between'>
             <Flex align='center' gap={10} style={{ flex: 1 }}>
-              <Link to='/'>
-                <img src='/logo.svg' />
+              <Link to='/' className='h-[50px]'>
+                <img src='/logo.svg' className='h-[50px]' />
               </Link>
               <Link to='/'>
                 <Text strong className='text-[24px]'>

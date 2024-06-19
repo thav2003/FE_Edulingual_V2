@@ -896,27 +896,82 @@ export interface CourseDto {
 /**
  * 
  * @export
- * @interface CourseDtoListResult
+ * @interface CourseDtoIPaginate
  */
-export interface CourseDtoListResult {
+export interface CourseDtoIPaginate {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoIPaginate
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoIPaginate
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoIPaginate
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoIPaginate
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {Array<CourseDto>}
+     * @memberof CourseDtoIPaginate
+     */
+    'items'?: Array<CourseDto> | null;
+}
+/**
+ * 
+ * @export
+ * @interface CourseDtoPagingResult
+ */
+export interface CourseDtoPagingResult {
     /**
      * 
      * @type {HttpStatusCode}
-     * @memberof CourseDtoListResult
+     * @memberof CourseDtoPagingResult
      */
     'statusCode'?: HttpStatusCode;
     /**
      * 
      * @type {string}
-     * @memberof CourseDtoListResult
+     * @memberof CourseDtoPagingResult
      */
     'message'?: string | null;
     /**
      * 
-     * @type {Array<CourseDto>}
-     * @memberof CourseDtoListResult
+     * @type {CourseDtoIPaginate}
+     * @memberof CourseDtoPagingResult
      */
-    'data'?: Array<CourseDto> | null;
+    'data'?: CourseDtoIPaginate;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoPagingResult
+     */
+    'pageNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoPagingResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseDtoPagingResult
+     */
+    'totalCount'?: number;
 }
 
 
@@ -1294,6 +1349,43 @@ export interface CourseViewModel {
 /**
  * 
  * @export
+ * @interface CourseViewModelIPaginate
+ */
+export interface CourseViewModelIPaginate {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelIPaginate
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelIPaginate
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelIPaginate
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelIPaginate
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {Array<CourseViewModel>}
+     * @memberof CourseViewModelIPaginate
+     */
+    'items'?: Array<CourseViewModel> | null;
+}
+/**
+ * 
+ * @export
  * @interface CourseViewModelListResult
  */
 export interface CourseViewModelListResult {
@@ -1315,6 +1407,51 @@ export interface CourseViewModelListResult {
      * @memberof CourseViewModelListResult
      */
     'data'?: Array<CourseViewModel> | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface CourseViewModelPagingResult
+ */
+export interface CourseViewModelPagingResult {
+    /**
+     * 
+     * @type {HttpStatusCode}
+     * @memberof CourseViewModelPagingResult
+     */
+    'statusCode'?: HttpStatusCode;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseViewModelPagingResult
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {CourseViewModelIPaginate}
+     * @memberof CourseViewModelPagingResult
+     */
+    'data'?: CourseViewModelIPaginate;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelPagingResult
+     */
+    'pageNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelPagingResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseViewModelPagingResult
+     */
+    'totalCount'?: number;
 }
 
 
@@ -2841,6 +2978,18 @@ export interface UpdateUserRequest {
     'description'?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateUserRequest
+     */
+    'imageUrl'?: string | null;
+    /**
+     * 
      * @type {UserStatus}
      * @memberof UpdateUserRequest
      */
@@ -3012,6 +3161,12 @@ export interface UserCourse {
      * @type {string}
      * @memberof UserCourse
      */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourse
+     */
     'userId'?: string;
     /**
      * 
@@ -3031,7 +3186,160 @@ export interface UserCourse {
      * @memberof UserCourse
      */
     'course'?: Course;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourse
+     */
+    'joinedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourse
+     */
+    'finishedAt'?: string;
+    /**
+     * 
+     * @type {UserCourseStatus}
+     * @memberof UserCourse
+     */
+    'status'?: UserCourseStatus;
 }
+
+
+/**
+ * 
+ * @export
+ * @interface UserCourseDto
+ */
+export interface UserCourseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDto
+     */
+    'fullName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDto
+     */
+    'description'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDto
+     */
+    'joinedAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDto
+     */
+    'course'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserCourseDtoIPaginate
+ */
+export interface UserCourseDtoIPaginate {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoIPaginate
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoIPaginate
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoIPaginate
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoIPaginate
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {Array<UserCourseDto>}
+     * @memberof UserCourseDtoIPaginate
+     */
+    'items'?: Array<UserCourseDto> | null;
+}
+/**
+ * 
+ * @export
+ * @interface UserCourseDtoPagingResult
+ */
+export interface UserCourseDtoPagingResult {
+    /**
+     * 
+     * @type {HttpStatusCode}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'statusCode'?: HttpStatusCode;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {UserCourseDtoIPaginate}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'data'?: UserCourseDtoIPaginate;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'pageNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserCourseDtoPagingResult
+     */
+    'totalCount'?: number;
+}
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const UserCourseStatus = {
+    NUMBER_0: 0,
+    NUMBER_1: 1
+} as const;
+
+export type UserCourseStatus = typeof UserCourseStatus[keyof typeof UserCourseStatus];
+
+
 /**
  * 
  * @export
@@ -3098,6 +3406,18 @@ export interface UserDto {
      * @memberof UserDto
      */
     'description'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserDto
+     */
+    'imageUrl'?: string | null;
     /**
      * 
      * @type {UserStatus}
@@ -3239,6 +3559,18 @@ export interface UserViewModel {
     'description'?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof UserViewModel
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserViewModel
+     */
+    'imageUrl'?: string | null;
+    /**
+     * 
      * @type {UserStatus}
      * @memberof UserViewModel
      */
@@ -3252,6 +3584,43 @@ export interface UserViewModel {
 }
 
 
+/**
+ * 
+ * @export
+ * @interface UserViewModelIPaginate
+ */
+export interface UserViewModelIPaginate {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelIPaginate
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelIPaginate
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelIPaginate
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelIPaginate
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {Array<UserViewModel>}
+     * @memberof UserViewModelIPaginate
+     */
+    'items'?: Array<UserViewModel> | null;
+}
 /**
  * 
  * @export
@@ -3276,6 +3645,51 @@ export interface UserViewModelListResult {
      * @memberof UserViewModelListResult
      */
     'data'?: Array<UserViewModel> | null;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface UserViewModelPagingResult
+ */
+export interface UserViewModelPagingResult {
+    /**
+     * 
+     * @type {HttpStatusCode}
+     * @memberof UserViewModelPagingResult
+     */
+    'statusCode'?: HttpStatusCode;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserViewModelPagingResult
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {UserViewModelIPaginate}
+     * @memberof UserViewModelPagingResult
+     */
+    'data'?: UserViewModelIPaginate;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelPagingResult
+     */
+    'pageNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelPagingResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserViewModelPagingResult
+     */
+    'totalCount'?: number;
 }
 
 
@@ -5709,39 +6123,6 @@ export const ExamApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1ExamExamIdIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('apiV1ExamExamIdIdGet', 'id', id)
-            const localVarPath = `/api/v1/exam/examId/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -5777,6 +6158,39 @@ export const ExamApiAxiosParamCreator = function (configuration?: Configuration)
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(getScoreDto, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1ExamIdGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('apiV1ExamIdGet', 'id', id)
+            const localVarPath = `/api/v1/exam/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5890,18 +6304,6 @@ export const ExamApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async apiV1ExamExamIdIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExamResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamExamIdIdGet(id, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ExamApi.apiV1ExamExamIdIdGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -5912,6 +6314,18 @@ export const ExamApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamGetScorePost(page, size, getScoreDto, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExamApi.apiV1ExamGetScorePost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1ExamIdGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExamResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamIdGet(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExamApi.apiV1ExamIdGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5963,15 +6377,6 @@ export const ExamApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {string} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        apiV1ExamExamIdIdGet(id: string, options?: any): AxiosPromise<ExamResult> {
-            return localVarFp.apiV1ExamExamIdIdGet(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -5980,6 +6385,15 @@ export const ExamApiFactory = function (configuration?: Configuration, basePath?
          */
         apiV1ExamGetScorePost(page?: number, size?: number, getScoreDto?: GetScoreDto, options?: any): AxiosPromise<BooleanPagingResult> {
             return localVarFp.apiV1ExamGetScorePost(page, size, getScoreDto, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1ExamIdGet(id: string, options?: any): AxiosPromise<ExamResult> {
+            return localVarFp.apiV1ExamIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6026,17 +6440,6 @@ export class ExamApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} id 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ExamApi
-     */
-    public apiV1ExamExamIdIdGet(id: string, options?: RawAxiosRequestConfig) {
-        return ExamApiFp(this.configuration).apiV1ExamExamIdIdGet(id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {GetScoreDto} [getScoreDto] 
@@ -6046,6 +6449,17 @@ export class ExamApi extends BaseAPI {
      */
     public apiV1ExamGetScorePost(page?: number, size?: number, getScoreDto?: GetScoreDto, options?: RawAxiosRequestConfig) {
         return ExamApiFp(this.configuration).apiV1ExamGetScorePost(page, size, getScoreDto, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExamApi
+     */
+    public apiV1ExamIdGet(id: string, options?: RawAxiosRequestConfig) {
+        return ExamApiFp(this.configuration).apiV1ExamIdGet(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7168,10 +7582,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @param {string} [centerId] 
          * @param {string} [courseId] 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1NguoiHocGet: async (centerId?: string, courseId?: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1NguoiHocGet: async (centerId?: string, courseId?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/nguoi-hoc`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7192,6 +7608,14 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
                 localVarQueryParameter['courseId'] = courseId;
             }
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7206,10 +7630,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1NguoiHocIdKhoaHocGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1NguoiHocIdKhoaHocGet: async (id: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV1NguoiHocIdKhoaHocGet', 'id', id)
             const localVarPath = `/api/v1/nguoi-hoc/{id}/khoa-hoc`
@@ -7225,6 +7651,14 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -7239,10 +7673,12 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1TrungTamIdKhoaHocGet: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1TrungTamIdKhoaHocGet: async (id: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV1TrungTamIdKhoaHocGet', 'id', id)
             const localVarPath = `/api/v1/trung-tam/{id}/khoa-hoc`
@@ -7257,6 +7693,14 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
 
 
     
@@ -7458,11 +7902,13 @@ export const UserApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} [centerId] 
          * @param {string} [courseId] 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1NguoiHocGet(centerId?: string, courseId?: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseViewModelListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1NguoiHocGet(centerId, courseId, options);
+        async apiV1NguoiHocGet(centerId?: string, courseId?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserCourseDtoPagingResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1NguoiHocGet(centerId, courseId, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.apiV1NguoiHocGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7470,11 +7916,13 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1NguoiHocIdKhoaHocGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseDtoListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1NguoiHocIdKhoaHocGet(id, options);
+        async apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseDtoPagingResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1NguoiHocIdKhoaHocGet(id, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.apiV1NguoiHocIdKhoaHocGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7482,11 +7930,13 @@ export const UserApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1TrungTamIdKhoaHocGet(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseViewModelListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1TrungTamIdKhoaHocGet(id, options);
+        async apiV1TrungTamIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseViewModelPagingResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1TrungTamIdKhoaHocGet(id, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.apiV1TrungTamIdKhoaHocGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7498,7 +7948,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1UsersGet(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserViewModelListResult>> {
+        async apiV1UsersGet(page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserViewModelPagingResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1UsersGet(page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.apiV1UsersGet']?.[localVarOperationServerIndex]?.url;
@@ -7567,29 +8017,35 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * 
          * @param {string} [centerId] 
          * @param {string} [courseId] 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1NguoiHocGet(centerId?: string, courseId?: string, options?: any): AxiosPromise<CourseViewModelListResult> {
-            return localVarFp.apiV1NguoiHocGet(centerId, courseId, options).then((request) => request(axios, basePath));
+        apiV1NguoiHocGet(centerId?: string, courseId?: string, page?: number, size?: number, options?: any): AxiosPromise<UserCourseDtoPagingResult> {
+            return localVarFp.apiV1NguoiHocGet(centerId, courseId, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1NguoiHocIdKhoaHocGet(id: string, options?: any): AxiosPromise<CourseDtoListResult> {
-            return localVarFp.apiV1NguoiHocIdKhoaHocGet(id, options).then((request) => request(axios, basePath));
+        apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: any): AxiosPromise<CourseDtoPagingResult> {
+            return localVarFp.apiV1NguoiHocIdKhoaHocGet(id, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {string} id 
+         * @param {number} [page] 
+         * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1TrungTamIdKhoaHocGet(id: string, options?: any): AxiosPromise<CourseViewModelListResult> {
-            return localVarFp.apiV1TrungTamIdKhoaHocGet(id, options).then((request) => request(axios, basePath));
+        apiV1TrungTamIdKhoaHocGet(id: string, page?: number, size?: number, options?: any): AxiosPromise<CourseViewModelPagingResult> {
+            return localVarFp.apiV1TrungTamIdKhoaHocGet(id, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -7598,7 +8054,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1UsersGet(page?: number, size?: number, options?: any): AxiosPromise<UserViewModelListResult> {
+        apiV1UsersGet(page?: number, size?: number, options?: any): AxiosPromise<UserViewModelPagingResult> {
             return localVarFp.apiV1UsersGet(page, size, options).then((request) => request(axios, basePath));
         },
         /**
@@ -7652,34 +8108,40 @@ export class UserApi extends BaseAPI {
      * 
      * @param {string} [centerId] 
      * @param {string} [courseId] 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public apiV1NguoiHocGet(centerId?: string, courseId?: string, options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).apiV1NguoiHocGet(centerId, courseId, options).then((request) => request(this.axios, this.basePath));
+    public apiV1NguoiHocGet(centerId?: string, courseId?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).apiV1NguoiHocGet(centerId, courseId, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} id 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public apiV1NguoiHocIdKhoaHocGet(id: string, options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).apiV1NguoiHocIdKhoaHocGet(id, options).then((request) => request(this.axios, this.basePath));
+    public apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).apiV1NguoiHocIdKhoaHocGet(id, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
      * @param {string} id 
+     * @param {number} [page] 
+     * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public apiV1TrungTamIdKhoaHocGet(id: string, options?: RawAxiosRequestConfig) {
-        return UserApiFp(this.configuration).apiV1TrungTamIdKhoaHocGet(id, options).then((request) => request(this.axios, this.basePath));
+    public apiV1TrungTamIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return UserApiFp(this.configuration).apiV1TrungTamIdKhoaHocGet(id, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

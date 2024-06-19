@@ -13,7 +13,7 @@ const EditorComponent: React.FC<EditorComponentProps> = ({ id, value = '', onCha
   return (
     <div className='App' id={id}>
       <CKEditor
-        editor={Editor.Editor}
+        editor={Editor}
         data={value}
         onReady={(editor) => {
           // You can store the "editor" and use when it is needed.

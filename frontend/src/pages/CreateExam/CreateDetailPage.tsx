@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ConfigProvider, List, Radio, Space, Typography } from 'antd'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ExamApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
@@ -7,11 +9,11 @@ const examApi = new ExamApi()
 const CreateDetailPage: React.FC = () => {
   const { id } = useParams()
   const fetch = () => {
-    return examApi.apiV1ExamExamIdIdGet(id)
+    return examApi.apiV1ExamIdGet(id)
   }
   const [loading, error, response] = useFetchData(fetch, id)
-  const questions = response?.data?.data?.questions
-  console.log(response)
+  const questions = response?.data?.data?.questions as any
+
   return (
     <div
       style={{
@@ -30,7 +32,7 @@ const CreateDetailPage: React.FC = () => {
           <List
             itemLayout='horizontal'
             dataSource={questions}
-            renderItem={(item, index) => (
+            renderItem={(item: any) => (
               <List.Item>
                 <List.Item.Meta
                   title={<Typography.Text>{item.content}</Typography.Text>}

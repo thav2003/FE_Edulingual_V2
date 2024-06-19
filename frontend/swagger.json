@@ -1803,7 +1803,7 @@
         }
       }
     },
-    "/api/v1/exam/examId/{id}": {
+    "/api/v1/exam/{id}": {
       "get": {
         "tags": [
           "Exam"
@@ -2725,17 +2725,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserViewModelListResult"
+                  "$ref": "#/components/schemas/UserViewModelPagingResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserViewModelListResult"
+                  "$ref": "#/components/schemas/UserViewModelPagingResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserViewModelListResult"
+                  "$ref": "#/components/schemas/UserViewModelPagingResult"
                 }
               }
             }
@@ -2978,6 +2978,24 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
           }
         ],
         "responses": {
@@ -2986,17 +3004,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/CourseViewModelPagingResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/CourseViewModelPagingResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/CourseViewModelPagingResult"
                 }
               }
             }
@@ -3025,6 +3043,24 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
           }
         ],
         "responses": {
@@ -3033,17 +3069,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/UserCourseDtoPagingResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/UserCourseDtoPagingResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseViewModelListResult"
+                  "$ref": "#/components/schemas/UserCourseDtoPagingResult"
                 }
               }
             }
@@ -3065,6 +3101,24 @@
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
           }
         ],
         "responses": {
@@ -3073,17 +3127,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoListResult"
+                  "$ref": "#/components/schemas/CourseDtoPagingResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoListResult"
+                  "$ref": "#/components/schemas/CourseDtoPagingResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoListResult"
+                  "$ref": "#/components/schemas/CourseDtoPagingResult"
                 }
               }
             }
@@ -3791,7 +3845,41 @@
         },
         "additionalProperties": false
       },
-      "CourseDtoListResult": {
+      "CourseDtoIPaginate": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CourseDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CourseDtoPagingResult": {
         "type": "object",
         "properties": {
           "statusCode": {
@@ -3802,11 +3890,19 @@
             "nullable": true
           },
           "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseDto"
-            },
-            "nullable": true
+            "$ref": "#/components/schemas/CourseDtoIPaginate"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4052,6 +4148,40 @@
         },
         "additionalProperties": false
       },
+      "CourseViewModelIPaginate": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CourseViewModel"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "CourseViewModelListResult": {
         "type": "object",
         "properties": {
@@ -4068,6 +4198,34 @@
               "$ref": "#/components/schemas/CourseViewModel"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CourseViewModelPagingResult": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseViewModelIPaginate"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -5189,6 +5347,14 @@
             "type": "string",
             "nullable": true
           },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
           "userStatus": {
             "$ref": "#/components/schemas/UserStatus"
           },
@@ -5330,6 +5496,10 @@
       "UserCourse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "userId": {
             "type": "string",
             "format": "uuid"
@@ -5343,9 +5513,116 @@
           },
           "course": {
             "$ref": "#/components/schemas/Course"
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserCourseStatus"
           }
         },
         "additionalProperties": false
+      },
+      "UserCourseDto": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "course": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserCourseDtoIPaginate": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserCourseDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserCourseDtoPagingResult": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserCourseDtoIPaginate"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserCourseStatus": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "UserDto": {
         "type": "object",
@@ -5386,6 +5663,14 @@
             "nullable": true
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
             "type": "string",
             "nullable": true
           },
@@ -5478,11 +5763,53 @@
             "type": "string",
             "nullable": true
           },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
           "status": {
             "$ref": "#/components/schemas/UserStatus"
           },
           "role": {
             "$ref": "#/components/schemas/RoleDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewModelIPaginate": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserViewModel"
+            },
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -5503,6 +5830,34 @@
               "$ref": "#/components/schemas/UserViewModel"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserViewModelPagingResult": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserViewModelIPaginate"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

@@ -1,6 +1,7 @@
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import { App, Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Typography } from 'antd'
 import type { TableProps, TabsProps, FormProps } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { UserApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
@@ -40,6 +41,7 @@ const AdminTeacherPage: React.FC = () => {
   const { notification } = App.useApp()
   const [open, setOpen] = useState(false)
   const [form] = Form.useForm()
+  const [updateForm] = Form.useForm()
   const [loading, setLoading] = useState(false)
   const options = ['option 1', 'options 2']
 
@@ -47,7 +49,9 @@ const AdminTeacherPage: React.FC = () => {
     return userApi.apiV1UsersGet(1, 10000)
   }
   const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
+  const [updateModal, setUpdateModal] = useState(false)
 
+  const [selected, setSelected] = useState<DataType>()
   const data_users = responseUsers?.data?.data?.items as DataType[]
   const roles = [
     ...new Set(
@@ -58,6 +62,16 @@ const AdminTeacherPage: React.FC = () => {
       })
     )
   ]
+
+  const handleDelete = async (id: string) => {
+    try {
+      await userApi.apiV1UsersIdDelete(id)
+      notification.info({ message: 'Delete thành công' })
+      refetchApp()
+    } catch (e) {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
+  }
   const columns: TableProps<DataType>['columns'] = [
     {
       title: '#ID',
@@ -92,9 +106,20 @@ const AdminTeacherPage: React.FC = () => {
       }
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'isDone',
-      render: () => <Button type='primary'>Chi tiết</Button>
+      title: '',
+      key: 'actions',
+      render: (_, record) => (
+        <Space>
+          <Button
+            onClick={() => {
+              setUpdateModal(true)
+              setSelected(record)
+            }}
+            icon={<EditOutlined />}
+          />
+          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+        </Space>
+      )
     }
   ]
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
@@ -119,6 +144,27 @@ const AdminTeacherPage: React.FC = () => {
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
+  const onFinishUpdate: FormProps<FieldType>['onFinish'] = async (values) => {
+    console.log('Success:', values)
+    try {
+      setLoading(true)
+      await userApi.apiV1UsersIdPut(selected!.id, values)
+      notification.info({ message: 'Cập nhật thành công' })
+      refetchApp()
+    } catch {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const onFinishFailedUpdate: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+
+  useEffect(() => {
+    updateForm.setFieldsValue(selected)
+  }, [selected, updateForm])
   return (
     <div
       style={{
@@ -135,9 +181,9 @@ const AdminTeacherPage: React.FC = () => {
         <div className='h-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
             <Flex align='center' justify='space-between' gap={20} wrap>
-              <Text strong>1,133 Giáo viên</Text>
+              <Text strong>{data_users?.filter((d) => d.role.roleName === 'Teacher').length} Giáo viên</Text>
               <Flex align='center' gap={20}>
-                <Input.Search size='large' />
+                {/* <Input.Search size='large' />
                 <Select
                   size='large'
                   className='!text-left'
@@ -195,7 +241,7 @@ const AdminTeacherPage: React.FC = () => {
                       {data}
                     </Select.Option>
                   ))}
-                </Select>
+                </Select> */}
                 <Button type='primary' size='large' onClick={() => setOpen(true)}>
                   Thêm giáo viên
                 </Button>
@@ -204,7 +250,7 @@ const AdminTeacherPage: React.FC = () => {
 
             <Table<DataType>
               loading={loadingUsers}
-              pagination={{ position: ['bottomLeft'] }}
+              pagination={{ position: ['bottomLeft'], pageSize: 5 }}
               columns={columns}
               dataSource={data_users?.filter((d) => d.role.roleName === 'Teacher')}
             />
@@ -226,9 +272,40 @@ const AdminTeacherPage: React.FC = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item<FieldType> name='userName' label='User Name'>
-              <Input placeholder='Username' />
+            <Form.Item<FieldType> name='userName' label='Email'>
+              <Input placeholder='Email' />
             </Form.Item>
+            <Form.Item<FieldType> name='password' label='Password'>
+              <Input.Password placeholder='Password' />
+            </Form.Item>
+            <Form.Item<FieldType> name='fullName' label='Full Name'>
+              <Input placeholder='Full Name' />
+            </Form.Item>
+            <Form.Item<FieldType> name='description' label='Description'>
+              {/* <EditorComponent /> */}
+              <Input placeholder='Description' />
+            </Form.Item>
+            <Form.Item>
+              <Button loading={loading} type='primary' htmlType='submit'>
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <Modal
+          title='Chi tiết giáo viên'
+          open={updateModal}
+          onOk={() => setUpdateModal(false)}
+          onCancel={() => setUpdateModal(false)}
+          width={1000}
+          style={{ top: 20 }}
+          footer={null}
+        >
+          <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
+            <Form.Item<FieldType> name='userName' label='Email'>
+              <Input placeholder='Email' />
+            </Form.Item>
+
             <Form.Item<FieldType> name='password' label='Password'>
               <Input.Password placeholder='Password' />
             </Form.Item>

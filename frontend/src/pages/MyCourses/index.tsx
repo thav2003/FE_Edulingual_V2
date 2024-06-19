@@ -208,8 +208,8 @@ const MyCoursesPage: React.FC = () => {
     return userApi.apiV1TrungTamIdKhoaHocGet(userId!)
   }
   const [loadingCourses, errorCourses, responseCourses] = useFetchData(fetchCourses)
-  const data_courses = responseCourses?.data?.data as Course[]
-
+  const data_courses = responseCourses?.data?.data.items as Course[]
+  console.log(responseCourses)
   const onFinishCourse: FormProps<FieldCourseType>['onFinish'] = async (values) => {
     console.log('Success:', values)
     try {

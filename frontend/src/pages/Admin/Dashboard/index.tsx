@@ -107,6 +107,10 @@ const DashboardPage: React.FC = () => {
                   value={responseExams?.data?.data?.dataThisMonth}
                   formatter={formatter}
                 />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered>
                 <Statistic
                   title='Bài kiểm tra tháng trước'
                   value={responseExams?.data?.data?.dataLastMonth}
@@ -118,12 +122,16 @@ const DashboardPage: React.FC = () => {
               <Card bordered>
                 <Statistic
                   title='Thu nhập tháng này'
-                  value={responseFinances.data?.data?.dataThisMonth}
+                  value={responseFinances?.data?.data?.dataThisMonth}
                   formatter={formatter}
                 />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered>
                 <Statistic
                   title='Thu nhập tháng trước'
-                  value={responseFinances.data?.data?.dataLastMonth}
+                  value={responseFinances?.data?.data?.dataLastMonth}
                   formatter={formatter}
                 />
               </Card>
@@ -132,12 +140,16 @@ const DashboardPage: React.FC = () => {
               <Card bordered>
                 <Statistic
                   title='Giáo viên tháng này'
-                  value={responseTeachers.data?.data?.dataThisMonth}
+                  value={responseTeachers?.data?.data?.dataThisMonth}
                   formatter={formatter}
                 />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered>
                 <Statistic
                   title='Giáo viên tháng trước'
-                  value={responseTeachers.data?.data?.dataLastMonth}
+                  value={responseTeachers?.data?.data?.dataLastMonth}
                   formatter={formatter}
                 />
               </Card>
@@ -149,6 +161,10 @@ const DashboardPage: React.FC = () => {
                   value={responseUsers?.data?.data?.dataThisMonth}
                   formatter={formatter}
                 />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card bordered>
                 <Statistic
                   title='Người dùng tháng trước'
                   value={responseUsers?.data?.data?.dataLastMonth}
@@ -156,7 +172,7 @@ const DashboardPage: React.FC = () => {
                 />
               </Card>
             </Col>
-            <Col span={12}>
+            {/* <Col span={12}>
               <Card bordered>
                 <Line {...configLine} />;
               </Card>
@@ -165,7 +181,7 @@ const DashboardPage: React.FC = () => {
               <Card bordered>
                 <DualAxes {...configDualAxes} />
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </div>
       </ConfigProvider>

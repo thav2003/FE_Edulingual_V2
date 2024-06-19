@@ -9,13 +9,13 @@
   "types": "./build/ckeditor.d.ts",
   "dependencies": {
     "@ckeditor/ckeditor5-alignment": "41.4.2",
-    "@ckeditor/ckeditor5-autoformat": "41.4.2",
     "@ckeditor/ckeditor5-autosave": "41.4.2",
     "@ckeditor/ckeditor5-basic-styles": "41.4.2",
     "@ckeditor/ckeditor5-block-quote": "41.4.2",
-    "@ckeditor/ckeditor5-cloud-services": "41.4.2",
+    "@ckeditor/ckeditor5-code-block": "41.4.2",
     "@ckeditor/ckeditor5-editor-classic": "41.4.2",
     "@ckeditor/ckeditor5-essentials": "41.4.2",
+    "@ckeditor/ckeditor5-find-and-replace": "41.4.2",
     "@ckeditor/ckeditor5-font": "41.4.2",
     "@ckeditor/ckeditor5-heading": "41.4.2",
     "@ckeditor/ckeditor5-highlight": "41.4.2",
@@ -23,7 +23,6 @@
     "@ckeditor/ckeditor5-html-support": "41.4.2",
     "@ckeditor/ckeditor5-image": "41.4.2",
     "@ckeditor/ckeditor5-indent": "41.4.2",
-    "@ckeditor/ckeditor5-language": "41.4.2",
     "@ckeditor/ckeditor5-link": "41.4.2",
     "@ckeditor/ckeditor5-list": "41.4.2",
     "@ckeditor/ckeditor5-media-embed": "41.4.2",
@@ -34,10 +33,8 @@
     "@ckeditor/ckeditor5-style": "41.4.2",
     "@ckeditor/ckeditor5-table": "41.4.2",
     "@ckeditor/ckeditor5-typing": "41.4.2",
-    "@ckeditor/ckeditor5-ui": "41.4.2",
     "@ckeditor/ckeditor5-undo": "41.4.2",
     "@ckeditor/ckeditor5-upload": "41.4.2",
-    "@ckeditor/ckeditor5-watchdog": "41.4.2",
     "@ckeditor/ckeditor5-word-count": "41.4.2"
   },
   "devDependencies": {
@@ -57,7 +54,7 @@
     "webpack-cli": "^4.10.0"
   },
   "scripts": {
-    "build": "webpack --mode development",
+    "build": "webpack --mode production",
     "postbuild": "tsc --declaration --declarationDir build --stripInternal --emitDeclarationOnly"
   }
 }

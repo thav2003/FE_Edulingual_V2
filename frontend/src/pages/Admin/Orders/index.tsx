@@ -168,7 +168,6 @@ const AdminOrderPage: React.FC = () => {
 
                 setSearchParams(queryParams.toString())
               }}
-              pagination={{ position: ['bottomLeft'] }}
               columns={columns}
               dataSource={data_payments}
             />
