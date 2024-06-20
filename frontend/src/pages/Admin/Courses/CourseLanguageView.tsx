@@ -48,7 +48,7 @@ const CourseLanguageView: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await courseLanguageApi.apiV1NgonNguIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
     } catch (e) {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
@@ -122,7 +122,7 @@ const CourseLanguageView: React.FC = () => {
         onOk={() => setOpenModalCourseLanguage(false)}
         onCancel={() => setOpenModalCourseLanguage(false)}
         footer={null}
-        width={1000}
+        width={500}
         centered
       >
         <Form
@@ -133,7 +133,7 @@ const CourseLanguageView: React.FC = () => {
           initialValues={{ courseLanguageStatus: 1 }}
         >
           <Form.Item<FieldCourseLanguageType>
-            label='Name'
+            label='Tên ngôn ngữ'
             name='name'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >

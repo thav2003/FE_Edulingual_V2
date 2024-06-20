@@ -1,5 +1,5 @@
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { App, Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Typography } from 'antd'
+import { App, Button, ConfigProvider, Flex, Form, Input, Modal, Select, Space, Table, Tag, Typography } from 'antd'
 import type { TableProps, TabsProps, FormProps } from 'antd'
 import { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
@@ -8,13 +8,14 @@ import useFetchData from '~/hooks/useFetch'
 import { useAppStore } from '~/stores'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text, Paragraph } = Typography
+const { Option } = Select
 
 interface DataType {
   userName: string
   password: string
   fullName: string
   description: string
-  status: number
+  status: 0 | 1
   id: string
   createdAt: string
   updatedAt: string
@@ -31,7 +32,7 @@ type FieldType = {
   password: string
   fullName: string
   description: string
-  userStatus: 0 | 1
+  status: 0 | 1
   roleId: string
 }
 
@@ -66,7 +67,7 @@ const AdminTeacherPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await userApi.apiV1UsersIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
     } catch (e) {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
@@ -106,7 +107,26 @@ const AdminTeacherPage: React.FC = () => {
       }
     },
     {
-      title: '',
+      title: 'Trạng thái',
+      key: 'status',
+      render: (_, { status }) => {
+        if (status) {
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
+        } else {
+          return (
+            <Tag color='red' className='px-4 py-1'>
+              NGƯNG HOẠT ĐỘNG
+            </Tag>
+          )
+        }
+      }
+    },
+    {
+      title: 'Hành động',
       key: 'actions',
       render: (_, record) => (
         <Space>
@@ -262,28 +282,28 @@ const AdminTeacherPage: React.FC = () => {
           onOk={() => setOpen(false)}
           onCancel={() => setOpen(false)}
           width={1000}
-          style={{ top: 20 }}
+          centered
           footer={null}
         >
           <Form
             layout={'vertical'}
             form={form}
-            initialValues={{ userStatus: 1 }}
+            initialValues={{ status: 1 }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item<FieldType> name='userName' label='Email'>
-              <Input placeholder='Email' />
+            <Form.Item<FieldType> name='userName' label='Tài khoản'>
+              <Input placeholder='Tài khoản' />
             </Form.Item>
-            <Form.Item<FieldType> name='password' label='Password'>
+            <Form.Item<FieldType> name='password' label='Mật khẩu'>
               <Input.Password placeholder='Password' />
             </Form.Item>
-            <Form.Item<FieldType> name='fullName' label='Full Name'>
-              <Input placeholder='Full Name' />
+            <Form.Item<FieldType> name='fullName' label='Tên trung tâm'>
+              <Input placeholder='Tên trung tâm' />
             </Form.Item>
-            <Form.Item<FieldType> name='description' label='Description'>
+            <Form.Item<FieldType> name='description' label='Mô tả'>
               {/* <EditorComponent /> */}
-              <Input placeholder='Description' />
+              <Input placeholder='Mô tả' />
             </Form.Item>
             <Form.Item>
               <Button loading={loading} type='primary' htmlType='submit'>
@@ -298,23 +318,33 @@ const AdminTeacherPage: React.FC = () => {
           onOk={() => setUpdateModal(false)}
           onCancel={() => setUpdateModal(false)}
           width={1000}
-          style={{ top: 20 }}
+          centered
           footer={null}
         >
           <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
-            <Form.Item<FieldType> name='userName' label='Email'>
-              <Input placeholder='Email' />
+            <Form.Item<FieldType> name='userName' label='Tài khoản'>
+              <Input placeholder='Tài khoản' />
             </Form.Item>
 
-            <Form.Item<FieldType> name='password' label='Password'>
+            <Form.Item<FieldType> name='password' label='Mật khẩu'>
               <Input.Password placeholder='Password' />
             </Form.Item>
-            <Form.Item<FieldType> name='fullName' label='Full Name'>
+            <Form.Item<FieldType> name='fullName' label='Tên trung tâm'>
               <Input placeholder='Full Name' />
             </Form.Item>
-            <Form.Item<FieldType> name='description' label='Description'>
+            <Form.Item<FieldType> name='description' label='Mô tả'>
               {/* <EditorComponent /> */}
               <Input placeholder='Description' />
+            </Form.Item>
+            <Form.Item<FieldType>
+              label='Trạng thái'
+              name='status'
+              rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+              <Select placeholder='Trạng thái' allowClear>
+                <Option value={0}>Ngưng hoạt động</Option>
+                <Option value={1}>Hoạt động</Option>
+              </Select>
             </Form.Item>
             <Form.Item>
               <Button loading={loading} type='primary' htmlType='submit'>

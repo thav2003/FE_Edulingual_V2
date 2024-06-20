@@ -10,6 +10,7 @@ import {
   Select,
   Space,
   Table,
+  Tag,
   Typography,
   notification
 } from 'antd'
@@ -100,7 +101,26 @@ const AdminStudentPage: React.FC = () => {
       }
     },
     {
-      title: '',
+      title: 'Trạng thái',
+      key: 'status',
+      render: (_, { status }) => {
+        if (status) {
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
+        } else {
+          return (
+            <Tag color='red' className='px-4 py-1'>
+              NGƯNG HOẠT ĐỘNG
+            </Tag>
+          )
+        }
+      }
+    },
+    {
+      title: 'Hành động',
       key: 'actions',
       render: (_, record) => (
         <Space>
@@ -230,7 +250,7 @@ const AdminStudentPage: React.FC = () => {
           onOk={() => setUpdateModal(false)}
           onCancel={() => setUpdateModal(false)}
           width={1000}
-          style={{ top: 20 }}
+          centered
           footer={null}
         >
           <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>

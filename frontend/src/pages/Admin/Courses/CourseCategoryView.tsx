@@ -72,7 +72,7 @@ const CourseCategoryView: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await courseCategoryApi.apiV1LoaiKhoaHocIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
     } catch (e) {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
@@ -150,7 +150,7 @@ const CourseCategoryView: React.FC = () => {
         open={openModalCourseCategory}
         onOk={() => setOpenModalCourseCategory(false)}
         onCancel={() => setOpenModalCourseCategory(false)}
-        width={1000}
+        width={500}
         centered
         footer={null}
       >
@@ -163,14 +163,14 @@ const CourseCategoryView: React.FC = () => {
           initialValues={{ courseCategoryStatus: 1 }}
         >
           <Form.Item<FieldCourseCategoryType>
-            label='Name'
+            label='Tên loại khóa học'
             name='name'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldCourseCategoryType>
-            label='Language'
+            label='Ngôn ngữ'
             name='languageId'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >

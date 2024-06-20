@@ -94,7 +94,7 @@ const CheckoutPage: React.FC = () => {
   const navigate = useNavigate()
   const data_course = course.data as Course
   const user = useAuthStore((state) => state.user)
-  const [paymentMethod, setPaymentMethod] = useState('card')
+  const [paymentMethod, setPaymentMethod] = useState('PAYOS')
   const [loading, setLoading] = useState(false)
   const [fullName, setFullName] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
