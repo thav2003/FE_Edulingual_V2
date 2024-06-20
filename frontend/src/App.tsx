@@ -27,6 +27,7 @@ import AdminLayout from './layouts/AdminLayout'
 import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi, UserApi } from './api'
 import PaymetnSuccessPage from './pages/PaymentSucess'
 import ViewExamPage from './pages/ViewExam'
+import ExamDetailPage from './pages/ViewExam/ExamDetail'
 const courseApi = new CourseApi()
 const courseAreaApi = new CourseAreaApi()
 const courseCategoryApi = new CourseCategoryApi()
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
               {
                 path: 'viewexam',
                 element: <ViewExamPage />
+              },
+              {
+                path: 'viewexam/:id',
+                element: <ExamDetailPage />
               },
               {
                 path: 'createexam/:id',

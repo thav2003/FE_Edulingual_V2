@@ -283,72 +283,96 @@ const MyCoursesPage: React.FC = () => {
       dataIndex: 'tuitionfee',
       key: 'tuitionfee'
     },
-    {
-      title: 'Khu vực',
-      dataIndex: ['courseArea', 'name'],
-      key: 'courseArea'
-    },
-    {
-      title: 'Ngôn ngữ',
-      dataIndex: ['courseLanguage', 'name'],
-      key: 'courseLanguage'
-    },
-    {
-      title: 'Danh mục',
-      dataIndex: ['courseCategory', 'name'],
-      key: 'courseCategory'
-    },
-    {
-      title: 'Trung tâm',
-      dataIndex: ['center', 'fullName'],
-      key: 'center'
-    },
-    {
-      title: 'Trạng thái',
-      key: 'status',
-      render: (_, { status }) => {
-        if (status) {
-          return (
-            <Tag color='green' className='px-4 py-1'>
-              HOẠT ĐỘNG
-            </Tag>
-          )
-        } else {
-          return (
-            <Tag color='orange' className='px-4 py-1'>
-              CHỜ DUYỆT
-            </Tag>
-          )
+    userRole === Role.USER
+      ? {
+          title: 'Mô tả',
+          dataIndex: 'description',
+          key: 'description',
+          render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />
         }
-      }
-    },
-    {
-      title: '',
-      key: 'actions',
-      render: (_, record) =>
-        userRole === Role.TEACHER ? (
-          <Space>
-            <Button
-              onClick={() => {
-                setOpenModalCourseDetail(true)
-                setSelectedCourse(record)
-              }}
-              icon={<EditOutlined />}
-            />
-            <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
-          </Space>
-        ) : (
-          <Space>
-            <Button
-              onClick={() => {
-                setOpenModalCourseDetail(true)
-                setSelectedCourse(record)
-              }}
-              icon={<EyeOutlined />}
-            />
-          </Space>
-        )
-    }
+      : {},
+    userRole === Role.USER
+      ? {}
+      : {
+          title: 'Khu vực',
+          dataIndex: ['courseArea', 'name'],
+          key: 'courseArea'
+        },
+    userRole === Role.USER
+      ? {}
+      : {
+          title: 'Ngôn ngữ',
+          dataIndex: ['courseLanguage', 'name'],
+          key: 'courseLanguage'
+        },
+    userRole === Role.USER
+      ? {}
+      : {
+          title: 'Danh mục',
+          dataIndex: ['courseCategory', 'name'],
+          key: 'courseCategory'
+        },
+    userRole === Role.USER
+      ? {
+          title: 'Trung tâm',
+          dataIndex: 'centerName',
+          key: 'centerName'
+        }
+      : {
+          title: 'Trung tâm',
+          dataIndex: ['center', 'fullName'],
+          key: 'center'
+        },
+    userRole === Role.USER
+      ? {}
+      : {
+          title: 'Trạng thái',
+          key: 'status',
+          render: (_, { status }) => {
+            if (status) {
+              return (
+                <Tag color='green' className='px-4 py-1'>
+                  HOẠT ĐỘNG
+                </Tag>
+              )
+            } else {
+              return (
+                <Tag color='orange' className='px-4 py-1'>
+                  CHỜ DUYỆT
+                </Tag>
+              )
+            }
+          }
+        },
+    userRole === Role.USER
+      ? {}
+      : {
+          title: '',
+          key: 'actions',
+          render: (_, record) =>
+            userRole === Role.TEACHER ? (
+              <Space>
+                <Button
+                  onClick={() => {
+                    setOpenModalCourseDetail(true)
+                    setSelectedCourse(record)
+                  }}
+                  icon={<EditOutlined />}
+                />
+                <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+              </Space>
+            ) : (
+              <Space>
+                <Button
+                  onClick={() => {
+                    setOpenModalCourseDetail(true)
+                    setSelectedCourse(record)
+                  }}
+                  icon={<EyeOutlined />}
+                />
+              </Space>
+            )
+        }
   ]
 
   useEffect(() => {
@@ -729,9 +753,11 @@ const MyCoursesPage: React.FC = () => {
                     Hoạt động
                   </Select.Option>
                 </Select> */}
-                <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
-                  Thêm khóa học
-                </Button>
+                {userRole === Role.TEACHER && (
+                  <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
+                    Thêm khóa học
+                  </Button>
+                )}
               </Flex>
             </Flex>
             <Table<Course>

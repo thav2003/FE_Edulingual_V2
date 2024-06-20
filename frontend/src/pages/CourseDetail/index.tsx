@@ -116,7 +116,7 @@ const CourseDetailPage: React.FC = () => {
                 </li>
                 <li className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'>
                   <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
-                  {data_course?.courseCategory.name}
+                  {data_course?.courseArea.name}
                 </li>
               </ul>
               <div className='flex items-center space-x-[15px] rtl:space-x-reverse'>

@@ -92,7 +92,7 @@ const CreateExamPage: React.FC = () => {
       fmData.append('file', file)
       try {
         const res = await axios.post(
-          `http://34.16.153.203/api/v1/exam/upload?teacherId=${userId}&courseId=${selectedCourseId}`,
+          `http://35.198.226.22:10000/api/v1/exam/upload?teacherId=${userId}&courseId=${selectedCourseId}`,
           fmData,
           {
             headers: { 'content-type': 'multipart/form-data' },
