@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Space, Modal, Input, Select, Button, Flex, Table, Form, App } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
+import { Space, Modal, Input, Select, Button, Flex, Table, Form, App, Typography, Tag } from 'antd'
 import type { FormProps, TableProps } from 'antd'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { CourseCategoryApi, CourseLanguageApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import { useAppStore } from '~/stores'
+const { Text } = Typography
 
 const { Option } = Select
 
@@ -78,10 +80,10 @@ const CourseCategoryView: React.FC = () => {
   }
   const columns_courseCategory: TableProps<CourseCategory>['columns'] = [
     {
-      title: 'Ngôn ngữ',
-      dataIndex: 'language',
-      key: 'language',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
     },
     {
       title: 'Tên',
@@ -89,30 +91,38 @@ const CourseCategoryView: React.FC = () => {
       key: 'name'
     },
     {
+      title: 'Ngôn ngữ',
+      dataIndex: 'language',
+      key: 'language',
+      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
+    },
+    {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status: number) => (status === 1 ? 'Hoạt động' : 'Không hoạt động') // Giả định: 1 là hoạt động, 0 là không hoạt động
-    },
-    {
-      title: 'Người tạo',
-      dataIndex: 'createdBy',
-      key: 'createdBy',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
-    },
-    {
-      title: 'Người cập nhật',
-      dataIndex: 'updatedBy',
-      key: 'updatedBy',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
+      render: (status: number) => {
+        if (status) {
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
+        } else {
+          return (
+            <Tag color='red' className='px-4 py-1'>
+              NGƯNG HOẠT ĐỘNG
+            </Tag>
+          )
+        }
+      } // Giả định: 1 là hoạt động, 0 là không hoạt động
     },
     {
       title: 'Hành động',
       key: 'actions',
       render: (_, { id }) => (
-        <Button danger type='primary' onClick={() => handleDelete(id)}>
-          Xóa
-        </Button>
+        <Space>
+          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
+        </Space>
       ) // Nút hành động
     }
   ]

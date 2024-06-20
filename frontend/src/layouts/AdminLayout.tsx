@@ -170,7 +170,7 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
         </Header>
         <Layout>
           <Sider
-            width={350}
+            width={250}
             breakpoint='lg'
             collapsedWidth={0}
             onBreakpoint={(broken) => {
