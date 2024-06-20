@@ -292,16 +292,32 @@ const AdminTeacherPage: React.FC = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
           >
-            <Form.Item<FieldType> name='userName' label='Tài khoản'>
+            <Form.Item<FieldType>
+              name='userName'
+              label='Tài khoản'
+              rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
+            >
               <Input placeholder='Tài khoản' />
             </Form.Item>
-            <Form.Item<FieldType> name='password' label='Mật khẩu'>
+            <Form.Item<FieldType>
+              name='password'
+              label='Mật khẩu'
+              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+            >
               <Input.Password placeholder='Password' />
             </Form.Item>
-            <Form.Item<FieldType> name='fullName' label='Tên trung tâm'>
+            <Form.Item<FieldType>
+              name='fullName'
+              label='Tên trung tâm'
+              rules={[{ required: true, message: 'Vui lòng nhập tên trung tâm!' }]}
+            >
               <Input placeholder='Tên trung tâm' />
             </Form.Item>
-            <Form.Item<FieldType> name='description' label='Mô tả'>
+            <Form.Item<FieldType>
+              name='description'
+              label='Mô tả'
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả' }]}
+            >
               {/* <EditorComponent /> */}
               <Input placeholder='Mô tả' />
             </Form.Item>
@@ -322,25 +338,37 @@ const AdminTeacherPage: React.FC = () => {
           footer={null}
         >
           <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
-            <Form.Item<FieldType> name='userName' label='Tài khoản'>
+            <Form.Item<FieldType>
+              name='userName'
+              label='Tài khoản'
+              rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
+            >
               <Input placeholder='Tài khoản' />
             </Form.Item>
 
-            <Form.Item<FieldType> name='password' label='Mật khẩu'>
+            <Form.Item<FieldType>
+              name='password'
+              label='Mật khẩu'
+              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+            >
               <Input.Password placeholder='Password' />
             </Form.Item>
-            <Form.Item<FieldType> name='fullName' label='Tên trung tâm'>
+            <Form.Item<FieldType>
+              name='fullName'
+              label='Tên trung tâm'
+              rules={[{ required: true, message: 'Vui lòng nhập tên trung tâm!' }]}
+            >
               <Input placeholder='Full Name' />
             </Form.Item>
-            <Form.Item<FieldType> name='description' label='Mô tả'>
+            <Form.Item<FieldType>
+              name='description'
+              label='Mô tả'
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
+            >
               {/* <EditorComponent /> */}
               <Input placeholder='Description' />
             </Form.Item>
-            <Form.Item<FieldType>
-              label='Trạng thái'
-              name='status'
-              rules={[{ required: true, message: 'Please input your username!' }]}
-            >
+            <Form.Item<FieldType> label='Trạng thái' name='status'>
               <Select placeholder='Trạng thái' allowClear>
                 <Option value={0}>Ngưng hoạt động</Option>
                 <Option value={1}>Hoạt động</Option>

@@ -22,7 +22,16 @@ interface CourseLanguage {
   isDeleted: boolean
 }
 interface CourseCategory {
-  language: string | null
+  courseLanguage: {
+    name: string
+    status: number
+    id: string
+    createdAt: string
+    updatedAt: string
+    createdBy: string | null
+    updatedBy: string | null
+    isDeleted: boolean
+  }
   name: string
   status: number
   id: string
@@ -51,6 +60,7 @@ const CourseCategoryView: React.FC = () => {
   const fetchCourseLanguage = () => {
     return courseLanguageApi.apiV1NgonNguGet(1, 10000)
   }
+
   const [loadingCourseLanguage, errorCourseLanguage, responseCourseLanguage] = useFetchData(fetchCourseLanguage)
 
   const data_courseLanguage = responseCourseLanguage?.data?.data?.items as CourseLanguage[]
@@ -69,6 +79,7 @@ const CourseCategoryView: React.FC = () => {
 
   const data_courseCategory = responseCourseCategory?.data?.data?.items as CourseCategory[]
   const data_total_courseCategory = responseCourseCategory?.data?.data.total as number
+  console.log(data_courseCategory)
   const handleDelete = async (id: string) => {
     try {
       await courseCategoryApi.apiV1LoaiKhoaHocIdDelete(id)
@@ -92,9 +103,8 @@ const CourseCategoryView: React.FC = () => {
     },
     {
       title: 'Ngôn ngữ',
-      dataIndex: 'language',
-      key: 'language',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
+      dataIndex: ['courseLanguage', 'name'],
+      key: 'courseLanguage'
     },
     {
       title: 'Trạng thái',
@@ -165,14 +175,14 @@ const CourseCategoryView: React.FC = () => {
           <Form.Item<FieldCourseCategoryType>
             label='Tên loại khóa học'
             name='name'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên loại khóa học!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldCourseCategoryType>
             label='Ngôn ngữ'
             name='languageId'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
           >
             <Select placeholder='Language' allowClear>
               {data_courseLanguage?.map((cl) => (

@@ -263,8 +263,8 @@ const CheckoutPage: React.FC = () => {
               </Radio.Group>
               <Card className='!bg-[#F7F7F7] mt-7'>
                 <Flex vertical gap={20}>
-                  <Input placeholder='Họ tên' onChange={(e) => setFullName(e.target.value)} />
-                  <Input placeholder='Số điện thoại' onChange={(e) => setPhoneNumber(e.target.value)} />
+                  <Input placeholder='Họ tên' onChange={(e) => setFullName(e.target.value)} required />
+                  <Input placeholder='Số điện thoại' onChange={(e) => setPhoneNumber(e.target.value)} required />
                   {/* <CreditCardInput />
                   <Flex gap={20}>
                     <PatternFormat customInput={Input} size='large' placeholder='MM' format='##' />
