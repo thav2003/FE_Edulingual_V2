@@ -262,7 +262,7 @@ const CoursesView: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await courseApi.apiV1KhoaHocIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
     } catch (e) {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
@@ -275,7 +275,7 @@ const CoursesView: React.FC = () => {
       key: 'title'
     },
     {
-      title: 'Thời gian học',
+      title: 'Thời lượng',
       dataIndex: 'duration',
       key: 'duration'
     },
@@ -327,7 +327,7 @@ const CoursesView: React.FC = () => {
       }
     },
     {
-      title: '',
+      title: 'Hành động',
       key: 'actions',
       render: (_, record) => (
         <Space>
@@ -506,14 +506,14 @@ const CoursesView: React.FC = () => {
           initialValues={{ courseStatus: 1 }}
         >
           <Form.Item<FieldCourseType>
-            label='Title'
+            label='Tên khóa học'
             name='title'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldCourseType>
-            label='Description'
+            label='Mô tả'
             name='description'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
@@ -522,11 +522,11 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Center'
+                label='Trung tâm'
                 name='centerId'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
-                <Select placeholder='Area' allowClear>
+                <Select placeholder='Trung tâm' allowClear>
                   {data_users
                     ?.filter((d) => d.role.roleName === 'Teacher')
                     ?.map((cl) => (
@@ -539,7 +539,7 @@ const CoursesView: React.FC = () => {
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Duration'
+                label='Thời lượng'
                 name='duration'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
@@ -551,7 +551,7 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Tuitionfee'
+                label='Học phí'
                 name='tuitionfee'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
@@ -560,11 +560,11 @@ const CoursesView: React.FC = () => {
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Area'
+                label='Địa điểm'
                 name='courseAreaId'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
-                <Select placeholder='Area' allowClear>
+                <Select placeholder='Địa điểm' allowClear>
                   {data_courseArea?.map((cl) => (
                     <Option key={cl.id} value={cl.id}>
                       {cl.name}
@@ -577,11 +577,11 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Category'
+                label='Loại khóa học'
                 name='courseCategoryId'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
-                <Select placeholder='Category' allowClear>
+                <Select placeholder='Loại khóa học' allowClear>
                   {data_courseCategory?.map((cl) => (
                     <Option key={cl.id} value={cl.id}>
                       {cl.name}
@@ -592,7 +592,7 @@ const CoursesView: React.FC = () => {
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Language'
+                label='Ngôn ngữ'
                 name='courseLanguageId'
                 rules={[{ required: true, message: 'Please input your username!' }]}
               >
@@ -607,11 +607,11 @@ const CoursesView: React.FC = () => {
             </Col>
           </Row>
           <Form.Item<FieldCourseType>
-            label='Status'
+            label='Trạng thái'
             name='status'
             rules={[{ required: true, message: 'Please input your username!' }]}
           >
-            <Select placeholder='Language' allowClear>
+            <Select placeholder='Trạng thái' allowClear>
               <Option value={0}>Chờ duyệt</Option>
               <Option value={1}>Hoạt động</Option>
             </Select>
