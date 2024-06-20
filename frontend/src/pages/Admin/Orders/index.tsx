@@ -37,12 +37,10 @@ const AdminOrderPage: React.FC = () => {
   const data_total_data_payments = responsePayments?.data?.data.total as number
   const columns: TableProps<DataType>['columns'] = [
     {
-      title: 'Ngày',
-      // dataIndex: 'key',
-      key: 'createdAt',
-      render: (_, { createdAt }) => {
-        return formatDateToDDMMYYWithTime(new Date(createdAt))
-      }
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
     },
     {
       title: 'Học sinh',
@@ -53,16 +51,43 @@ const AdminOrderPage: React.FC = () => {
       }
     },
     {
-      title: 'Giáo viên',
-      // dataIndex: 'email',
-      key: 'teacher'
+      title: 'SĐT',
+      // dataIndex: 'name',
+      key: 'student',
+      render: (_, { phoneNumber }) => {
+        return phoneNumber
+      }
     },
     {
-      title: 'Môn',
+      title: 'Học phí',
+      // dataIndex: 'email',
+      key: 'teacher',
+      render: (_, { fee }) => {
+        return fee.toLocaleString()
+      }
+    },
+    {
+      title: 'Khóa học',
       // dataIndex: 'note',
       key: 'course',
       render: (_, { course }) => {
         return course.title
+      }
+    },
+    {
+      title: 'Ngày tạo',
+      // dataIndex: 'key',
+      key: 'createdAt',
+      render: (_, { createdAt }) => {
+        return formatDateToDDMMYYWithTime(new Date(createdAt))
+      }
+    },
+    {
+      title: 'Thanh toán',
+      // dataIndex: 'note',
+      key: 'course',
+      render: (_, { paymentMethod }) => {
+        return paymentMethod
       }
     },
     {

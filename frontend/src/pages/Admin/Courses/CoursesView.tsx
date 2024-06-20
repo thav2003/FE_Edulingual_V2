@@ -282,7 +282,10 @@ const CoursesView: React.FC = () => {
     {
       title: 'Học phí',
       dataIndex: 'tuitionfee',
-      key: 'tuitionfee'
+      key: 'tuitionfee',
+      render: (_, { tuitionfee }) => {
+        return tuitionfee.toLocaleString()
+      }
     },
     {
       title: 'Khu vực',
@@ -625,6 +628,7 @@ const CoursesView: React.FC = () => {
         <Flex align='center' gap={20}>
           <Input.Search
             size='large'
+            placeholder='Tìm khóa học'
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value)

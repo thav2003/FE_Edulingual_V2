@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Space, Modal, Input, Button, Flex, Table, Form, App } from 'antd'
+import { Space, Modal, Input, Button, Flex, Table, Form, App, Typography, Tag } from 'antd'
 import { useState } from 'react'
 import { CourseAreaApi } from '~/api'
 import type { FormProps, TableProps } from 'antd'
 import useFetchData from '~/hooks/useFetch'
 import { useSearchParams } from 'react-router-dom'
 import { useAppStore } from '~/stores'
+import { DeleteOutlined } from '@ant-design/icons'
+const { Text } = Typography
 
 interface CourseArea {
   name: string
@@ -74,6 +76,12 @@ const CourseAreaView: React.FC = () => {
 
   const columns_courseArea: TableProps<CourseArea>['columns'] = [
     {
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
+    },
+    {
       title: 'Tên',
       dataIndex: 'name',
       key: 'name'
@@ -82,27 +90,29 @@ const CourseAreaView: React.FC = () => {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (status: number) => (status === 1 ? 'Hoạt động' : 'Không hoạt động') // Giả định: 1 là hoạt động, 0 là không hoạt động
-    },
-    {
-      title: 'Người tạo',
-      dataIndex: 'createdBy',
-      key: 'createdBy',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
-    },
-    {
-      title: 'Người cập nhật',
-      dataIndex: 'updatedBy',
-      key: 'updatedBy',
-      render: (text: string | null) => (text ? text : 'N/A') // Hiển thị 'N/A' nếu null
+      render: (status: number) => {
+        if (status) {
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
+        } else {
+          return (
+            <Tag color='red' className='px-4 py-1'>
+              NGƯNG HOẠT ĐỘNG
+            </Tag>
+          )
+        }
+      } // Giả định: 1 là hoạt động, 0 là không hoạt động
     },
     {
       title: 'Hành động',
       key: 'actions',
       render: (_, { id }) => (
-        <Button danger type='primary' onClick={() => handleDelete(id)}>
-          Xóa
-        </Button>
+        <Space>
+          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
+        </Space>
       ) // Nút hành động
     }
   ]
