@@ -1,18 +1,33 @@
 import React from 'react'
-import { Typography, Button, Form, Input, Space } from 'antd'
-import { Link } from 'react-router-dom'
+import { Typography, Button, Form, Input, Space, App } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
 import type { FormProps } from 'antd'
+import { AuthenticationApi } from '~/api'
+import { useAuthStore } from '~/stores'
 const { Title, Text } = Typography
 
 type FieldType = {
-  email?: string
+  userName?: string
   password?: string
+  email?: string
+  fullName?: string
   confirmPassword?: string
 }
 
+const authenticationApi = new AuthenticationApi()
 const RegisterForm: React.FC = () => {
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  const { notification } = App.useApp()
+  const navigate = useNavigate()
+  const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
+    values.email = values.userName
+    try {
+      await authenticationApi.apiV1RegisterPut(values)
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
   }
 
   const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
@@ -36,10 +51,17 @@ const RegisterForm: React.FC = () => {
         >
           <Form.Item<FieldType>
             label={<Text strong>Nhập Email</Text>}
-            name='email'
+            name='userName'
             rules={[{ required: true, message: 'Please input your email!' }]}
           >
             <Input size='large' placeholder='Email address' />
+          </Form.Item>
+          <Form.Item<FieldType>
+            label={<Text strong>Nhập tên của bạn</Text>}
+            name='fullName'
+            rules={[{ required: true, message: 'Please input your full name!' }]}
+          >
+            <Input size='large' placeholder='Full Name' />
           </Form.Item>
 
           <Form.Item<FieldType>

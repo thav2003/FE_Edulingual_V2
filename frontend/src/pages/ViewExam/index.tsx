@@ -70,7 +70,7 @@ interface Course {
 }
 const userApi = new UserApi()
 const examApi = new ExamApi()
-const CreateExamPage: React.FC = () => {
+const ViewExamPage: React.FC = () => {
   const { notification } = App.useApp()
   const navigate = useNavigate()
   const userId = useAuthStore((state) => state.user?.id)
@@ -129,7 +129,7 @@ const CreateExamPage: React.FC = () => {
   }
 
   const fetchCourses = () => {
-    return userApi.apiV1TrungTamIdKhoaHocGet(userId!)
+    return userApi.apiV1NguoiHocIdKhoaHocGet(userId!)
   }
   const [loadingCourses, errorCourses, responseCourses] = useFetchData(fetchCourses)
   const data_courses = responseCourses?.data?.data.items as Course[]
@@ -182,6 +182,7 @@ const CreateExamPage: React.FC = () => {
       )
     }
   ]
+
   console.log(selectedCourseId)
   return (
     <div
@@ -199,7 +200,7 @@ const CreateExamPage: React.FC = () => {
         <div className='h-full w-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
             <div>
-              <Typography.Title level={3}>Chuyển đổi tài liệu sang bộ đề trực tuyến</Typography.Title>
+              <Typography.Title level={3}>Chọn khóa học</Typography.Title>
               <Select
                 value={selectedCourseId}
                 onChange={setSelectedCourseId}
@@ -214,15 +215,6 @@ const CreateExamPage: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
-              <Dragger {...props}>
-                <Button type='primary' size='large'>
-                  Chọn tài liệu
-                </Button>
-                <p className='ant-upload-text'>Hoặc kéo và thả tập tin vào đây</p>
-                <p className='ant-upload-hint'>Các định dạng được hỗ trợ: PDF, JPG, PNG,...</p>
-
-                {progress > 0 ? <Progress percent={progress} /> : null}
-              </Dragger>
             </div>
             <div>
               {selectedCourseId && (
@@ -243,4 +235,4 @@ const CreateExamPage: React.FC = () => {
   )
 }
 
-export default CreateExamPage
+export default ViewExamPage

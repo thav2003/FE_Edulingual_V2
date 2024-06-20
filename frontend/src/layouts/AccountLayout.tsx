@@ -19,12 +19,8 @@ const AccountLayout: React.FC = () => {
     ...(user?.role === Role.USER
       ? [
           {
-            key: '1',
-            label: 'My Journey'
-          },
-          {
-            key: '2',
-            label: 'Kiểm tra & Kết quả'
+            key: 'viewexam',
+            label: <Link to='viewexam'>Kiểm tra & Kết quả</Link>
           },
           {
             key: 'mycourses',

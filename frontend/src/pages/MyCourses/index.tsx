@@ -13,15 +13,19 @@ import {
   Form,
   App,
   Typography,
-  ConfigProvider
+  ConfigProvider,
+  Tag
 } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import type { FormProps, TableProps } from 'antd'
 import { useSearchParams } from 'react-router-dom'
 import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi, UserApi } from '~/api'
 import { useAppStore, useAuthStore } from '~/stores'
 import useFetchData from '~/hooks/useFetch'
 import debounce from '~/utils'
+import EditorComponent from '~/components/EditorComponent'
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons'
+import { Role } from '~/interfaces'
 const { Text } = Typography
 const { Option } = Select
 
@@ -140,6 +144,7 @@ type FieldCourseType = {
   courseLanguageId: string
   courseCategoryId: string
   courseStatus: 0 | 1
+  status: 0 | 1
 }
 
 const courseLanguageApi = new CourseLanguageApi()
@@ -156,9 +161,12 @@ const MyCoursesPage: React.FC = () => {
   const [openModalCourse, setOpenModalCourse] = useState(false)
   const { notification } = App.useApp()
   const [createCourseForm] = Form.useForm()
+  const [updateCourseForm] = Form.useForm()
   const [searchQuery, setSearchQuery] = useState(searchParams.get('title') ? searchParams.get('title')! : '')
 
-  const options = ['option 1', 'options 2']
+  const [selectedCourse, setSelectedCourse] = useState<Course>()
+  const [openModalCourseDetail, setOpenModalCourseDetail] = useState(false)
+  const [updateCourseLoading, setUpdateCourseLoading] = useState(false)
 
   const fetchUsers = () => {
     return userApi.apiV1UsersGet(1, 10000)
@@ -218,14 +226,36 @@ const MyCoursesPage: React.FC = () => {
       await courseApi.apiV1KhoaHocPost(values)
       refetchApp()
       createCourseForm.resetFields()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+      notification.success({ message: 'Tạo thành công' })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      if (err.response.data.errors) {
+        notification.error({ message: err.response.data.errors.Tuitionfee[0] })
+      } else {
+        notification.error({ message: 'Sorry! Something went wrong. App server error' })
+      }
     } finally {
       setCreateCourseLoading(false)
     }
   }
 
   const onFinishFailedCourse: FormProps<FieldCourseType>['onFinishFailed'] = (errorInfo) => {
+    console.log('Failed:', errorInfo)
+  }
+  const onFinishCourseDetail: FormProps<FieldCourseType>['onFinish'] = async (values) => {
+    console.log('Success:', values)
+    try {
+      setUpdateCourseLoading(true)
+      await courseApi.apiV1KhoaHocIdPut(selectedCourse!.id, values)
+      refetchApp()
+    } catch {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } finally {
+      setUpdateCourseLoading(false)
+    }
+  }
+
+  const onFinishFailedCourseDetail: FormProps<FieldCourseType>['onFinishFailed'] = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
   const handleDelete = async (id: string) => {
@@ -278,25 +308,62 @@ const MyCoursesPage: React.FC = () => {
       key: 'status',
       render: (_, { status }) => {
         if (status) {
-          return 'Hoạt động'
+          return (
+            <Tag color='green' className='px-4 py-1'>
+              HOẠT ĐỘNG
+            </Tag>
+          )
         } else {
-          return 'Chờ duyệt'
+          return (
+            <Tag color='orange' className='px-4 py-1'>
+              CHỜ DUYỆT
+            </Tag>
+          )
         }
       }
+    },
+    {
+      title: '',
+      key: 'actions',
+      render: (_, record) =>
+        userRole === Role.TEACHER ? (
+          <Space>
+            <Button
+              onClick={() => {
+                setOpenModalCourseDetail(true)
+                setSelectedCourse(record)
+              }}
+              icon={<EditOutlined />}
+            />
+            <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+          </Space>
+        ) : (
+          <Space>
+            <Button
+              onClick={() => {
+                setOpenModalCourseDetail(true)
+                setSelectedCourse(record)
+              }}
+              icon={<EyeOutlined />}
+            />
+          </Space>
+        )
     }
-    // {
-    //   title: '',
-    //   key: 'actions',
-    //   render: (_, { id }) => (
-    //     <Space>
-    //       <Button type='primary'>Chi tiết</Button>
-    //       <Button danger type='primary' onClick={() => handleDelete(id)}>
-    //         Xóa
-    //       </Button>
-    //     </Space>
-    //   )
-    // }
   ]
+
+  useEffect(() => {
+    updateCourseForm.setFieldsValue({
+      title: selectedCourse?.title,
+      description: selectedCourse?.description,
+      duration: selectedCourse?.duration,
+      tuitionfee: selectedCourse?.tuitionfee,
+      centerId: selectedCourse?.center?.id,
+      courseAreaId: selectedCourse?.courseArea?.id,
+      courseLanguageId: selectedCourse?.courseLanguage?.id,
+      courseCategoryId: selectedCourse?.courseCategory?.id,
+      status: selectedCourse?.status
+    })
+  }, [selectedCourse, updateCourseForm])
   return (
     <div
       style={{
@@ -310,6 +377,142 @@ const MyCoursesPage: React.FC = () => {
           }
         }}
       >
+        <Modal
+          title='Chi tiết khóa học'
+          open={openModalCourseDetail}
+          onOk={() => setOpenModalCourseDetail(false)}
+          onCancel={() => setOpenModalCourseDetail(false)}
+          width={1000}
+          style={{ top: 20 }}
+          footer={null}
+        >
+          <Form
+            form={updateCourseForm}
+            layout='vertical'
+            name='CreateCourseForm'
+            onFinish={onFinishCourseDetail}
+            onFinishFailed={onFinishFailedCourseDetail}
+            autoComplete='off'
+            disabled={userRole === Role.USER}
+          >
+            <Form.Item<FieldCourseType>
+              label='Title'
+              name='title'
+              rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item<FieldCourseType>
+              label='Description'
+              name='description'
+              rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+              <EditorComponent disabled={userRole === Role.USER} />
+            </Form.Item>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Center'
+                  name='centerId'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <Select placeholder='Area' allowClear>
+                    {data_users
+                      ?.filter((d) => d.role.roleName === 'Teacher')
+                      ?.map((cl) => (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.fullName}
+                        </Option>
+                      ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Duration'
+                  name='duration'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <Input />
+                </Form.Item>
+              </Col>
+            </Row>
+
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Tuitionfee'
+                  name='tuitionfee'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <InputNumber className='w-full' />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Area'
+                  name='courseAreaId'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <Select placeholder='Area' allowClear>
+                    {data_courseArea?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Category'
+                  name='courseCategoryId'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <Select placeholder='Category' allowClear>
+                    {data_courseCategory?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item<FieldCourseType>
+                  label='Language'
+                  name='courseLanguageId'
+                  rules={[{ required: true, message: 'Please input your username!' }]}
+                >
+                  <Select placeholder='Language' allowClear>
+                    {data_courseLanguage?.map((cl) => (
+                      <Option key={cl.id} value={cl.id}>
+                        {cl.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Form.Item<FieldCourseType>
+              label='Status'
+              name='status'
+              rules={[{ required: true, message: 'Please input your username!' }]}
+            >
+              <Select placeholder='Language' allowClear disabled>
+                <Option value={0}>Chờ duyệt</Option>
+                <Option value={1}>Hoạt động</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item>
+              <Button loading={updateCourseLoading} type='primary' htmlType='submit'>
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
         <div className='h-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
             <Modal
@@ -342,7 +545,7 @@ const MyCoursesPage: React.FC = () => {
                   name='description'
                   rules={[{ required: true, message: 'Please input your username!' }]}
                 >
-                  <Input.TextArea />
+                  <EditorComponent />
                 </Form.Item>
                 <Row gutter={16}>
                   <Col span={24}>
@@ -425,19 +628,31 @@ const MyCoursesPage: React.FC = () => {
             <Flex align='center' justify='space-between' gap={20} wrap>
               <Text strong>{data_courses?.length} Courses</Text>
               <Flex align='center' gap={20}>
-                <Input.Search
+                {/* <Input.Search
                   size='large'
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
                     handleSearchCourses(e.target.value)
                   }}
-                />
-                <Select
+                /> */}
+                {/* <Select
                   size='large'
                   className='!text-left'
                   allowClear
                   optionLabelProp='label'
+                  onChange={(status) => {
+                    const queryParams = new URLSearchParams({
+                      page: searchParams.get('page') || '1',
+                      size: searchParams.get('size') || '5'
+                    })
+                    if (searchParams.get('title')) {
+                      queryParams.set('title', searchParams.get('title')!)
+                    }
+                    if (status !== undefined) queryParams.set('status', status)
+
+                    setSearchParams(queryParams.toString())
+                  }}
                   placeholder={
                     <Space>
                       <svg
@@ -456,41 +671,64 @@ const MyCoursesPage: React.FC = () => {
                         />
                       </svg>
                       Lọc theo
-                      <Text strong>Đánh giá cao</Text>
+                      <Text strong>Trạng thái</Text>
                     </Space>
                   }
                   style={{ width: 250 }}
                 >
-                  {options.map((data) => (
-                    <Select.Option
-                      key={data}
-                      value={data}
-                      label={
-                        <Space className='text-[#00000040]'>
-                          <svg
-                            className='inline'
-                            width='18'
-                            height='13'
-                            viewBox='0 0 18 13'
-                            fill='none'
-                            xmlns='http://www.w3.org/2000/svg'
-                          >
-                            <path
-                              fillRule='evenodd'
-                              clipRule='evenodd'
-                              d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                              fill='#A5A9AD'
-                            />
-                          </svg>
-                          Lọc theo
-                          <Text strong>{data}</Text>
-                        </Space>
-                      }
-                    >
-                      {data}
-                    </Select.Option>
-                  ))}
-                </Select>
+                  <Select.Option
+                    value={0}
+                    label={
+                      <Space className='text-[#00000040]'>
+                        <svg
+                          className='inline'
+                          width='18'
+                          height='13'
+                          viewBox='0 0 18 13'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            clipRule='evenodd'
+                            d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                            fill='#A5A9AD'
+                          />
+                        </svg>
+                        Lọc theo
+                        <Text strong>Chờ duyệt</Text>
+                      </Space>
+                    }
+                  >
+                    Chờ duyệt
+                  </Select.Option>
+                  <Select.Option
+                    value={1}
+                    label={
+                      <Space className='text-[#00000040]'>
+                        <svg
+                          className='inline'
+                          width='18'
+                          height='13'
+                          viewBox='0 0 18 13'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            clipRule='evenodd'
+                            d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                            fill='#A5A9AD'
+                          />
+                        </svg>
+                        Lọc theo
+                        <Text strong>Hoạt động</Text>
+                      </Space>
+                    }
+                  >
+                    Hoạt động
+                  </Select.Option>
+                </Select> */}
                 <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
                   Thêm khóa học
                 </Button>

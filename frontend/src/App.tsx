@@ -25,6 +25,8 @@ import CommonLayout from './layouts/CommonLayout'
 import AccountLayout from './layouts/AccountLayout'
 import AdminLayout from './layouts/AdminLayout'
 import { CourseApi, CourseAreaApi, CourseCategoryApi, CourseLanguageApi, UserApi } from './api'
+import PaymetnSuccessPage from './pages/PaymentSucess'
+import ViewExamPage from './pages/ViewExam'
 const courseApi = new CourseApi()
 const courseAreaApi = new CourseAreaApi()
 const courseCategoryApi = new CourseCategoryApi()
@@ -44,6 +46,10 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <HomePage />
+          },
+          {
+            path: 'payment/success',
+            element: <PaymetnSuccessPage />
           },
           {
             path: 'checkout/:courseId',
@@ -85,6 +91,10 @@ const router = createBrowserRouter([
               {
                 path: 'createexam',
                 element: <CreateExamPage />
+              },
+              {
+                path: 'viewexam',
+                element: <ViewExamPage />
               },
               {
                 path: 'createexam/:id',

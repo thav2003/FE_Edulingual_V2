@@ -6,13 +6,15 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 interface EditorComponentProps {
   id?: string
   value?: string
+  disabled?: boolean
   onChange?: (value: string) => void
 }
 
-const EditorComponent: React.FC<EditorComponentProps> = ({ id, value = '', onChange }) => {
+const EditorComponent: React.FC<EditorComponentProps> = ({ id, value = '', onChange, disabled = false }) => {
   return (
     <div className='App' id={id}>
       <CKEditor
+        disabled={disabled}
         editor={Editor}
         data={value}
         onReady={(editor) => {
