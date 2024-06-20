@@ -32,10 +32,14 @@ const CreateDetailPage: React.FC = () => {
           <List
             itemLayout='horizontal'
             dataSource={questions}
-            renderItem={(item: any) => (
+            renderItem={(item: any, index) => (
               <List.Item>
                 <List.Item.Meta
-                  title={<Typography.Text>{item.content}</Typography.Text>}
+                  title={
+                    <Typography.Text>
+                      Question {index + 1}: {item.content}
+                    </Typography.Text>
+                  }
                   description={
                     <Radio.Group value={item.answers?.find((a) => a.isCorrect).content}>
                       <Space direction='vertical'>

@@ -274,7 +274,7 @@ const MyCoursesPage: React.FC = () => {
       key: 'title'
     },
     {
-      title: 'Thời gian học',
+      title: 'Thời lượng',
       dataIndex: 'duration',
       key: 'duration'
     },

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { InboxOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
 import { message, Upload, ConfigProvider, Typography, Space, Button, Form, Progress, Select, App, Table } from 'antd'
 import type { FormProps } from 'antd'
@@ -144,7 +144,7 @@ const CreateExamPage: React.FC = () => {
 
   const columns = [
     {
-      title: '#',
+      title: 'STT',
       dataIndex: 'id',
       key: 'id',
       render: (item, record, index) => <Typography.Text>{++index}</Typography.Text>
@@ -172,13 +172,14 @@ const CreateExamPage: React.FC = () => {
       render: (item, record, index) => <Typography.Text>{formatDateToDDMMYYWithTime(new Date(item))}</Typography.Text>
     },
     {
-      // title: 'Trạng thái',
+      title: 'Hành động',
       key: 'actions',
       // dataIndex: 'isDone',
       render: (_, { id }) => (
-        <Button type='primary' onClick={() => navigate(`${id}`)}>
-          Chi tiết
-        </Button>
+        <Space>
+          <Button onClick={() => navigate(`${id}`)} icon={<EyeOutlined />}></Button>
+          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+        </Space>
       )
     }
   ]
