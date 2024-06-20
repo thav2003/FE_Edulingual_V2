@@ -135,7 +135,7 @@ const CourseLanguageView: React.FC = () => {
           <Form.Item<FieldCourseLanguageType>
             label='Tên ngôn ngữ'
             name='name'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên ngôn ngữ!' }]}
           >
             <Input />
           </Form.Item>

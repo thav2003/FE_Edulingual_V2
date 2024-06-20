@@ -175,7 +175,7 @@ const CourseAreaView: React.FC = () => {
           <Form.Item<FieldCourseAreaType>
             label='Name'
             name='name'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên địa điểm!' }]}
           >
             <Input />
           </Form.Item>
