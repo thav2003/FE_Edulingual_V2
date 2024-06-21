@@ -358,8 +358,8 @@ const HomePage: React.FC = () => {
                         avatar={<Avatar shape='square' src={item.center.imageUrl} size={128} />}
                         title={
                           <div className='flex flex-col'>
-                            <Text className='text-xl'>{item.title}</Text>
-                            <Text className='font-normal text-base'>{item.center.fullName}</Text>
+                            <Text className='text-xl whitespace-pre-line'>{item.title}</Text>
+                            <Text className='font-normal text-base whitespace-pre-line'>{item.center.fullName}</Text>
                             <Space style={{ display: 'flex', alignItems: 'center' }}>
                               <Space
                                 align='center'
