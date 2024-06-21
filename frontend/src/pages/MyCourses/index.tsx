@@ -269,6 +269,12 @@ const MyCoursesPage: React.FC = () => {
   }
   const columns_courses: TableProps<Course>['columns'] = [
     {
+      title: 'STT',
+      dataIndex: 'id',
+      key: 'id',
+      render: (item, record, index) => <Text>{++index}</Text>
+    },
+    {
       title: 'Tiêu đề',
       dataIndex: 'title',
       key: 'title'
@@ -281,16 +287,11 @@ const MyCoursesPage: React.FC = () => {
     {
       title: 'Học phí',
       dataIndex: 'tuitionfee',
-      key: 'tuitionfee'
+      key: 'tuitionfee',
+      render: (_, { tuitionfee }) => {
+        return tuitionfee.toLocaleString()
+      }
     },
-    userRole === Role.USER
-      ? {
-          title: 'Mô tả',
-          dataIndex: 'description',
-          key: 'description',
-          render: (text) => <div dangerouslySetInnerHTML={{ __html: text }} />
-        }
-      : {},
     userRole === Role.USER
       ? {}
       : {
@@ -420,42 +421,45 @@ const MyCoursesPage: React.FC = () => {
             disabled={userRole === Role.USER}
           >
             <Form.Item<FieldCourseType>
-              label='Title'
+              label='Tên khóa học'
               name='title'
-              rules={[{ required: true, message: 'Please input your username!' }]}
+              rules={[{ required: true, message: 'Vui lòng nhập tên khóa học!' }]}
             >
               <Input />
             </Form.Item>
             <Form.Item<FieldCourseType>
-              label='Description'
+              label='Mô tả'
               name='description'
-              rules={[{ required: true, message: 'Please input your username!' }]}
+              rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
             >
               <EditorComponent disabled={userRole === Role.USER} />
             </Form.Item>
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Center'
+                  label='Trung tâm'
                   name='centerId'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng chọn trung tâm!' }]}
                 >
-                  <Select placeholder='Area' allowClear>
+                  <Select placeholder='Trung tâm' allowClear disabled>
                     {data_users
                       ?.filter((d) => d.role.roleName === 'Teacher')
-                      ?.map((cl) => (
-                        <Option key={cl.id} value={cl.id}>
-                          {cl.fullName}
-                        </Option>
-                      ))}
+                      ?.map(
+                        (cl) =>
+                          cl.status && (
+                            <Option key={cl.id} value={cl.id}>
+                              {cl.fullName}
+                            </Option>
+                          )
+                      )}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Duration'
+                  label='Thời lượng'
                   name='duration'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng nhập thời lượng!' }]}
                 >
                   <Input />
                 </Form.Item>
@@ -465,25 +469,28 @@ const MyCoursesPage: React.FC = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Tuitionfee'
+                  label='Học phí'
                   name='tuitionfee'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng nhập học phí!' }]}
                 >
                   <InputNumber className='w-full' />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Area'
+                  label='Địa điểm'
                   name='courseAreaId'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
                 >
-                  <Select placeholder='Area' allowClear>
-                    {data_courseArea?.map((cl) => (
-                      <Option key={cl.id} value={cl.id}>
-                        {cl.name}
-                      </Option>
-                    ))}
+                  <Select placeholder='Địa điểm' allowClear>
+                    {data_courseArea?.map(
+                      (cl) =>
+                        cl.status && (
+                          <Option key={cl.id} value={cl.id}>
+                            {cl.name}
+                          </Option>
+                        )
+                    )}
                   </Select>
                 </Form.Item>
               </Col>
@@ -491,41 +498,47 @@ const MyCoursesPage: React.FC = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Category'
+                  label='Loại khóa học'
                   name='courseCategoryId'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng chọn loại khóa học!' }]}
                 >
-                  <Select placeholder='Category' allowClear>
-                    {data_courseCategory?.map((cl) => (
-                      <Option key={cl.id} value={cl.id}>
-                        {cl.name}
-                      </Option>
-                    ))}
+                  <Select placeholder='Loại khóa học' allowClear>
+                    {data_courseCategory?.map(
+                      (cl) =>
+                        cl.status && (
+                          <Option key={cl.id} value={cl.id}>
+                            {cl.name}
+                          </Option>
+                        )
+                    )}
                   </Select>
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item<FieldCourseType>
-                  label='Language'
+                  label='Ngôn ngữ'
                   name='courseLanguageId'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
                 >
-                  <Select placeholder='Language' allowClear>
-                    {data_courseLanguage?.map((cl) => (
-                      <Option key={cl.id} value={cl.id}>
-                        {cl.name}
-                      </Option>
-                    ))}
+                  <Select placeholder='Ngôn ngữ' allowClear>
+                    {data_courseLanguage?.map(
+                      (cl) =>
+                        cl.status && (
+                          <Option key={cl.id} value={cl.id}>
+                            {cl.name}
+                          </Option>
+                        )
+                    )}
                   </Select>
                 </Form.Item>
               </Col>
             </Row>
             <Form.Item<FieldCourseType>
-              label='Status'
+              label='Trạng thái'
               name='status'
-              rules={[{ required: true, message: 'Please input your username!' }]}
+              rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}
             >
-              <Select placeholder='Language' allowClear disabled>
+              <Select placeholder='Trạng thái' allowClear disabled>
                 <Option value={0}>Chờ duyệt</Option>
                 <Option value={1}>Hoạt động</Option>
               </Select>
@@ -558,25 +571,25 @@ const MyCoursesPage: React.FC = () => {
                 initialValues={{ courseStatus: 1 }}
               >
                 <Form.Item<FieldCourseType>
-                  label='Title'
+                  label='Tên khóa học'
                   name='title'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng nhập tên khóa học!' }]}
                 >
                   <Input />
                 </Form.Item>
                 <Form.Item<FieldCourseType>
-                  label='Description'
+                  label='Mô tả'
                   name='description'
-                  rules={[{ required: true, message: 'Please input your username!' }]}
+                  rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
                 >
                   <EditorComponent />
                 </Form.Item>
                 <Row gutter={16}>
                   <Col span={24}>
                     <Form.Item<FieldCourseType>
-                      label='Duration'
+                      label='Thời lượng'
                       name='duration'
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: 'Vui lòng nhập thời lượng!' }]}
                     >
                       <Input />
                     </Form.Item>
@@ -586,25 +599,28 @@ const MyCoursesPage: React.FC = () => {
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item<FieldCourseType>
-                      label='Tuitionfee'
+                      label='Học phí'
                       name='tuitionfee'
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: 'Vui lòng nhập học phí!' }]}
                     >
                       <InputNumber className='w-full' />
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item<FieldCourseType>
-                      label='Area'
+                      label='Ngôn ngữ'
                       name='courseAreaId'
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
                     >
-                      <Select placeholder='Area' allowClear>
-                        {data_courseArea?.map((cl) => (
-                          <Option key={cl.id} value={cl.id}>
-                            {cl.name}
-                          </Option>
-                        ))}
+                      <Select placeholder='Ngôn ngữ' allowClear>
+                        {data_courseArea?.map(
+                          (cl) =>
+                            cl.status && (
+                              <Option key={cl.id} value={cl.id}>
+                                {cl.name}
+                              </Option>
+                            )
+                        )}
                       </Select>
                     </Form.Item>
                   </Col>
@@ -612,31 +628,37 @@ const MyCoursesPage: React.FC = () => {
                 <Row gutter={16}>
                   <Col span={12}>
                     <Form.Item<FieldCourseType>
-                      label='Category'
+                      label='Loại khóa học'
                       name='courseCategoryId'
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: 'Vui lòng chọn loại khóa học!' }]}
                     >
-                      <Select placeholder='Category' allowClear>
-                        {data_courseCategory?.map((cl) => (
-                          <Option key={cl.id} value={cl.id}>
-                            {cl.name}
-                          </Option>
-                        ))}
+                      <Select placeholder='Loại khóa học' allowClear>
+                        {data_courseCategory?.map(
+                          (cl) =>
+                            cl.status && (
+                              <Option key={cl.id} value={cl.id}>
+                                {cl.name}
+                              </Option>
+                            )
+                        )}
                       </Select>
                     </Form.Item>
                   </Col>
                   <Col span={12}>
                     <Form.Item<FieldCourseType>
-                      label='Language'
+                      label='Ngôn ngữ'
                       name='courseLanguageId'
-                      rules={[{ required: true, message: 'Please input your username!' }]}
+                      rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
                     >
-                      <Select placeholder='Language' allowClear>
-                        {data_courseLanguage?.map((cl) => (
-                          <Option key={cl.id} value={cl.id}>
-                            {cl.name}
-                          </Option>
-                        ))}
+                      <Select placeholder='Ngôn ngữ' allowClear>
+                        {data_courseLanguage?.map(
+                          (cl) =>
+                            cl.status && (
+                              <Option key={cl.id} value={cl.id}>
+                                {cl.name}
+                              </Option>
+                            )
+                        )}
                       </Select>
                     </Form.Item>
                   </Col>

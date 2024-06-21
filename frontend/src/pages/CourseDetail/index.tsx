@@ -91,11 +91,17 @@ const CourseDetailPage: React.FC = () => {
       label: 'Description',
       children: (
         <div>
-          <div className='pt-[30px] space-y-[30px]'>
+          <div>
             <div>
-              <ul className='mb-[20px] space-x-[10px] lg:space-x-[35px] rtl:space-x-reverse'>
+              <ul
+                className='space-x-[10px] lg:space-x-[35px] rtl:space-x-reverse'
+                style={{ marginLeft: '-40px', display: 'flex', alignItems: 'center' }}
+              >
                 <li className='inline-block text-[13px] lg:text-[17px] transition duration-500 ease-in-out group-hover:text-white'>
-                  <div className='flex items-center space-x-[5px] rtl:space-x-reverse'>
+                  <div
+                    className='flex items-center space-x-[5px] rtl:space-x-reverse'
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
                     <div className='text-[#FCA120] text-[15px] sm:text-[20px] space-x-[1px] rtl:space-x-reverse'>
                       <StarFilled />
                       <StarFilled />
@@ -103,18 +109,27 @@ const CourseDetailPage: React.FC = () => {
                       <StarFilled />
                       <StarFilled />
                     </div>
-                    <p className='relative top-[1px]'>4.9 Reviews</p>
+                    <p className='relative font-medium'>4.9 Reviews</p>
                   </div>
                 </li>
-                <li className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'>
+                <li
+                  className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
                   <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
                   {data_course?.courseCategory.name}
                 </li>
-                <li className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'>
+                <li
+                  className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
                   <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
                   {data_course?.duration}
                 </li>
-                <li className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'>
+                <li
+                  className='inline-block text-[13px] lg:text-[17px] font-medium transition duration-500 ease-in-out group-hover:text-white'
+                  style={{ display: 'flex', alignItems: 'center' }}
+                >
                   <ProfileOutlined className='text-primary text-[17px] lg:text-[22px] mr-[5px] group-hover:text-white' />
                   {data_course?.courseArea.name}
                 </li>

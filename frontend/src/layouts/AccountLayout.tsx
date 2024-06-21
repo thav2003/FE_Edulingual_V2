@@ -46,12 +46,12 @@ const AccountLayout: React.FC = () => {
     ...(user?.role === Role.USER
       ? [
           {
-            key: 'viewexam',
-            label: <Link to='viewexam'>Kiểm tra & Kết quả</Link>
-          },
-          {
             key: 'mycourses',
             label: <Link to='mycourses'>Khóa học</Link>
+          },
+          {
+            key: 'viewexam',
+            label: <Link to='viewexam'>Kiểm tra & Kết quả</Link>
           },
           {
             key: '4',
@@ -62,16 +62,16 @@ const AccountLayout: React.FC = () => {
     ...(user?.role === Role.TEACHER
       ? [
           {
-            key: 'mystudents',
-            label: <Link to='mystudents'>Học sinh</Link>
+            key: 'mycourses',
+            label: <Link to='mycourses'>Khóa học</Link>
           },
           {
             key: 'createexam',
             label: <Link to='createexam'>Tạo bộ đề</Link>
           },
           {
-            key: 'mycourses',
-            label: <Link to='mycourses'>Khóa học</Link>
+            key: 'mystudents',
+            label: <Link to='mystudents'>Học sinh</Link>
           },
           {
             key: '4',
