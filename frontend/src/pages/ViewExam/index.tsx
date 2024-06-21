@@ -373,8 +373,7 @@ const ViewExamPage: React.FC = () => {
                             <Flex align='center' gap={10}>
                               <Avatar size={64} icon={<UserOutlined />} />
                               <Space direction='vertical'>
-                                <Text strong>Hằng</Text>
-                                <Text>English Teacher</Text>
+                                <Text strong>{item.center?.fullName}</Text>
                               </Space>
                             </Flex>
                           </Flex>
@@ -733,8 +732,7 @@ const ViewExamPage: React.FC = () => {
                           <Flex align='center' gap={10}>
                             <Avatar size={64} icon={<UserOutlined />} />
                             <Space direction='vertical'>
-                              <Text strong>{item.center?.name}</Text>
-                              <Text>English Teacher</Text>
+                              <Text strong>{item.center?.fullName}</Text>
                             </Space>
                           </Flex>
                         </Flex>
@@ -770,7 +768,7 @@ const ViewExamPage: React.FC = () => {
                                 }}
                               >
                                 <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
-                                42
+                                {item.totalQuestionRight ? item.totalQuestionRight : 42}
                               </Space>
                               <Space
                                 style={{
@@ -781,7 +779,8 @@ const ViewExamPage: React.FC = () => {
                                   width: 60
                                 }}
                               >
-                                <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />8
+                                <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
+                                {item.totalQuestionWrong ? item.totalQuestionWrong : 8}
                               </Space>
                             </Space>
                           </Space>

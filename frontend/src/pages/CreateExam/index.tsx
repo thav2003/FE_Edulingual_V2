@@ -141,6 +141,7 @@ const CreateExamPage: React.FC = () => {
   const [loadingExams, errorExams, responseExams] = useFetchData(fetchExams, selectedCourseId)
 
   const data_exams = responseExams?.data?.data?.items
+  console.log(data_exams)
 
   const columns = [
     {
@@ -156,9 +157,9 @@ const CreateExamPage: React.FC = () => {
     },
     {
       title: 'Số câu',
-      // dataIndex: 'tuitionfee',
-      key: 'numberOfQuestions',
-      render: (item, record, index) => <Typography.Text>{record?.questions?.length}</Typography.Text>
+      dataIndex: 'totalQuestion',
+      key: 'totalQuestion'
+      //render: (item, record, index) => <Typography.Text>{record?.questions?.length}</Typography.Text>
     },
     {
       title: 'Tạo bởi',
