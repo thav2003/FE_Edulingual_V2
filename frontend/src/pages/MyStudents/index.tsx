@@ -25,7 +25,7 @@ const MyStudentPage: React.FC = () => {
 
   const columns: TableProps<User>['columns'] = [
     {
-      title: '#ID',
+      title: 'STT',
       dataIndex: 'id',
       key: 'id',
       render: (item, record, index) => <Text>{++index}</Text>

@@ -378,16 +378,16 @@ const CoursesView: React.FC = () => {
           initialValues={{ courseStatus: 1 }}
         >
           <Form.Item<FieldCourseType>
-            label='Title'
+            label='Tên khóa học'
             name='title'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên khóa học!' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldCourseType>
-            label='Description'
+            label='Mô tả'
             name='description'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
           >
             {/* <Input.TextArea /> */}
             <EditorComponent />
@@ -395,26 +395,29 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Center'
+                label='Trung tâm'
                 name='centerId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn trung tâm!' }]}
               >
-                <Select placeholder='Area' allowClear>
+                <Select placeholder='Địa điểm' allowClear>
                   {data_users
                     ?.filter((d) => d.role.roleName === 'Teacher')
-                    ?.map((cl) => (
-                      <Option key={cl.id} value={cl.id}>
-                        {cl.fullName}
-                      </Option>
-                    ))}
+                    ?.map(
+                      (cl) =>
+                        cl.status && (
+                          <Option key={cl.id} value={cl.id}>
+                            {cl.fullName}
+                          </Option>
+                        )
+                    )}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Duration'
+                label='Thời lượng'
                 name='duration'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập thời lượng!' }]}
               >
                 <Input />
               </Form.Item>
@@ -424,25 +427,28 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Tuitionfee'
+                label='Học phí'
                 name='tuitionfee'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập học phí!' }]}
               >
                 <InputNumber className='w-full' />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Area'
+                label='Địa điểm'
                 name='courseAreaId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
               >
-                <Select placeholder='Area' allowClear>
-                  {data_courseArea?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                <Select placeholder='Địa điểm' allowClear>
+                  {data_courseArea?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
@@ -450,31 +456,37 @@ const CoursesView: React.FC = () => {
           <Row gutter={16}>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Category'
+                label='Loại khóa học'
                 name='courseCategoryId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn loại khóa học!' }]}
               >
-                <Select placeholder='Category' allowClear>
-                  {data_courseCategory?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                <Select placeholder='Loại khóa học' allowClear>
+                  {data_courseCategory?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item<FieldCourseType>
-                label='Language'
+                label='Ngôn ngữ'
                 name='courseLanguageId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
               >
-                <Select placeholder='Language' allowClear>
-                  {data_courseLanguage?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                <Select placeholder='Ngôn ngữ' allowClear>
+                  {data_courseLanguage?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
@@ -508,14 +520,14 @@ const CoursesView: React.FC = () => {
           <Form.Item<FieldCourseType>
             label='Tên khóa học'
             name='title'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên khóa học' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldCourseType>
             label='Mô tả'
             name='description'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
           >
             <EditorComponent />
           </Form.Item>
@@ -524,16 +536,19 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Trung tâm'
                 name='centerId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn trung tâm!' }]}
               >
                 <Select placeholder='Trung tâm' allowClear>
                   {data_users
                     ?.filter((d) => d.role.roleName === 'Teacher')
-                    ?.map((cl) => (
-                      <Option key={cl.id} value={cl.id}>
-                        {cl.fullName}
-                      </Option>
-                    ))}
+                    ?.map(
+                      (cl) =>
+                        cl.status && (
+                          <Option key={cl.id} value={cl.id}>
+                            {cl.fullName}
+                          </Option>
+                        )
+                    )}
                 </Select>
               </Form.Item>
             </Col>
@@ -541,7 +556,7 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Thời lượng'
                 name='duration'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập thời lượng!' }]}
               >
                 <Input />
               </Form.Item>
@@ -553,7 +568,7 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Học phí'
                 name='tuitionfee'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng nhập học phí!' }]}
               >
                 <InputNumber className='w-full' />
               </Form.Item>
@@ -562,14 +577,17 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Địa điểm'
                 name='courseAreaId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn địa điểm!' }]}
               >
                 <Select placeholder='Địa điểm' allowClear>
-                  {data_courseArea?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                  {data_courseArea?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
@@ -579,14 +597,17 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Loại khóa học'
                 name='courseCategoryId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn loại khóa học!' }]}
               >
                 <Select placeholder='Loại khóa học' allowClear>
-                  {data_courseCategory?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                  {data_courseCategory?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
@@ -594,14 +615,17 @@ const CoursesView: React.FC = () => {
               <Form.Item<FieldCourseType>
                 label='Ngôn ngữ'
                 name='courseLanguageId'
-                rules={[{ required: true, message: 'Please input your username!' }]}
+                rules={[{ required: true, message: 'Vui lòng chọn ngôn ngữ!' }]}
               >
-                <Select placeholder='Language' allowClear>
-                  {data_courseLanguage?.map((cl) => (
-                    <Option key={cl.id} value={cl.id}>
-                      {cl.name}
-                    </Option>
-                  ))}
+                <Select placeholder='Ngôn ngữ' allowClear>
+                  {data_courseLanguage?.map(
+                    (cl) =>
+                      cl.status && (
+                        <Option key={cl.id} value={cl.id}>
+                          {cl.name}
+                        </Option>
+                      )
+                  )}
                 </Select>
               </Form.Item>
             </Col>
@@ -609,7 +633,7 @@ const CoursesView: React.FC = () => {
           <Form.Item<FieldCourseType>
             label='Trạng thái'
             name='status'
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Vui lòng chọn trạng thái!' }]}
           >
             <Select placeholder='Trạng thái' allowClear>
               <Option value={0}>Chờ duyệt</Option>

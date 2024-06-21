@@ -29,12 +29,12 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
       key: 'course'
     },
     {
-      label: <Link to='/admin/students'>Học sinh</Link>,
-      key: 'students'
-    },
-    {
       label: <Link to='/admin/teachers'>Giáo viên</Link>,
       key: 'teachers'
+    },
+    {
+      label: <Link to='/admin/students'>Học sinh</Link>,
+      key: 'students'
     },
     {
       label: <Link to='/admin/orders'>Giao dịch</Link>,
@@ -133,19 +133,19 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
                       },
                       {
                         key: 'students',
-                        label: <Link to={'/admin/courses'}>Course</Link>
-                      },
-                      {
-                        key: 'students',
-                        label: <Link to={'/admin/students'}>Student</Link>
+                        label: <Link to={'/admin/courses'}>Khóa học</Link>
                       },
                       {
                         key: 'teachers',
-                        label: <Link to={'/admin/teachers'}>Teacher</Link>
+                        label: <Link to={'/admin/teachers'}>Giáo viên</Link>
+                      },
+                      {
+                        key: 'students',
+                        label: <Link to={'/admin/students'}>Học sinh</Link>
                       },
                       {
                         key: 'orders',
-                        label: <Link to={'/admin/orders'}>Orders</Link>
+                        label: <Link to={'/admin/orders'}>Giao dịch</Link>
                       },
                       {
                         type: 'divider'

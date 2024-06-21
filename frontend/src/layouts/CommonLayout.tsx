@@ -31,12 +31,12 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
             label: <Link to={'/admin/courses'}>Course</Link>
           },
           {
-            key: 'students',
-            label: <Link to={'/admin/students'}>Student</Link>
-          },
-          {
             key: 'teachers',
             label: <Link to={'/admin/teachers'}>Teacher</Link>
+          },
+          {
+            key: 'students',
+            label: <Link to={'/admin/students'}>Student</Link>
           },
           {
             key: 'orders',
@@ -47,6 +47,10 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
     ...(user?.role === Role.USER
       ? [
           {
+            key: 'teachers',
+            label: <Link to={'/account/viewexam'}>Làm kiểm tra</Link>
+          },
+          {
             label: <Link to='/account/mycourses'>Khóa học</Link>,
             key: 'mycourses'
           }
@@ -56,6 +60,14 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
       ? [
           {
             label: <Link to='/account/mycourses'>Khóa học</Link>,
+            key: 'mycourses'
+          },
+          {
+            label: <Link to='/account/createexam'>Tạo bộ đề</Link>,
+            key: 'mycourses'
+          },
+          {
+            label: <Link to='/account/mystudents'>Học sinh</Link>,
             key: 'mycourses'
           }
         ]
