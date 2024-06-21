@@ -1,20 +1,47 @@
 import { UserOutlined, EditOutlined } from '@ant-design/icons'
-import { Layout, Menu, ConfigProvider, Avatar, Typography, MenuProps } from 'antd'
+import {
+  Layout,
+  Menu,
+  ConfigProvider,
+  Avatar,
+  Typography,
+  MenuProps,
+  Button,
+  Tooltip,
+  Upload,
+  message,
+  notification
+} from 'antd'
 import { Space } from 'antd'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { UserApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
 import { Role } from '~/interfaces'
-import { useAuthStore } from '~/stores'
+import { useAppStore, useAuthStore } from '~/stores'
+import ImgCrop from 'antd-img-crop'
+import { RcFile, UploadChangeParam, UploadFile, UploadProps } from 'antd/es/upload'
+import axios from 'axios'
+import { convertToFormData } from '~/utils/formData'
 const { Text } = Typography
 const { Sider } = Layout
+
+const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result as string))
+  reader.readAsDataURL(img)
+}
+const userApi = new UserApi()
 const AccountLayout: React.FC = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const logoutUser = useAuthStore((state) => state.logoutUser)
 
+  const refetchApp = useAppStore((state) => state.refetchApp)
   const user = useAuthStore((state) => state.user)
   const pathSegments = location.pathname.split('/')
   const lastSegment = pathSegments[pathSegments.length - 1]
+  const [imageUrl, setImageUrl] = useState<string>('error')
   const items: MenuProps['items'] = [
     ...(user?.role === Role.USER
       ? [
@@ -58,6 +85,54 @@ const AccountLayout: React.FC = () => {
       label: 'Đăng xuất'
     }
   ]
+  const fetchProfile = () => {
+    return userApi.apiV1UsersIdGet(user!.id)
+  }
+  const [loading, error, response] = useFetchData(fetchProfile, user?.id)
+  const user_data = response?.data?.data
+
+  const onChangeAvatar: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
+    console.log(info)
+    getBase64(info.file.originFileObj as RcFile, (url) => {
+      setImageUrl(url)
+    })
+  }
+
+  const props: UploadProps = {
+    showUploadList: false,
+    onChange: onChangeAvatar,
+    customRequest: async (options: any) => {
+      try {
+        // const data = {
+        //   imageFile: options.file
+        // }
+        // const response = await axios.post('/user/uploadavatar', convertToFormData(data), {
+        //   headers: {
+        //     'content-type': 'multipart/form-data'
+        //   }
+        // })
+        // if (response) {
+        //   notification.success({ message: 'Cập nhật thành công' })
+        //   refetchApp
+        // } else {
+        //   notification.error({ message: 'Cập nhật thất bại' })
+        // }
+      } catch (err) {
+        notification.error({ message: (err as string) || 'Sorry! Something went wrong. App server error' })
+      }
+    },
+    beforeUpload: (file: RcFile) => {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      if (!isJpgOrPng) {
+        message.error('You can only upload JPG/PNG file!')
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        message.error('Image must smaller than 2MB!')
+      }
+      return isJpgOrPng && isLt2M
+    }
+  }
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e)
     if (e.key === '5') {
@@ -80,6 +155,11 @@ const AccountLayout: React.FC = () => {
     }
   }, [location])
 
+  useEffect(() => {
+    if (user_data?.imageUrl) {
+      setImageUrl(user_data?.imageUrl)
+    }
+  }, [user_data?.imageUrl])
   return (
     <ConfigProvider
       theme={{
@@ -122,16 +202,36 @@ const AccountLayout: React.FC = () => {
           }}
         >
           <Space direction='vertical'>
-            <Avatar size={128} icon={<UserOutlined />} />
+            <Avatar size={128} icon={<UserOutlined />} src={imageUrl} />
 
             <Text strong style={{ fontSize: 24 }}>
               {user?.name}
             </Text>
             {user?.role === Role.TEACHER && <Text>English</Text>}
 
-            <Text type='success'>
-              <EditOutlined /> Chỉnh sửa
-            </Text>
+            <ImgCrop
+              showGrid
+              cropShape='round'
+              rotationSlider
+              beforeCrop={(file: RcFile) => {
+                const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+                if (!isJpgOrPng) {
+                  message.error('You can only upload JPG/PNG file!')
+                }
+                const isLt2M = file.size / 1024 / 1024 < 2
+                if (!isLt2M) {
+                  message.error('Image must smaller than 2MB!')
+                }
+
+                return isJpgOrPng && isLt2M
+              }}
+            >
+              <Upload {...props}>
+                <Text type='success' className='cursor-pointer'>
+                  <EditOutlined /> Chỉnh sửa
+                </Text>
+              </Upload>
+            </ImgCrop>
           </Space>
 
           <Menu

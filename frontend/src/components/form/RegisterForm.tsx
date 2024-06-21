@@ -11,6 +11,7 @@ type FieldType = {
   password?: string
   email?: string
   fullName?: string
+  description?: string
   confirmPassword?: string
 }
 
@@ -21,6 +22,7 @@ const RegisterForm: React.FC = () => {
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
     values.email = values.userName
+    values.description = 'description'
     try {
       await authenticationApi.apiV1RegisterPut(values)
       navigate('/login')

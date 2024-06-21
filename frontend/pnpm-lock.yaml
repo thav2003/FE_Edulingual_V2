@@ -26,6 +26,9 @@ importers:
       antd:
         specifier: ^5.17.3
         version: 5.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      antd-img-crop:
+        specifier: ^4.22.0
+        version: 4.22.0(antd@5.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       axios:
         specifier: ^1.7.2
         version: 1.7.2
@@ -1012,6 +1015,13 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
+  antd-img-crop@4.22.0:
+    resolution: {integrity: sha512-mfGujUUH+rf9L4ENx7yFJPkvtnEjvexWmR1/kycHzVUnMlC1UBtFMKcXgYvtNl/JTAW6jRVRc1asjzGr9idIZA==}
+    peerDependencies:
+      antd: '>=4.0.0'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
   antd@5.18.1:
     resolution: {integrity: sha512-l762vsoIpA3xsVsbIExlce3hgFgiLdflGEgdo8NFnq17Qq3fHIMJklGzM8WNpdJJ4iUk4FzritmSSnHk0Y5kZA==}
     peerDependencies:
@@ -1162,6 +1172,9 @@ packages:
   commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
+
+  compare-versions@6.1.0:
+    resolution: {integrity: sha512-LNZQXhqUvqUTotpZ00qLSaify3b4VFD588aRr8MKFw4CMUr98ytzCW5wDH5qx/DEY5kCDXcbcRuCqL0szEf2tg==}
 
   compute-scroll-into-view@3.1.0:
     resolution: {integrity: sha512-rj8l8pD4bJ1nx+dAkMhV1xB5RuZEyVysfxJqB1pRchh1KVvwOv9b7CGB8ZfjTImVv2oF+sYMUkMZq6Na5Ftmbg==}
@@ -1945,6 +1958,9 @@ packages:
     resolution: {integrity: sha512-bdok/XvKII3nUpklnV6P2hxtMNrCboOjAcyBuQnWEhO665FwrSNRxU+AqpsyvO6LgGYPspN+lu5CLtw4jPRKNA==}
     engines: {node: '>=0.10.0'}
 
+  normalize-wheel@1.0.1:
+    resolution: {integrity: sha512-1OnlAPZ3zgrk8B91HyRj+eVv+kS5u+Z0SCsak6Xil/kmgEia50ga7zfkumayonZrImffAxPU/5WcyGhzetHNPA==}
+
   nwsapi@2.2.10:
     resolution: {integrity: sha512-QK0sRs7MKv0tKe1+5uZIQk/C8XGza4DAnztJG8iD+TpJIORARrCxczA738awHrZoHeTjSSoHqao2teO0dC/gFQ==}
 
@@ -2362,6 +2378,12 @@ packages:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
       react: ^18.3.1
+
+  react-easy-crop@5.0.7:
+    resolution: {integrity: sha512-6d5IUt09M3HwdDGwrcjPVgfrOfYWAOku8sCTn/xU7b1vkEg+lExMLwW8UbR39L8ybQi0hJZTU57yprF9h5Q5Ig==}
+    peerDependencies:
+      react: '>=16.4.0'
+      react-dom: '>=16.4.0'
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -3101,6 +3123,11 @@ snapshots:
   '@ckeditor/ckeditor5-adapter-ckfinder@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-alignment@41.4.2':
     dependencies:
@@ -3171,6 +3198,11 @@ snapshots:
       '@ckeditor/ckeditor5-table': 41.4.2
       '@ckeditor/ckeditor5-typing': 41.4.2
       '@ckeditor/ckeditor5-ui': 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-build-balloon@41.4.2':
     dependencies:
@@ -3194,6 +3226,11 @@ snapshots:
       '@ckeditor/ckeditor5-paste-from-office': 41.4.2
       '@ckeditor/ckeditor5-table': 41.4.2
       '@ckeditor/ckeditor5-typing': 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-build-classic@41.4.2':
     dependencies:
@@ -3247,6 +3284,11 @@ snapshots:
       '@ckeditor/ckeditor5-paste-from-office': 41.4.2
       '@ckeditor/ckeditor5-table': 41.4.2
       '@ckeditor/ckeditor5-typing': 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-build-inline@41.4.2':
     dependencies:
@@ -3298,6 +3340,11 @@ snapshots:
       '@ckeditor/ckeditor5-paste-from-office': 41.4.2
       '@ckeditor/ckeditor5-table': 41.4.2
       '@ckeditor/ckeditor5-typing': 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-ckbox@41.4.2':
     dependencies:
@@ -3331,6 +3378,11 @@ snapshots:
   '@ckeditor/ckeditor5-cloud-services@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-code-block@41.4.2':
     dependencies:
@@ -3361,16 +3413,31 @@ snapshots:
     dependencies:
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-editor-classic@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-editor-decoupled@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-editor-inline@41.4.2':
     dependencies:
@@ -3417,6 +3484,11 @@ snapshots:
       '@ckeditor/ckeditor5-ui': 41.4.2
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-font@41.4.2':
     dependencies:
@@ -3448,6 +3520,11 @@ snapshots:
   '@ckeditor/ckeditor5-horizontal-line@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-html-embed@41.4.2':
     dependencies:
@@ -3576,6 +3653,11 @@ snapshots:
   '@ckeditor/ckeditor5-paste-from-office@41.4.2':
     dependencies:
       ckeditor5: 41.4.2
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - utf-8-validate
 
   '@ckeditor/ckeditor5-react@7.0.0(@ckeditor/ckeditor5-core@41.4.2)(@ckeditor/ckeditor5-editor-multi-root@41.4.2)(@ckeditor/ckeditor5-engine@41.4.2)(@ckeditor/ckeditor5-utils@41.4.2)(@ckeditor/ckeditor5-watchdog@41.4.2)(react@18.3.1)':
     dependencies:
@@ -3610,11 +3692,6 @@ snapshots:
     dependencies:
       '@ckeditor/ckeditor5-ui': 41.4.2
       ckeditor5: 41.4.2
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
 
   '@ckeditor/ckeditor5-source-editing@41.4.2':
     dependencies:
@@ -3629,22 +3706,12 @@ snapshots:
     dependencies:
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
 
   '@ckeditor/ckeditor5-table@41.4.2':
     dependencies:
       '@ckeditor/ckeditor5-ui': 41.4.2
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
 
   '@ckeditor/ckeditor5-theme-lark@41.4.2':
     dependencies:
@@ -3699,11 +3766,6 @@ snapshots:
     dependencies:
       ckeditor5: 41.4.2
       lodash-es: 4.17.21
-    transitivePeerDependencies:
-      - bufferutil
-      - canvas
-      - supports-color
-      - utf-8-validate
 
   '@ctrl/tinycolor@3.6.1': {}
 
@@ -4190,6 +4252,15 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
+  antd-img-crop@4.22.0(antd@5.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      antd: 5.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      compare-versions: 6.1.0
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-easy-crop: 5.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      tslib: 2.6.3
+
   antd@5.18.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@ant-design/colors': 7.0.2
@@ -4513,6 +4584,8 @@ snapshots:
   commander@4.1.1: {}
 
   commander@7.2.0: {}
+
+  compare-versions@6.1.0: {}
 
   compute-scroll-into-view@3.1.0: {}
 
@@ -5367,6 +5440,8 @@ snapshots:
 
   normalize-range@0.1.2: {}
 
+  normalize-wheel@1.0.1: {}
+
   nwsapi@2.2.10: {}
 
   object-assign@4.1.1: {}
@@ -5845,6 +5920,13 @@ snapshots:
       loose-envify: 1.4.0
       react: 18.3.1
       scheduler: 0.23.2
+
+  react-easy-crop@5.0.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      normalize-wheel: 1.0.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      tslib: 2.6.3
 
   react-is@16.13.1: {}
 

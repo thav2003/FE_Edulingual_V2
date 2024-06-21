@@ -2013,6 +2013,46 @@
         }
       }
     },
+    "/api/v1/exam": {
+      "delete": {
+        "tags": [
+          "Exam"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BooleanResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/binh-luan-paging": {
       "get": {
         "tags": [
@@ -3127,17 +3167,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoPagingResult"
+                  "$ref": "#/components/schemas/CourseByUserDtoPagingResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoPagingResult"
+                  "$ref": "#/components/schemas/CourseByUserDtoPagingResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CourseDtoPagingResult"
+                  "$ref": "#/components/schemas/CourseByUserDtoPagingResult"
                 }
               }
             }
@@ -3374,6 +3414,7 @@
       },
       "Course": {
         "required": [
+          "description",
           "title"
         ],
         "type": "object",
@@ -3406,10 +3447,8 @@
             "type": "string"
           },
           "description": {
-            "maxLength": 1000,
-            "minLength": 0,
-            "type": "string",
-            "nullable": true
+            "minLength": 1,
+            "type": "string"
           },
           "duration": {
             "type": "string",
@@ -3641,6 +3680,98 @@
         },
         "additionalProperties": false
       },
+      "CourseByUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "duration": {
+            "type": "string",
+            "nullable": true
+          },
+          "tuitionfee": {
+            "type": "number",
+            "format": "double"
+          },
+          "centerName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CourseByUserDtoIPaginate": {
+        "type": "object",
+        "properties": {
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CourseByUserDto"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CourseByUserDtoPagingResult": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/CourseByUserDtoIPaginate"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "CourseCategory": {
         "required": [
           "name"
@@ -3752,7 +3883,7 @@
           "status": {
             "$ref": "#/components/schemas/CourseCategoryStatus"
           },
-          "language": {
+          "courseLanguage": {
             "$ref": "#/components/schemas/CourseLanguageDto"
           }
         },
@@ -3841,68 +3972,6 @@
           },
           "isHighlighted": {
             "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CourseDtoIPaginate": {
-        "type": "object",
-        "properties": {
-          "size": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "page": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "total": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "totalPages": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CourseDto"
-            },
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CourseDtoPagingResult": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "$ref": "#/components/schemas/HttpStatusCode"
-          },
-          "message": {
-            "type": "string",
-            "nullable": true
-          },
-          "data": {
-            "$ref": "#/components/schemas/CourseDtoIPaginate"
-          },
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -4455,6 +4524,10 @@
           "center": {
             "$ref": "#/components/schemas/User"
           },
+          "totalQuestion": {
+            "type": "integer",
+            "format": "int32"
+          },
           "courseId": {
             "type": "string",
             "format": "uuid"
@@ -4666,7 +4739,7 @@
             "type": "string",
             "format": "uuid"
           },
-          "examId": {
+          "courseId": {
             "type": "string",
             "format": "uuid"
           }
@@ -5028,7 +5101,6 @@
           "email",
           "fullName",
           "password",
-          "roleId",
           "userName"
         ],
         "type": "object",
@@ -5059,10 +5131,6 @@
           },
           "userStatus": {
             "$ref": "#/components/schemas/UserStatus"
-          },
-          "roleId": {
-            "type": "string",
-            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -5355,7 +5423,7 @@
             "type": "string",
             "nullable": true
           },
-          "userStatus": {
+          "status": {
             "$ref": "#/components/schemas/UserStatus"
           },
           "roleId": {
@@ -5704,6 +5772,14 @@
           "score": {
             "type": "number",
             "format": "double"
+          },
+          "totalQuestionRight": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalQuestionWrong": {
+            "type": "integer",
+            "format": "int32"
           },
           "createdAt": {
             "type": "string",

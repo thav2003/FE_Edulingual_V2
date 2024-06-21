@@ -252,7 +252,7 @@ export interface Course {
      * @type {string}
      * @memberof Course
      */
-    'description'?: string | null;
+    'description': string;
     /**
      * 
      * @type {string}
@@ -582,6 +582,131 @@ export interface CourseAreaViewModelResult {
 /**
  * 
  * @export
+ * @interface CourseByUserDto
+ */
+export interface CourseByUserDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDto
+     */
+    'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDto
+     */
+    'title'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDto
+     */
+    'description'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDto
+     */
+    'duration'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDto
+     */
+    'tuitionfee'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDto
+     */
+    'centerName'?: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface CourseByUserDtoIPaginate
+ */
+export interface CourseByUserDtoIPaginate {
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoIPaginate
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoIPaginate
+     */
+    'page'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoIPaginate
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoIPaginate
+     */
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {Array<CourseByUserDto>}
+     * @memberof CourseByUserDtoIPaginate
+     */
+    'items'?: Array<CourseByUserDto> | null;
+}
+/**
+ * 
+ * @export
+ * @interface CourseByUserDtoPagingResult
+ */
+export interface CourseByUserDtoPagingResult {
+    /**
+     * 
+     * @type {HttpStatusCode}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'statusCode'?: HttpStatusCode;
+    /**
+     * 
+     * @type {string}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {CourseByUserDtoIPaginate}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'data'?: CourseByUserDtoIPaginate;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'pageNumber'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CourseByUserDtoPagingResult
+     */
+    'totalCount'?: number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface CourseCategory
  */
 export interface CourseCategory {
@@ -754,7 +879,7 @@ export interface CourseCategoryViewModel {
      * @type {CourseLanguageDto}
      * @memberof CourseCategoryViewModel
      */
-    'language'?: CourseLanguageDto;
+    'courseLanguage'?: CourseLanguageDto;
 }
 
 
@@ -890,88 +1015,6 @@ export interface CourseDto {
      * @memberof CourseDto
      */
     'isHighlighted'?: boolean;
-}
-
-
-/**
- * 
- * @export
- * @interface CourseDtoIPaginate
- */
-export interface CourseDtoIPaginate {
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoIPaginate
-     */
-    'size'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoIPaginate
-     */
-    'page'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoIPaginate
-     */
-    'total'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoIPaginate
-     */
-    'totalPages'?: number;
-    /**
-     * 
-     * @type {Array<CourseDto>}
-     * @memberof CourseDtoIPaginate
-     */
-    'items'?: Array<CourseDto> | null;
-}
-/**
- * 
- * @export
- * @interface CourseDtoPagingResult
- */
-export interface CourseDtoPagingResult {
-    /**
-     * 
-     * @type {HttpStatusCode}
-     * @memberof CourseDtoPagingResult
-     */
-    'statusCode'?: HttpStatusCode;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDtoPagingResult
-     */
-    'message'?: string | null;
-    /**
-     * 
-     * @type {CourseDtoIPaginate}
-     * @memberof CourseDtoPagingResult
-     */
-    'data'?: CourseDtoIPaginate;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoPagingResult
-     */
-    'pageNumber'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoPagingResult
-     */
-    'pageSize'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDtoPagingResult
-     */
-    'totalCount'?: number;
 }
 
 
@@ -1750,6 +1793,12 @@ export interface Exam {
     'center'?: User;
     /**
      * 
+     * @type {number}
+     * @memberof Exam
+     */
+    'totalQuestion'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof Exam
      */
@@ -2046,7 +2095,7 @@ export interface GetScoreDto {
      * @type {string}
      * @memberof GetScoreDto
      */
-    'examId'?: string;
+    'courseId'?: string;
 }
 /**
  * 
@@ -2570,12 +2619,6 @@ export interface RegisterRequest {
      * @memberof RegisterRequest
      */
     'userStatus'?: UserStatus;
-    /**
-     * 
-     * @type {string}
-     * @memberof RegisterRequest
-     */
-    'roleId': string;
 }
 
 
@@ -2993,7 +3036,7 @@ export interface UpdateUserRequest {
      * @type {UserStatus}
      * @memberof UpdateUserRequest
      */
-    'userStatus'?: UserStatus;
+    'status'?: UserStatus;
     /**
      * 
      * @type {string}
@@ -3469,6 +3512,18 @@ export interface UserExam {
      * @memberof UserExam
      */
     'score'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserExam
+     */
+    'totalQuestionRight'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof UserExam
+     */
+    'totalQuestionWrong'?: number;
     /**
      * 
      * @type {string}
@@ -6123,6 +6178,39 @@ export const ExamApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1ExamDelete: async (id: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('apiV1ExamDelete', 'id', id)
+            const localVarPath = `/api/v1/exam`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -6304,6 +6392,18 @@ export const ExamApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1ExamDelete(id: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BooleanResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamDelete(id, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ExamApi.apiV1ExamDelete']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -6377,6 +6477,15 @@ export const ExamApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1ExamDelete(id: string, options?: any): AxiosPromise<BooleanResult> {
+            return localVarFp.apiV1ExamDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {GetScoreDto} [getScoreDto] 
@@ -6436,6 +6545,17 @@ export class ExamApi extends BaseAPI {
      */
     public apiV1ExamCourseIdIdGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
         return ExamApiFp(this.configuration).apiV1ExamCourseIdIdGet(id, page, size, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExamApi
+     */
+    public apiV1ExamDelete(id: string, options?: RawAxiosRequestConfig) {
+        return ExamApiFp(this.configuration).apiV1ExamDelete(id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7921,7 +8041,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseDtoPagingResult>> {
+        async apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseByUserDtoPagingResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1NguoiHocIdKhoaHocGet(id, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['UserApi.apiV1NguoiHocIdKhoaHocGet']?.[localVarOperationServerIndex]?.url;
@@ -8033,7 +8153,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: any): AxiosPromise<CourseDtoPagingResult> {
+        apiV1NguoiHocIdKhoaHocGet(id: string, page?: number, size?: number, options?: any): AxiosPromise<CourseByUserDtoPagingResult> {
             return localVarFp.apiV1NguoiHocIdKhoaHocGet(id, page, size, options).then((request) => request(axios, basePath));
         },
         /**
