@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Space, Modal, Input, Select, Button, Flex, Table, Form, App, Typography, Tag } from 'antd'
 import type { FormProps, TableProps } from 'antd'
 import { useState } from 'react'
@@ -131,7 +131,13 @@ const CourseCategoryView: React.FC = () => {
       key: 'actions',
       render: (_, { id }) => (
         <Space>
-          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
+          <Button
+            // onClick={() => {
+            //   setOpenModalCourseAreaDetail(true)
+            //   setSelectedCourseArea(record)
+            // }}
+            icon={<EditOutlined />}
+          />
         </Space>
       ) // Nút hành động
     }

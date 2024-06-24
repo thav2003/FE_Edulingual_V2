@@ -1,9 +1,12 @@
+import { EditOutlined } from '@ant-design/icons'
 import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
+import { useCallback, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { PaymentApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import { useAppStore } from '~/stores'
+import debounce from '~/utils'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
@@ -75,6 +78,14 @@ const AdminOrderPage: React.FC = () => {
       }
     },
     {
+      title: 'Trung tâm',
+      // dataIndex: 'note',
+      key: 'center',
+      render: (_, { course }) => {
+        return course.center?.fullName
+      }
+    },
+    {
       title: 'Ngày tạo',
       // dataIndex: 'key',
       key: 'createdAt',
@@ -94,7 +105,17 @@ const AdminOrderPage: React.FC = () => {
       // title: 'Trạng thái',
       key: 'actions',
       // dataIndex: 'isDone',
-      render: (_, { isDone }) => <Button type='primary'>Chi tiết</Button>
+      render: (_, { isDone }) => (
+        <Space>
+          <Button
+            // onClick={() => {
+            //   setOpenModalCourseAreaDetail(true)
+            //   setSelectedCourseArea(record)
+            // }}
+            icon={<EditOutlined />}
+          />
+        </Space>
+      )
     }
   ]
 
@@ -114,9 +135,9 @@ const AdminOrderPage: React.FC = () => {
         <div className='h-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
             <Flex align='center' justify='space-between' gap={20} wrap>
-              <Text strong>1,133 Orders</Text>
+              <Text strong>{data_total_data_payments} giao dịch</Text>
               <Flex align='center' gap={20}>
-                <Input.Search size='large' />
+                <Input.Search size='large' placeholder='Tìm trung tâm' />
                 <Select
                   size='large'
                   className='!text-left'

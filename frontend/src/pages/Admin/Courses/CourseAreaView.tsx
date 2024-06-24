@@ -141,7 +141,6 @@ const CourseAreaView: React.FC = () => {
             }}
             icon={<EditOutlined />}
           />
-          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
         </Space>
       ) // Nút hành động
     }

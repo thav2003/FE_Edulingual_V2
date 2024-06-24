@@ -24,35 +24,35 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
       ? [
           {
             key: 'dashboard',
-            label: <Link to={'/admin/dashboard'}>Dashboard</Link>
+            label: <Link to={'/admin/dashboard'}>Bảng điều khiển</Link>
           },
           {
             key: 'courses',
-            label: <Link to={'/admin/courses'}>Course</Link>
+            label: <Link to={'/admin/courses'}>Khóa học</Link>
           },
           {
             key: 'teachers',
-            label: <Link to={'/admin/teachers'}>Teacher</Link>
+            label: <Link to={'/admin/teachers'}>Giáo viên</Link>
           },
           {
             key: 'students',
-            label: <Link to={'/admin/students'}>Student</Link>
+            label: <Link to={'/admin/students'}>Học sinh</Link>
           },
           {
             key: 'orders',
-            label: <Link to={'/admin/orders'}>Orders</Link>
+            label: <Link to={'/admin/orders'}>Giao dịch</Link>
           }
         ]
       : []),
     ...(user?.role === Role.USER
       ? [
           {
-            key: 'teachers',
-            label: <Link to={'/account/viewexam'}>Làm kiểm tra</Link>
-          },
-          {
             label: <Link to='/account/mycourses'>Khóa học</Link>,
             key: 'mycourses'
+          },
+          {
+            key: 'viewexam',
+            label: <Link to={'/account/viewexam'}>Làm kiểm tra</Link>
           }
         ]
       : []),
@@ -64,11 +64,11 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
           },
           {
             label: <Link to='/account/createexam'>Tạo bộ đề</Link>,
-            key: 'mycourses'
+            key: 'createexam'
           },
           {
             label: <Link to='/account/mystudents'>Học sinh</Link>,
-            key: 'mycourses'
+            key: 'mystudents'
           }
         ]
       : []),

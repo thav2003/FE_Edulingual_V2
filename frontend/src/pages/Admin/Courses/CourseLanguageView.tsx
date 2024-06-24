@@ -109,7 +109,13 @@ const CourseLanguageView: React.FC = () => {
       key: 'actions',
       render: (_, { id }) => (
         <Space>
-          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
+          <Button
+            // onClick={() => {
+            //   setOpenModalCourseAreaDetail(true)
+            //   setSelectedCourseArea(record)
+            // }}
+            icon={<EditOutlined />}
+          />
         </Space>
       ) // Nút hành động
     }

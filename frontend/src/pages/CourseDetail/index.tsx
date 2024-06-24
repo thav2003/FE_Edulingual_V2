@@ -144,7 +144,7 @@ const CourseDetailPage: React.FC = () => {
                   data-nimg='1'
                   className='w-[40px] h-[40px] rounded-full'
                   style={{ color: 'transparent' }}
-                  src='/anh2.png'
+                  src={data_course?.center?.imageUrl}
                 />
                 <div>
                   <h3 className='text-[17px] lg:text-[19px]'>
@@ -165,7 +165,7 @@ const CourseDetailPage: React.FC = () => {
             <div className='sm:flex items-center justify-between space-y-[20px] sm:space-y-[0]'>
               <div>
                 <Button type='primary' size='large' onClick={() => navigate(`/checkout/${data_course.id}`)}>
-                  Now Buy Course <i className='ri-arrow-right-up-line'></i>
+                  Đăng kí khóa học<i className='ri-arrow-right-up-line'></i>
                 </Button>
               </div>
               <div className='flex items-center space-x-[10px] rtl:space-x-reverse'>

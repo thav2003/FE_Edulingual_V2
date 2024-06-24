@@ -257,10 +257,6 @@ const AdminStudentPage: React.FC = () => {
             <Form.Item<FieldType> name='userName' label='Email'>
               <Input placeholder='Email' />
             </Form.Item>
-
-            <Form.Item<FieldType> name='password' label='Password'>
-              <Input.Password placeholder='Password' />
-            </Form.Item>
             <Form.Item<FieldType> name='fullName' label='Full Name'>
               <Input placeholder='Full Name' />
             </Form.Item>

@@ -7,7 +7,7 @@ import { useAuthStore } from '~/stores'
 const { Title, Text } = Typography
 
 type FieldType = {
-  email: string
+  username: string
   password: string
 }
 
@@ -17,10 +17,10 @@ const LoginForm: React.FC = () => {
   const loginUser = useAuthStore((state) => state.loginUser)
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
-    const { email, password } = values
+    const { username, password } = values
 
     try {
-      await loginUser(email, password)
+      await loginUser(username, password)
       navigate('/account')
     } catch (error) {
       console.log(error)
@@ -35,7 +35,7 @@ const LoginForm: React.FC = () => {
     <div className='mt-2'>
       <Space direction='vertical' className='w-full'>
         <Title className='drop-shadow-lg'>
-          Chào mứng đến với <br />
+          Chào mừng đến với <br />
           <span className='drop-shadow-lg !text-primary'>Edu Lingual</span>
         </Title>
 
@@ -79,18 +79,18 @@ const LoginForm: React.FC = () => {
             or
           </Divider>
           <Form.Item<FieldType>
-            label={<Text strong>Nhập Email</Text>}
-            name='email'
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            label={<Text strong>Nhập tài khoản</Text>}
+            name='username'
+            rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
-            <Input size='large' placeholder='Email address' />
+            <Input size='large' placeholder='Tài khoản' />
           </Form.Item>
 
           <Form.Item<FieldType>
             label={<Text strong>Mật khẩu</Text>}
             name='password'
             style={{ position: 'relative' }}
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
             <Input.Password size='large' placeholder='Password' />
           </Form.Item>

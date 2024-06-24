@@ -271,7 +271,7 @@ const ViewExamPage: React.FC = () => {
             <Select
               value={selectedCourseId}
               onChange={setSelectedCourseId}
-              placeholder='Khóa học'
+              placeholder='Chọn khóa học'
               size='large'
               allowClear
               className='w-full mb-5'
@@ -371,7 +371,7 @@ const ViewExamPage: React.FC = () => {
                             </Space>
 
                             <Flex align='center' gap={10}>
-                              <Avatar size={64} icon={<UserOutlined />} />
+                              <Avatar size={64} icon={<UserOutlined />} src={item.center?.imageUrl} />
                               <Space direction='vertical'>
                                 <Text strong>{item.center?.fullName}</Text>
                               </Space>
@@ -722,7 +722,7 @@ const ViewExamPage: React.FC = () => {
                           }}
                         >
                           <Space align='start' direction='vertical' style={{ width: '100%' }}>
-                            <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
+                            <Text style={{}}>{formatDateToDDMMYYWithTime(new Date(item.createdAt))}</Text>
 
                             <Text strong style={{ fontSize: 28 }}>
                               {item.exam.title}
@@ -730,7 +730,7 @@ const ViewExamPage: React.FC = () => {
                           </Space>
 
                           <Flex align='center' gap={10}>
-                            <Avatar size={64} icon={<UserOutlined />} />
+                            <Avatar size={64} icon={<UserOutlined />} src={item.center?.imageUrl} />
                             <Space direction='vertical'>
                               <Text strong>{item.center?.fullName}</Text>
                             </Space>
@@ -792,8 +792,8 @@ const ViewExamPage: React.FC = () => {
                               borderRadius: 10
                             }}
                           >
-                            <CloudDownloadOutlined />
-                            Tải đáp án
+                            {/* <CloudDownloadOutlined />
+                            Tải đáp án */}
                           </Space>
                         </Flex>
                       </Flex>
