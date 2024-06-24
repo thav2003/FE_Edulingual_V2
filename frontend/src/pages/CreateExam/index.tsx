@@ -1,7 +1,21 @@
 import React, { useState } from 'react'
 import { DeleteOutlined, EditOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
-import { message, Upload, ConfigProvider, Typography, Space, Button, Form, Progress, Select, App, Table } from 'antd'
+import {
+  message,
+  Upload,
+  ConfigProvider,
+  Typography,
+  Space,
+  Button,
+  Form,
+  Progress,
+  Select,
+  App,
+  Table,
+  Flex,
+  Input
+} from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
 import { useAppStore, useAuthStore } from '~/stores'
@@ -10,6 +24,7 @@ import useFetchData from '~/hooks/useFetch'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 import { useNavigate } from 'react-router-dom'
 const { Dragger } = Upload
+const { Text } = Typography
 
 interface Course {
   courseArea: {
@@ -141,6 +156,7 @@ const CreateExamPage: React.FC = () => {
   const [loadingExams, errorExams, responseExams] = useFetchData(fetchExams, selectedCourseId)
 
   const data_exams = responseExams?.data?.data?.items
+  const total_exams = responseExams?.data?.totalCount
   console.log(data_exams)
 
   const columns = [
@@ -219,17 +235,25 @@ const CreateExamPage: React.FC = () => {
 
                 {progress > 0 ? <Progress percent={progress} /> : null}
               </Dragger>
-            </div>
+            </div>{' '}
             <div>
               {selectedCourseId && (
-                <Table
-                  pagination={{
-                    position: ['bottomCenter'],
-                    pageSize: 5
-                  }}
-                  columns={columns}
-                  dataSource={data_exams}
-                />
+                <Space className='w-full' direction='vertical'>
+                  <Flex align='center' justify='space-between' gap={20} wrap>
+                    <Text strong>{total_exams} bài kiểm tra</Text>
+                    <Flex align='center' gap={20}>
+                      <Input.Search size='large' placeholder='Tìm bài kiểm tra' />
+                    </Flex>
+                  </Flex>
+                  <Table
+                    pagination={{
+                      position: ['bottomCenter'],
+                      pageSize: 5
+                    }}
+                    columns={columns}
+                    dataSource={data_exams}
+                  />
+                </Space>
               )}
             </div>
           </Space>

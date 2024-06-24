@@ -232,7 +232,12 @@ const MyCoursesPage: React.FC = () => {
       if (err.response.data.errors) {
         notification.error({ message: err.response.data.errors.Tuitionfee[0] })
       } else {
-        notification.error({ message: 'Sorry! Something went wrong. App server error' })
+        notification.error({
+          message:
+            err?.response?.data?.message ||
+            err?.response?.data?.Error ||
+            'Sorry! Something went wrong. App server error'
+        })
       }
     } finally {
       setCreateCourseLoading(false)
@@ -248,8 +253,13 @@ const MyCoursesPage: React.FC = () => {
       setUpdateCourseLoading(true)
       await courseApi.apiV1KhoaHocIdPut(selectedCourse!.id, values)
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setUpdateCourseLoading(false)
     }
@@ -261,10 +271,15 @@ const MyCoursesPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await courseApi.apiV1KhoaHocIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const columns_courses: TableProps<Course>['columns'] = [
@@ -672,17 +687,18 @@ const MyCoursesPage: React.FC = () => {
               </Form>
             </Modal>
             <Flex align='center' justify='space-between' gap={20} wrap>
-              <Text strong>{data_courses?.length} Courses</Text>
+              <Text strong>{data_courses?.length} khóa học</Text>
               <Flex align='center' gap={20}>
-                {/* <Input.Search
+                <Input.Search
                   size='large'
                   value={searchQuery}
+                  placeholder='Tìm khóa học'
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
                     handleSearchCourses(e.target.value)
                   }}
-                /> */}
-                {/* <Select
+                />
+                <Select
                   size='large'
                   className='!text-left'
                   allowClear
@@ -774,7 +790,7 @@ const MyCoursesPage: React.FC = () => {
                   >
                     Hoạt động
                   </Select.Option>
-                </Select> */}
+                </Select>
                 {userRole === Role.TEACHER && (
                   <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
                     Thêm khóa học

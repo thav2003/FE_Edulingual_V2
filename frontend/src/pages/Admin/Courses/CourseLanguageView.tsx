@@ -50,8 +50,13 @@ const CourseLanguageView: React.FC = () => {
       await courseLanguageApi.apiV1NgonNguIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const onFinishCourseLanguage: FormProps<FieldCourseLanguageType>['onFinish'] = async (values) => {
@@ -61,8 +66,13 @@ const CourseLanguageView: React.FC = () => {
       await courseLanguageApi.apiV1NgonNguPost(values)
       refetchApp()
       notification.info({ message: 'Tạo thành công' })
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setCreateCourseLanguageLoading(false)
     }

@@ -232,8 +232,13 @@ const CoursesView: React.FC = () => {
       await courseApi.apiV1KhoaHocPost(values)
       refetchApp()
       createCourseForm.resetFields()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setCreateCourseLoading(false)
     }
@@ -249,8 +254,13 @@ const CoursesView: React.FC = () => {
       setUpdateCourseLoading(true)
       await courseApi.apiV1KhoaHocIdPut(selectedCourse!.id, values)
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setUpdateCourseLoading(false)
     }

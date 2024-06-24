@@ -20,7 +20,8 @@ import {
   Flex,
   Radio,
   List,
-  Image
+  Image,
+  Input
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
@@ -282,38 +283,45 @@ const ViewExamPage: React.FC = () => {
                 </Select.Option>
               ))}
             </Select>
-            <Radio.Group buttonStyle={'solid'} value={mode} onChange={(e) => setMode(e.target.value)}>
-              <Space size={'middle'}>
-                <Radio.Button
-                  value={1}
-                  type='primary'
-                  style={{
-                    borderRadius: 30,
-                    paddingLeft: 25,
-                    paddingRight: 25,
-                    height: 45,
-                    lineHeight: '45px',
-                    borderWidth: 1
-                  }}
-                >
-                  Kiểm tra
-                </Radio.Button>
-                <Radio.Button
-                  value={2}
-                  type='primary'
-                  style={{
-                    borderRadius: 30,
-                    paddingLeft: 25,
-                    paddingRight: 25,
-                    height: 45,
-                    lineHeight: '45px',
-                    borderWidth: 1
-                  }}
-                >
-                  Kết quả
-                </Radio.Button>
-              </Space>
-            </Radio.Group>
+            <Space className='flex justify-between items-center'>
+              <Radio.Group buttonStyle={'solid'} value={mode} onChange={(e) => setMode(e.target.value)}>
+                <Space size={'middle'}>
+                  <Radio.Button
+                    value={1}
+                    type='primary'
+                    style={{
+                      borderRadius: 30,
+                      paddingLeft: 25,
+                      paddingRight: 25,
+                      height: 45,
+                      lineHeight: '45px',
+                      borderWidth: 1
+                    }}
+                  >
+                    Kiểm tra
+                  </Radio.Button>
+                  <Radio.Button
+                    value={2}
+                    type='primary'
+                    style={{
+                      borderRadius: 30,
+                      paddingLeft: 25,
+                      paddingRight: 25,
+                      height: 45,
+                      lineHeight: '45px',
+                      borderWidth: 1
+                    }}
+                  >
+                    Kết quả
+                  </Radio.Button>
+                </Space>
+              </Radio.Group>
+              {selectedCourseId && (
+                <Flex align='center' className='self-end' gap={20}>
+                  <Input.Search size='large' placeholder='Tìm bài kiểm tra' />
+                </Flex>
+              )}
+            </Space>
 
             {mode === 1 && (
               <>
@@ -785,16 +793,36 @@ const ViewExamPage: React.FC = () => {
                             </Space>
                           </Space>
 
-                          <Space
+                          {/* <Space
                             style={{
                               color: '#53B748',
                               padding: 5,
                               borderRadius: 10
                             }}
                           >
-                            {/* <CloudDownloadOutlined />
-                            Tải đáp án */}
-                          </Space>
+                            <div
+                              style={{
+                                background: '#53B748',
+                                padding: 5,
+                                borderRadius: 10
+                              }}
+                              onClick={() => navigate(`${item.id}`)}
+                            >
+                              <Button
+                                size='large'
+                                target='_blank'
+                                style={{
+                                  // background: "transparent",
+                                  border: 'solid',
+                                  // borderWidth: 1,
+                                  height: 50,
+                                  fontWeight: 600
+                                }}
+                              >
+                                Làm kiểm tra lại
+                              </Button>
+                            </div>
+                          </Space> */}
                         </Flex>
                       </Flex>
                     </Card>

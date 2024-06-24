@@ -85,8 +85,13 @@ const CourseCategoryView: React.FC = () => {
       await courseCategoryApi.apiV1LoaiKhoaHocIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const columns_courseCategory: TableProps<CourseCategory>['columns'] = [
@@ -150,8 +155,13 @@ const CourseCategoryView: React.FC = () => {
       await courseCategoryApi.apiV1LoaiKhoaHocPost(values)
       refetchApp()
       notification.info({ message: 'Tạo thành công' })
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setCreateCourseCategoryLoading(false)
     }

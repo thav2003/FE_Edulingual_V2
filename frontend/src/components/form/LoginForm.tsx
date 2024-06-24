@@ -24,7 +24,9 @@ const LoginForm: React.FC = () => {
       navigate('/account')
     } catch (error) {
       console.log(error)
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+      notification.error({
+        message: error?.response?.data?.message || 'Sorry! Something went wrong. App server error'
+      })
     }
   }
 
