@@ -166,7 +166,7 @@ const CreateExamPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     console.log(id)
     try {
-      await examApi.apiV1ExamDelete(id)
+      await examApi.apiV1ExamIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
     } catch (e) {
@@ -284,7 +284,7 @@ const CreateExamPage: React.FC = () => {
                       pageSize: 5
                     }}
                     columns={columns}
-                    dataSource={data_exams}
+                    dataSource={filteredData}
                   />
                 </Space>
               )}

@@ -103,20 +103,22 @@ const AccountLayout: React.FC = () => {
     onChange: onChangeAvatar,
     customRequest: async (options: any) => {
       try {
-        // const data = {
-        //   imageFile: options.file
-        // }
-        // const response = await axios.post('/user/uploadavatar', convertToFormData(data), {
-        //   headers: {
-        //     'content-type': 'multipart/form-data'
-        //   }
-        // })
-        // if (response) {
-        //   notification.success({ message: 'Cập nhật thành công' })
-        //   refetchApp
-        // } else {
-        //   notification.error({ message: 'Cập nhật thất bại' })
-        // }
+        const data = {
+          file: options.file
+        }
+        const response = await axios.post('http://35.198.226.22:10000/api/v1/upload', convertToFormData(data), {
+          headers: {
+            'content-type': 'multipart/form-data'
+          }
+        })
+        console.log(response)
+        if (response) {
+          await userApi.apiV1UsersIdPut(user!.id, { imageUrl: response.data.data.publicLink })
+          notification.success({ message: 'Cập nhật thành công' })
+          refetchApp()
+        } else {
+          notification.error({ message: 'Cập nhật thất bại' })
+        }
       } catch (err) {
         notification.error({ message: (err as string) || 'Sorry! Something went wrong. App server error' })
       }

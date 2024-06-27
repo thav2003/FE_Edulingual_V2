@@ -110,7 +110,10 @@ const ViewExamPage: React.FC = () => {
   const [mode, setMode] = useState(1)
   const [searchExam, setSearcExam] = useState('')
   const [dataExamResults, setDataExamResults] = useState([])
+  const [dataExamResults1, setDataExamResults1] = useState([])
   const [filteredData, setFilteredData] = useState([])
+
+  const [filteredData1, setFilteredData1] = useState([])
   const props: UploadProps = {
     name: 'file',
     multiple: false,
@@ -234,6 +237,14 @@ const ViewExamPage: React.FC = () => {
       setFilteredData(filteredResults)
     }
   }, [searchExam, dataExamResults])
+  useEffect(() => {
+    if (dataExamResults1) {
+      const filteredResults = dataExamResults1.filter((result) =>
+        result?.title?.toLowerCase().includes(searchExam.toLowerCase())
+      )
+      setFilteredData1(filteredResults)
+    }
+  }, [searchExam, dataExamResults1])
 
   useEffect(() => {
     if (data_exam_results) {
@@ -241,6 +252,12 @@ const ViewExamPage: React.FC = () => {
       setFilteredData(data_exam_results)
     }
   }, [data_exam_results])
+  useEffect(() => {
+    if (data_exams) {
+      setDataExamResults1(data_exams)
+      setFilteredData1(data_exams)
+    }
+  }, [data_exams])
 
   return (
     <div
@@ -306,7 +323,12 @@ const ViewExamPage: React.FC = () => {
               </Radio.Group>
               {selectedCourseId && mode === 1 && (
                 <Flex align='center' className='self-end' gap={20}>
-                  <Input.Search size='large' placeholder='Tìm bài kiểm tra' />
+                  <Input.Search
+                    size='large'
+                    placeholder='Tìm bài kiểm tra'
+                    value={searchExam}
+                    onChange={(e) => setSearcExam(e.target.value)}
+                  />
                 </Flex>
               )}
               {selectedCourseId && mode === 2 && (
@@ -325,7 +347,7 @@ const ViewExamPage: React.FC = () => {
               <>
                 <List
                   itemLayout='horizontal'
-                  dataSource={data_exams}
+                  dataSource={filteredData1}
                   renderItem={(item: any, index) => (
                     <List.Item>
                       <Card
