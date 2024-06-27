@@ -28,12 +28,12 @@ const MyStudentPage: React.FC = () => {
   const options = ['option 1', 'options 2']
   const userId = useAuthStore((state) => state.user?.id)
   const fetchUsers = () => {
-    return userApi.apiV1TrungTamIdKhoaHocGet(userId!, 1, 10000)
+    return userApi.apiV1NguoiHocGet(userId!, undefined, 1, 10000)
   }
   const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
 
-  console.log(responseUsers)
   const dataUsers = responseUsers ? responseUsers?.data?.data?.items : []
+  console.log(dataUsers)
   const columns: TableProps<User>['columns'] = [
     {
       title: 'STT',
@@ -53,11 +53,16 @@ const MyStudentPage: React.FC = () => {
       key: 'userName'
     },
     {
-      title: 'Ngày tạo',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (_, { createdAt }) => {
-        return formatDateToDDMMYYWithTime(new Date(createdAt))
+      title: 'Khóa học',
+      dataIndex: 'course',
+      key: 'course'
+    },
+    {
+      title: 'Ngày tham gia',
+      dataIndex: 'joinedAt',
+      key: 'joinedAt',
+      render: (_, { joinedAt }) => {
+        return formatDateToDDMMYYWithTime(new Date(joinedAt))
       }
     },
     {
@@ -147,7 +152,7 @@ const MyStudentPage: React.FC = () => {
                 </Select>
               </Flex>
             </Flex>
-            <Table<User> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={[]} />
+            <Table<User> pagination={{ position: ['bottomLeft'] }} columns={columns} dataSource={dataUsers} />
           </Space>
         </div>
       </ConfigProvider>

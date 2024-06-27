@@ -22,8 +22,6 @@ import {
   List,
   Image,
   Input
-  Image,
-  Input
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
