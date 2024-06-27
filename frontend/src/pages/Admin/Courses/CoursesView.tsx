@@ -160,6 +160,9 @@ const CoursesView: React.FC = () => {
   const [createCourseForm] = Form.useForm<FieldCourseType>()
   const [updateCourseForm] = Form.useForm<FieldCourseType>()
   const [searchQuery, setSearchQuery] = useState(searchParams.get('title') ? searchParams.get('title')! : '')
+  const [searchCenterQuery, setSearchCenterQuery] = useState(
+    searchParams.get('center') ? searchParams.get('center')! : ''
+  )
 
   const [selectedCourse, setSelectedCourse] = useState<Course>()
 
@@ -198,8 +201,34 @@ const CoursesView: React.FC = () => {
         page: searchParams.get('page') || '1',
         size: searchParams.get('size') || '5'
       })
+      if (searchParams.get('center')) {
+        queryParams.set('center', searchParams.get('center')!)
+      }
+      if (searchParams.get('status')) {
+        queryParams.set('status', searchParams.get('status')!)
+      }
       if (query) {
         queryParams.set('title', query)
+      }
+      setSearchParams(queryParams.toString())
+    }, 500),
+    [searchParams, setSearchParams]
+  )
+  const handleSearchCenter = useCallback(
+    debounce((query) => {
+      console.log(query)
+      const queryParams = new URLSearchParams({
+        page: searchParams.get('page') || '1',
+        size: searchParams.get('size') || '5'
+      })
+      if (searchParams.get('title')) {
+        queryParams.set('title', searchParams.get('title')!)
+      }
+      if (searchParams.get('status')) {
+        queryParams.set('status', searchParams.get('status')!)
+      }
+      if (query) {
+        queryParams.set('center', query)
       }
       setSearchParams(queryParams.toString())
     }, 500),
@@ -210,7 +239,7 @@ const CoursesView: React.FC = () => {
     return courseApi.apiV1KhoaHocAdminGet(
       searchParams.get('title') ? searchParams.get('title')! : undefined,
       searchParams.get('status') ? (Number(searchParams.get('status')!) as 0 | 1) : undefined,
-      undefined,
+      searchParams.get('center') ? searchParams.get('center')! : undefined,
       searchParams.get('page') ? Number(searchParams.get('page')) : 1,
       searchParams.get('size') ? Number(searchParams.get('size')) : 5
     )
@@ -218,6 +247,7 @@ const CoursesView: React.FC = () => {
   const [loadingCourses, errorCourses, responseCourses] = useFetchData(
     fetchCourses,
     searchParams.get('page'),
+    searchParams.get('center'),
     searchParams.get('size'),
     searchParams.get('title'),
     searchParams.get('status')
@@ -249,6 +279,7 @@ const CoursesView: React.FC = () => {
       setUpdateCourseLoading(true)
       await courseApi.apiV1KhoaHocIdPut(selectedCourse!.id, values)
       refetchApp()
+      notification.success({ message: 'Cập nhật thành công' })
     } catch {
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
     } finally {
@@ -659,11 +690,21 @@ const CoursesView: React.FC = () => {
               handleSearchCourses(e.target.value)
             }}
           />
+          <Input.Search
+            size='large'
+            placeholder='Tìm theo trum tâm'
+            value={searchCenterQuery}
+            onChange={(e) => {
+              setSearchCenterQuery(e.target.value)
+              handleSearchCenter(e.target.value)
+            }}
+          />
           <Select
             size='large'
             className='!text-left'
             allowClear
             optionLabelProp='label'
+            value={searchParams.get('status') ? (Number(searchParams.get('status')!) as 0 | 1) : null}
             onChange={(status) => {
               const queryParams = new URLSearchParams({
                 page: searchParams.get('page') || '1',
@@ -777,6 +818,9 @@ const CoursesView: React.FC = () => {
           }
           if (searchParams.get('status')) {
             queryParams.set('status', searchParams.get('status')!)
+          }
+          if (searchParams.get('center')) {
+            queryParams.set('center', searchParams.get('center')!)
           }
           setSearchParams(queryParams.toString())
         }}

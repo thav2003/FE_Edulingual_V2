@@ -1,7 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DeleteOutlined, EditOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
-import { message, Upload, ConfigProvider, Typography, Space, Button, Form, Progress, Select, App, Table } from 'antd'
+import {
+  message,
+  Upload,
+  ConfigProvider,
+  Typography,
+  Space,
+  Button,
+  Form,
+  Progress,
+  Select,
+  App,
+  Table,
+  Input
+} from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
 import { useAppStore, useAuthStore } from '~/stores'
@@ -78,6 +91,9 @@ const CreateExamPage: React.FC = () => {
   const [progress, setProgress] = useState(0)
   const [selectedCourseId, setSelectedCourseId] = useState<string | undefined>(undefined)
   const refetchApp = useAppStore((state) => state.refetchApp)
+  const [searchExam, setSearcExam] = useState('')
+  const [dataExam, setDataExam] = useState([])
+  const [filteredData, setFilteredData] = useState([])
   const props: UploadProps = {
     name: 'file',
     multiple: false,
@@ -141,7 +157,16 @@ const CreateExamPage: React.FC = () => {
   const [loadingExams, errorExams, responseExams] = useFetchData(fetchExams, selectedCourseId)
 
   const data_exams = responseExams?.data?.data?.items
-
+  const handleDelete = async (id: string) => {
+    console.log(id)
+    try {
+      await examApi.apiV1ExamDelete(id)
+      notification.info({ message: 'Xóa thành công' })
+      refetchApp()
+    } catch (e) {
+      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    }
+  }
   const columns = [
     {
       title: 'STT',
@@ -178,12 +203,26 @@ const CreateExamPage: React.FC = () => {
       render: (_, { id }) => (
         <Space>
           <Button onClick={() => navigate(`${id}`)} icon={<EyeOutlined />}></Button>
-          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
+          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
         </Space>
       )
     }
   ]
-  console.log(selectedCourseId)
+  useEffect(() => {
+    if (dataExam) {
+      const filteredResults = dataExam.filter((result) =>
+        result?.title?.toLowerCase().includes(searchExam.toLowerCase())
+      )
+      setFilteredData(filteredResults)
+    }
+  }, [searchExam, dataExam])
+
+  useEffect(() => {
+    if (data_exams) {
+      setDataExam(data_exams)
+      setFilteredData(data_exams)
+    }
+  }, [data_exams])
   return (
     <div
       style={{
@@ -215,6 +254,13 @@ const CreateExamPage: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
+              <Input
+                size='large'
+                className='w-full mb-5'
+                placeholder='Search exam'
+                value={searchExam}
+                onChange={(e) => setSearcExam(e.target.value)}
+              />
               <Dragger {...props}>
                 <Button type='primary' size='large'>
                   Chọn tài liệu
@@ -225,6 +271,7 @@ const CreateExamPage: React.FC = () => {
                 {progress > 0 ? <Progress percent={progress} /> : null}
               </Dragger>
             </div>
+
             <div>
               {selectedCourseId && (
                 <Table
@@ -233,7 +280,7 @@ const CreateExamPage: React.FC = () => {
                     pageSize: 5
                   }}
                   columns={columns}
-                  dataSource={data_exams}
+                  dataSource={filteredData}
                 />
               )}
             </div>

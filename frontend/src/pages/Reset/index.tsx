@@ -32,7 +32,17 @@ const ResetPasswordPage: React.FC = () => {
           onFinishFailed={onFinishFailed}
           autoComplete='off'
         >
-          <Form.Item<FieldType> name='password' rules={[{ required: true, message: 'Please input your password!' }]}>
+          <Form.Item<FieldType>
+            name='password'
+            rules={[
+              { required: true, message: 'Please input your password!' },
+              {
+                pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
+                message:
+                  'Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character'
+              }
+            ]}
+          >
             <Input.Password size='large' placeholder='Password' />
           </Form.Item>
 

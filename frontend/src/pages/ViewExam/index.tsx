@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CheckSquareOutlined, CloudDownloadOutlined, InboxOutlined, UserOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
 import {
@@ -20,7 +20,8 @@ import {
   Flex,
   Radio,
   List,
-  Image
+  Image,
+  Input
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
@@ -107,7 +108,9 @@ const ViewExamPage: React.FC = () => {
   const [selectedCourseId, setSelectedCourseId] = useState<string | undefined>(undefined)
   const refetchApp = useAppStore((state) => state.refetchApp)
   const [mode, setMode] = useState(1)
-
+  const [searchExam, setSearcExam] = useState('')
+  const [dataExamResults, setDataExamResults] = useState([])
+  const [filteredData, setFilteredData] = useState([])
   const props: UploadProps = {
     name: 'file',
     multiple: false,
@@ -220,8 +223,23 @@ const ViewExamPage: React.FC = () => {
       )
     }
   ]
+  console.log(dataExamResults)
+  useEffect(() => {
+    if (dataExamResults) {
+      const filteredResults = dataExamResults.filter((result) =>
+        result?.exam.title?.toLowerCase().includes(searchExam.toLowerCase())
+      )
+      setFilteredData(filteredResults)
+    }
+  }, [searchExam, dataExamResults])
 
-  console.log(selectedCourseId)
+  useEffect(() => {
+    if (data_exam_results) {
+      setDataExamResults(data_exam_results)
+      setFilteredData(data_exam_results)
+    }
+  }, [data_exam_results])
+  console.log(data_exam_results)
   return (
     <div
       style={{
@@ -236,37 +254,6 @@ const ViewExamPage: React.FC = () => {
         }}
       >
         <div className='h-full w-full p-10 bg-[#FFFFFF]'>
-          {/* <Space className='w-full' direction='vertical'>
-            <div>
-              <Typography.Title level={3}>Chọn khóa học</Typography.Title>
-              <Select
-                value={selectedCourseId}
-                onChange={setSelectedCourseId}
-                placeholder='Khóa học'
-                size='large'
-                allowClear
-                className='w-full mb-5'
-              >
-                {data_courses?.map((cl) => (
-                  <Select.Option key={cl.id} value={cl.id}>
-                    {cl.title}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
-            <div>
-              {selectedCourseId && (
-                <Table
-                  pagination={{
-                    position: ['bottomCenter'],
-                    pageSize: 5
-                  }}
-                  columns={columns}
-                  dataSource={data_exams}
-                />
-              )}
-            </div>
-          </Space> */}
           <Space size={'large'} direction='vertical' style={{ width: '100%' }}>
             <Select
               value={selectedCourseId}
@@ -444,598 +431,144 @@ const ViewExamPage: React.FC = () => {
                     </List.Item>
                   )}
                 />
-                {/* <Space direction='vertical' size={30} style={{ width: '100%' }}>
-                  <Card
-                    hoverable
-                    style={cardStyle}
-                    styles={{
-                      body: {
-                        padding: 20
-                      }
-                    }}
-                  >
-                    <Flex
-                      gap={30}
-                      style={{
-                        borderRadius: 100
-                      }}
-                    >
-                      <div
-                        style={
-                          {
-                            // padding: 20,
-                            // paddingBottom: 40,
-                            // paddingRight: 30,
-                          }
-                        }
-                      >
-                        <img
-                          alt='avatar'
-                          src='/image/preview.png'
-                          //   style={imgStyle}
-                        />
-                      </div>
-                      <Flex
-                        vertical
-                        align='flex-start'
-                        justify='space-between'
-                        gap={20}
-                        style={{
-                          flexGrow: 1
-                        }}
-                      >
-                        <Space align='start' direction='vertical' style={{ width: '100%' }}>
-                          <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
-
-                          <Text strong style={{ fontSize: 28 }}>
-                            Đề kiểm tra trắc nghiệm
-                          </Text>
-                        </Space>
-
-                        <Flex align='center' gap={10}>
-                          <Avatar size={64} icon={<UserOutlined />} />
-                          <Space direction='vertical'>
-                            <Text strong>Hằng</Text>
-                            <Text>English Teacher</Text>
-                          </Space>
-                        </Flex>
-                      </Flex>
-                      <Flex
-                        vertical
-                        align='flex-start'
-                        justify='space-between'
-                        gap={20}
-                        style={
-                          {
-                            // padding: 24,
-                          }
-                        }
-                      >
-                        <div>
-                          <Text style={{}}>
-                            <Text strong>40</Text> câu hỏi
-                          </Text>
-                          <Divider type='vertical' style={{ borderWidth: 1 }} />
-                          <Text style={{}}>
-                            <Text strong>60</Text> phút
-                          </Text>
-                        </div>
-
-                        <div
-                          style={{
-                            background: '#53B748',
-                            padding: 5,
-                            borderRadius: 10
-                          }}
-                        >
-                          <Button
-                            size='large'
-                            target='_blank'
-                            style={{
-                              // background: "transparent",
-                              border: 'solid',
-                              // borderWidth: 1,
-                              height: 50,
-                              marginRight: 15,
-                              fontWeight: 600
-                            }}
-                          >
-                            Làm kiểm tra
-                          </Button>
-                          <svg
-                            style={{ marginRight: 10 }}
-                            width='29'
-                            height='16'
-                            viewBox='0 0 29 16'
-                            fill='none'
-                            xmlns='http://www.w3.org/2000/svg'
-                          >
-                            <path
-                              d='M21 15L26.25 9.75L27.2929 8.70711C27.6834 8.31658 27.6834 7.68342 27.2929 7.29289L21 1'
-                              stroke='#1C1C1C'
-                              stroke-width='2'
-                              stroke-linecap='round'
-                            />
-                            <path d='M21 8L1.75 8' stroke='#1C1C1C' stroke-width='2' stroke-linecap='round' />
-                          </svg>
-                        </div>
-                      </Flex>
-                    </Flex>
-                  </Card>
-                  <Card
-                    hoverable
-                    style={cardStyle}
-                    styles={{
-                      body: {
-                        padding: 20
-                      }
-                    }}
-                  >
-                    <Flex gap={30} style={{ borderRadius: 100 }}>
-                      <div
-                        style={
-                          {
-                            // padding: 20,
-                            // paddingBottom: 40,
-                            // paddingRight: 30,
-                          }
-                        }
-                      >
-                        <img
-                          alt='avatar'
-                          src='/image/preview1.png'
-                          //   style={imgStyle}
-                        />
-                      </div>
-                      <Flex
-                        vertical
-                        align='flex-start'
-                        justify='space-between'
-                        gap={20}
-                        style={{
-                          flexGrow: 1
-                        }}
-                      >
-                        <Space align='start' direction='vertical' style={{ width: '100%' }}>
-                          <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
-
-                          <Text strong style={{ fontSize: 28 }}>
-                            Đề kiểm tra trắc nghiệm
-                          </Text>
-                        </Space>
-
-                        <Flex align='center' gap={10}>
-                          <Avatar size={64} icon={<UserOutlined />} />
-                          <Space direction='vertical'>
-                            <Text strong>Hằng</Text>
-                            <Text>English Teacher</Text>
-                          </Space>
-                        </Flex>
-                      </Flex>
-                      <Flex
-                        vertical
-                        align='flex-start'
-                        justify='space-between'
-                        gap={20}
-                        style={
-                          {
-                            // padding: 24,
-                          }
-                        }
-                      >
-                        <div>
-                          <Text style={{}}>
-                            <Text strong>40</Text> câu hỏi
-                          </Text>
-                          <Divider type='vertical' style={{ borderWidth: 1 }} />
-                          <Text style={{}}>
-                            <Text strong>60</Text> phút
-                          </Text>
-                        </div>
-
-                        <div
-                          style={{
-                            background: '#53B748',
-                            padding: 5,
-                            borderRadius: 10
-                          }}
-                        >
-                          <Button
-                            size='large'
-                            target='_blank'
-                            style={{
-                              // background: "transparent",
-                              border: 'solid',
-                              // borderWidth: 1,
-                              height: 50,
-                              marginRight: 15,
-                              fontWeight: 600
-                            }}
-                          >
-                            Làm kiểm tra
-                          </Button>
-                          <svg
-                            style={{ marginRight: 10 }}
-                            width='29'
-                            height='16'
-                            viewBox='0 0 29 16'
-                            fill='none'
-                            xmlns='http://www.w3.org/2000/svg'
-                          >
-                            <path
-                              d='M21 15L26.25 9.75L27.2929 8.70711C27.6834 8.31658 27.6834 7.68342 27.2929 7.29289L21 1'
-                              stroke='#1C1C1C'
-                              stroke-width='2'
-                              stroke-linecap='round'
-                            />
-                            <path d='M21 8L1.75 8' stroke='#1C1C1C' stroke-width='2' stroke-linecap='round' />
-                          </svg>
-                        </div>
-                      </Flex>
-                    </Flex>
-                  </Card>
-                </Space> */}
               </>
             )}
             {mode === 2 && (
-              <List
-                itemLayout='horizontal'
-                dataSource={data_exam_results}
-                renderItem={(item: any, index) => (
-                  <List.Item>
-                    <Card
-                      hoverable
-                      style={cardStyle}
-                      styles={{
-                        body: {
-                          padding: 20
-                        }
-                      }}
-                    >
-                      <Flex gap={30} style={{ borderRadius: 100 }}>
-                        <div
-                          style={{
-                            // padding: 20,
-                            // paddingBottom: 40,
-                            // paddingRight: 30,
-                            flexGrow: 0.2,
-                            flexDirection: 'column',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                          }}
-                        >
-                          {/* <img
+              <Space direction='vertical' className='w-full'>
+                <Text strong className='text-lg'>
+                  Tìm kiếm bài kiếm tra
+                </Text>
+                <Input
+                  size='large'
+                  placeholder='Search exam'
+                  value={searchExam}
+                  onChange={(e) => setSearcExam(e.target.value)}
+                />
+                <List
+                  itemLayout='horizontal'
+                  dataSource={filteredData}
+                  renderItem={(item: any, index) => (
+                    <List.Item>
+                      <Card
+                        hoverable
+                        style={cardStyle}
+                        styles={{
+                          body: {
+                            padding: 20
+                          }
+                        }}
+                      >
+                        <Flex gap={30} style={{ borderRadius: 100 }}>
+                          <div
+                            style={{
+                              // padding: 20,
+                              // paddingBottom: 40,
+                              // paddingRight: 30,
+                              flexGrow: 0.2,
+                              flexDirection: 'column',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                            }}
+                          >
+                            {/* <img
                             alt="avatar"
                             src="/image/preview.png"
                             //   style={imgStyle}
                           /> */}
-                          <Title level={2}>{item.score}</Title>
-                          <Text>Điểm</Text>
-                        </div>
-                        <Flex
-                          vertical
-                          align='flex-start'
-                          justify='space-between'
-                          gap={20}
-                          style={{
-                            flexGrow: 1
-                          }}
-                        >
-                          <Space align='start' direction='vertical' style={{ width: '100%' }}>
-                            <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
+                            <Title level={2}>{item.score}</Title>
+                            <Text>Điểm</Text>
+                          </div>
+                          <Flex
+                            vertical
+                            align='flex-start'
+                            justify='space-between'
+                            gap={20}
+                            style={{
+                              flexGrow: 1
+                            }}
+                          >
+                            <Space align='start' direction='vertical' style={{ width: '100%' }}>
+                              <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
 
-                            <Text strong style={{ fontSize: 28 }}>
-                              {item.exam.title}
-                            </Text>
-                          </Space>
+                              <Text strong style={{ fontSize: 28 }}>
+                                {item.exam.title}
+                              </Text>
+                            </Space>
 
-                          <Flex align='center' gap={10}>
-                            <Avatar size={64} icon={<UserOutlined />} />
+                            <Flex align='center' gap={10}>
+                              <Avatar size={64} icon={<UserOutlined />} />
+                              <Space direction='vertical'>
+                                <Text strong>{item.center?.name}</Text>
+                                <Text>English Teacher</Text>
+                              </Space>
+                            </Flex>
+                          </Flex>
+                          <Flex
+                            vertical
+                            align='flex-start'
+                            justify='space-between'
+                            gap={20}
+                            style={
+                              {
+                                // padding: 24,
+                              }
+                            }
+                          >
                             <Space direction='vertical'>
-                              <Text strong>{item.center?.name}</Text>
-                              <Text>English Teacher</Text>
+                              <div>
+                                <Text style={{}}>
+                                  <Text strong>{item.exam.totalQuestion}</Text> câu hỏi
+                                </Text>
+                                <Divider type='vertical' style={{ borderWidth: 1 }} />
+                                <Text style={{}}>
+                                  <Text strong>60</Text> phút
+                                </Text>
+                              </div>
+                              <Space>
+                                <Space
+                                  style={{
+                                    background: '#3FB335',
+                                    padding: 5,
+                                    borderRadius: 5,
+                                    color: 'white',
+                                    width: 60
+                                  }}
+                                >
+                                  <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
+                                  42
+                                </Space>
+                                <Space
+                                  style={{
+                                    background: '#EF5B59',
+                                    padding: 5,
+                                    borderRadius: 5,
+                                    color: 'white',
+                                    width: 60
+                                  }}
+                                >
+                                  <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />8
+                                </Space>
+                              </Space>
+                            </Space>
+
+                            <Space
+                              style={{
+                                color: '#53B748',
+                                padding: 5,
+                                borderRadius: 10
+                              }}
+                            >
+                              <CloudDownloadOutlined />
+                              Tải đáp án
                             </Space>
                           </Flex>
                         </Flex>
-                        <Flex
-                          vertical
-                          align='flex-start'
-                          justify='space-between'
-                          gap={20}
-                          style={
-                            {
-                              // padding: 24,
-                            }
-                          }
-                        >
-                          <Space direction='vertical'>
-                            <div>
-                              <Text style={{}}>
-                                <Text strong>{item.exam.totalQuestion}</Text> câu hỏi
-                              </Text>
-                              <Divider type='vertical' style={{ borderWidth: 1 }} />
-                              <Text style={{}}>
-                                <Text strong>60</Text> phút
-                              </Text>
-                            </div>
-                            <Space>
-                              <Space
-                                style={{
-                                  background: '#3FB335',
-                                  padding: 5,
-                                  borderRadius: 5,
-                                  color: 'white',
-                                  width: 60
-                                }}
-                              >
-                                <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
-                                42
-                              </Space>
-                              <Space
-                                style={{
-                                  background: '#EF5B59',
-                                  padding: 5,
-                                  borderRadius: 5,
-                                  color: 'white',
-                                  width: 60
-                                }}
-                              >
-                                <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />8
-                              </Space>
-                            </Space>
-                          </Space>
-
-                          <Space
-                            style={{
-                              color: '#53B748',
-                              padding: 5,
-                              borderRadius: 10
-                            }}
-                          >
-                            <CloudDownloadOutlined />
-                            Tải đáp án
-                          </Space>
-                        </Flex>
-                      </Flex>
-                    </Card>
-                  </List.Item>
-                )}
-              />
-              // <Space direction='vertical' size={30} style={{ width: '100%' }}>
-              //   <Card
-              //     hoverable
-              //     style={cardStyle}
-              //     styles={{
-              //       body: {
-              //         padding: 20
-              //       }
-              //     }}
-              //   >
-              //     <Flex gap={30} style={{ borderRadius: 100 }}>
-              //       <div
-              //         style={{
-              //           // padding: 20,
-              //           // paddingBottom: 40,
-              //           // paddingRight: 30,
-              //           flexGrow: 0.2,
-              //           flexDirection: 'column',
-              //           display: 'flex',
-              //           justifyContent: 'center',
-              //           alignItems: 'center'
-              //         }}
-              //       >
-              //         {/* <img
-              //               alt="avatar"
-              //               src="/image/preview.png"
-              //               //   style={imgStyle}
-              //             /> */}
-              //         <Title level={2}>8.0</Title>
-              //         <Text>Điểm</Text>
-              //       </div>
-              //       <Flex
-              //         vertical
-              //         align='flex-start'
-              //         justify='space-between'
-              //         gap={20}
-              //         style={{
-              //           flexGrow: 1
-              //         }}
-              //       >
-              //         <Space align='start' direction='vertical' style={{ width: '100%' }}>
-              //           <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
-
-              //           <Text strong style={{ fontSize: 28 }}>
-              //             Đề kiểm tra trắc nghiệm
-              //           </Text>
-              //         </Space>
-
-              //         <Flex align='center' gap={10}>
-              //           <Avatar size={64} icon={<UserOutlined />} />
-              //           <Space direction='vertical'>
-              //             <Text strong>Hằng</Text>
-              //             <Text>English Teacher</Text>
-              //           </Space>
-              //         </Flex>
-              //       </Flex>
-              //       <Flex
-              //         vertical
-              //         align='flex-start'
-              //         justify='space-between'
-              //         gap={20}
-              //         style={
-              //           {
-              //             // padding: 24,
-              //           }
-              //         }
-              //       >
-              //         <Space direction='vertical'>
-              //           <div>
-              //             <Text style={{}}>
-              //               <Text strong>40</Text> câu hỏi
-              //             </Text>
-              //             <Divider type='vertical' style={{ borderWidth: 1 }} />
-              //             <Text style={{}}>
-              //               <Text strong>60</Text> phút
-              //             </Text>
-              //           </div>
-              //           <Space>
-              //             <Space
-              //               style={{
-              //                 background: '#3FB335',
-              //                 padding: 5,
-              //                 borderRadius: 5,
-              //                 color: 'white',
-              //                 width: 60
-              //               }}
-              //             >
-              //               <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
-              //               42
-              //             </Space>
-              //             <Space
-              //               style={{
-              //                 background: '#EF5B59',
-              //                 padding: 5,
-              //                 borderRadius: 5,
-              //                 color: 'white',
-              //                 width: 60
-              //               }}
-              //             >
-              //               <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />8
-              //             </Space>
-              //           </Space>
-              //         </Space>
-
-              //         <Space
-              //           style={{
-              //             color: '#53B748',
-              //             padding: 5,
-              //             borderRadius: 10
-              //           }}
-              //         >
-              //           <CloudDownloadOutlined />
-              //           Tải đáp án
-              //         </Space>
-              //       </Flex>
-              //     </Flex>
-              //   </Card>
-              //   <Card
-              //     hoverable
-              //     style={cardStyle}
-              //     styles={{
-              //       body: {
-              //         padding: 20
-              //       }
-              //     }}
-              //   >
-              //     <Flex gap={30} style={{ borderRadius: 100 }}>
-              //       <div
-              //         style={{
-              //           // padding: 20,
-              //           // paddingBottom: 40,
-              //           // paddingRight: 30,
-              //           flexGrow: 0.2,
-              //           flexDirection: 'column',
-              //           display: 'flex',
-              //           justifyContent: 'center',
-              //           alignItems: 'center'
-              //         }}
-              //       >
-              //         {/* <img
-              //               alt="avatar"
-              //               src="/image/preview.png"
-              //               //   style={imgStyle}
-              //             /> */}
-              //         <Title level={2}>8.0</Title>
-              //         <Text>Điểm</Text>
-              //       </div>
-              //       <Flex
-              //         vertical
-              //         align='flex-start'
-              //         justify='space-between'
-              //         gap={20}
-              //         style={{
-              //           flexGrow: 1
-              //         }}
-              //       >
-              //         <Space align='start' direction='vertical' style={{ width: '100%' }}>
-              //           <Text style={{}}>Ngày 21 tháng 2, 2024</Text>
-
-              //           <Text strong style={{ fontSize: 28 }}>
-              //             Đề kiểm tra trắc nghiệm
-              //           </Text>
-              //         </Space>
-
-              //         <Flex align='center' gap={10}>
-              //           <Avatar size={64} icon={<UserOutlined />} />
-              //           <Space direction='vertical'>
-              //             <Text strong>Hằng</Text>
-              //             <Text>English Teacher</Text>
-              //           </Space>
-              //         </Flex>
-              //       </Flex>
-              //       <Flex
-              //         vertical
-              //         align='flex-start'
-              //         justify='space-between'
-              //         gap={20}
-              //         style={
-              //           {
-              //             // padding: 24,
-              //           }
-              //         }
-              //       >
-              //         <Space direction='vertical'>
-              //           <div>
-              //             <Text style={{}}>
-              //               <Text strong>40</Text> câu hỏi
-              //             </Text>
-              //             <Divider type='vertical' style={{ borderWidth: 1 }} />
-              //             <Text style={{}}>
-              //               <Text strong>60</Text> phút
-              //             </Text>
-              //           </div>
-              //           <Space>
-              //             <Space
-              //               style={{
-              //                 background: '#3FB335',
-              //                 padding: 5,
-              //                 borderRadius: 5,
-              //                 color: 'white',
-              //                 width: 60
-              //               }}
-              //             >
-              //               <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />
-              //               42
-              //             </Space>
-              //             <Space
-              //               style={{
-              //                 background: '#EF5B59',
-              //                 padding: 5,
-              //                 borderRadius: 5,
-              //                 color: 'white',
-              //                 width: 60
-              //               }}
-              //             >
-              //               <CheckSquareOutlined style={{ fontSize: '16px', color: 'white' }} />8
-              //             </Space>
-              //           </Space>
-              //         </Space>
-
-              //         <Space
-              //           style={{
-              //             color: '#53B748',
-              //             padding: 5,
-              //             borderRadius: 10
-              //           }}
-              //         >
-              //           <CloudDownloadOutlined />
-              //           Tải đáp án
-              //         </Space>
-              //       </Flex>
-              //     </Flex>
-              //   </Card>
-              // </Space>
+                      </Card>
+                    </List.Item>
+                  )}
+                />
+              </Space>
             )}
           </Space>
         </div>

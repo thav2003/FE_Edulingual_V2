@@ -26,6 +26,7 @@ const RegisterForm: React.FC = () => {
     try {
       await authenticationApi.apiV1RegisterPut(values)
       navigate('/login')
+      notification.success({ message: 'Bạn đã đăng kí thành công' })
     } catch (error) {
       console.log(error)
       notification.error({ message: 'Sorry! Something went wrong. App server error' })
@@ -69,7 +70,14 @@ const RegisterForm: React.FC = () => {
           <Form.Item<FieldType>
             label={<Text strong>Mật khẩu</Text>}
             name='password'
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[
+              { required: true, message: 'Please input your password!' },
+              {
+                pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
+                message:
+                  'Password must be at least 6 characters long, contain at least one uppercase letter, one number, and one special character'
+              }
+            ]}
           >
             <Input.Password size='large' placeholder='Password' />
           </Form.Item>

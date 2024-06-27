@@ -35,6 +35,9 @@ importers:
       ckeditor5-custom-build:
         specifier: file:ckeditor5
         version: file:ckeditor5
+      dayjs:
+        specifier: ^1.11.11
+        version: 1.11.11
       react:
         specifier: ^18.2.0
         version: 18.3.1

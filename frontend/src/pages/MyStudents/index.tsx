@@ -1,5 +1,8 @@
 import { Button, ConfigProvider, Flex, Input, Select, Space, Table, Typography } from 'antd'
 import type { TableProps } from 'antd'
+import { UserApi } from '~/api'
+import useFetchData from '~/hooks/useFetch'
+import { useAuthStore } from '~/stores'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 const { Text } = Typography
 
@@ -20,9 +23,17 @@ interface User {
     roleName: string
   }
 }
+const userApi = new UserApi()
 const MyStudentPage: React.FC = () => {
   const options = ['option 1', 'options 2']
+  const userId = useAuthStore((state) => state.user?.id)
+  const fetchUsers = () => {
+    return userApi.apiV1TrungTamIdKhoaHocGet(userId!, 1, 10000)
+  }
+  const [loadingUsers, errorUsers, responseUsers] = useFetchData(fetchUsers)
 
+  console.log(responseUsers)
+  const dataUsers = responseUsers ? responseUsers?.data?.data?.items : []
   const columns: TableProps<User>['columns'] = [
     {
       title: 'STT',

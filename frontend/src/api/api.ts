@@ -940,87 +940,6 @@ export interface CourseCategoryViewModelResult {
 /**
  * 
  * @export
- * @interface CourseDto
- */
-export interface CourseDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'createdAt'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'updatedAt'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'createdBy'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'updatedBy'?: string | null;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseDto
-     */
-    'isDeleted'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'description'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CourseDto
-     */
-    'duration'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof CourseDto
-     */
-    'tuitionfee'?: number;
-    /**
-     * 
-     * @type {CourseStatus}
-     * @memberof CourseDto
-     */
-    'status'?: CourseStatus;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof CourseDto
-     */
-    'isHighlighted'?: boolean;
-}
-
-
-/**
- * 
- * @export
  * @interface CourseFeedback
  */
 export interface CourseFeedback {
@@ -2096,6 +2015,12 @@ export interface GetScoreDto {
      * @memberof GetScoreDto
      */
     'courseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetScoreDto
+     */
+    'examName'?: string | null;
 }
 /**
  * 
@@ -2433,10 +2358,10 @@ export interface PaymentViewModel {
     'fee'?: number;
     /**
      * 
-     * @type {CourseDto}
+     * @type {CourseViewModel}
      * @memberof PaymentViewModel
      */
-    'course'?: CourseDto;
+    'course'?: CourseViewModel;
     /**
      * 
      * @type {UserDto}
@@ -2705,13 +2630,43 @@ export interface ReportDataDto {
      * @type {number}
      * @memberof ReportDataDto
      */
-    'dataThisMonth'?: number;
+    'dataInMonday'?: number;
     /**
      * 
      * @type {number}
      * @memberof ReportDataDto
      */
-    'dataLastMonth'?: number;
+    'dataInTuesday'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataDto
+     */
+    'dataInWednesday'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataDto
+     */
+    'dataInThursday'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataDto
+     */
+    'dataInFriday'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataDto
+     */
+    'dataInSaturday'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataDto
+     */
+    'dataInSunday'?: number;
 }
 /**
  * 
@@ -4085,13 +4040,13 @@ export const CourseApiAxiosParamCreator = function (configuration?: Configuratio
          * 
          * @param {string} [title] 
          * @param {CourseStatus} [status] 
-         * @param {string} [centerId] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1KhoaHocAdminGet: async (title?: string, status?: CourseStatus, centerId?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1KhoaHocAdminGet: async (title?: string, status?: CourseStatus, centerName?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/khoa-hoc-admin`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4112,8 +4067,8 @@ export const CourseApiAxiosParamCreator = function (configuration?: Configuratio
                 localVarQueryParameter['status'] = status;
             }
 
-            if (centerId !== undefined) {
-                localVarQueryParameter['centerId'] = centerId;
+            if (centerName !== undefined) {
+                localVarQueryParameter['centerName'] = centerName;
             }
 
             if (page !== undefined) {
@@ -4378,14 +4333,14 @@ export const CourseApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} [title] 
          * @param {CourseStatus} [status] 
-         * @param {string} [centerId] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerId?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseViewModelListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1KhoaHocAdminGet(title, status, centerId, page, size, options);
+        async apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CourseViewModelListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1KhoaHocAdminGet(title, status, centerName, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['CourseApi.apiV1KhoaHocAdminGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4482,14 +4437,14 @@ export const CourseApiFactory = function (configuration?: Configuration, basePat
          * 
          * @param {string} [title] 
          * @param {CourseStatus} [status] 
-         * @param {string} [centerId] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerId?: string, page?: number, size?: number, options?: any): AxiosPromise<CourseViewModelListResult> {
-            return localVarFp.apiV1KhoaHocAdminGet(title, status, centerId, page, size, options).then((request) => request(axios, basePath));
+        apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerName?: string, page?: number, size?: number, options?: any): AxiosPromise<CourseViewModelListResult> {
+            return localVarFp.apiV1KhoaHocAdminGet(title, status, centerName, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4565,15 +4520,15 @@ export class CourseApi extends BaseAPI {
      * 
      * @param {string} [title] 
      * @param {CourseStatus} [status] 
-     * @param {string} [centerId] 
+     * @param {string} [centerName] 
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CourseApi
      */
-    public apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerId?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
-        return CourseApiFp(this.configuration).apiV1KhoaHocAdminGet(title, status, centerId, page, size, options).then((request) => request(this.axios, this.basePath));
+    public apiV1KhoaHocAdminGet(title?: string, status?: CourseStatus, centerName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return CourseApiFp(this.configuration).apiV1KhoaHocAdminGet(title, status, centerName, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5867,35 +5822,6 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1DashboardExamGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/api/v1/dashboard/exam`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         apiV1DashboardFinanceGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/dashboard/finance`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -5993,17 +5919,6 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1DashboardExamGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportDataDtoResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1DashboardExamGet(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DashboardApi.apiV1DashboardExamGet']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         async apiV1DashboardFinanceGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportDataDtoResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1DashboardFinanceGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
@@ -6047,14 +5962,6 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1DashboardExamGet(options?: any): AxiosPromise<ReportDataDtoResult> {
-            return localVarFp.apiV1DashboardExamGet(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         apiV1DashboardFinanceGet(options?: any): AxiosPromise<ReportDataDtoResult> {
             return localVarFp.apiV1DashboardFinanceGet(options).then((request) => request(axios, basePath));
         },
@@ -6084,16 +5991,6 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
  * @extends {BaseAPI}
  */
 export class DashboardApi extends BaseAPI {
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DashboardApi
-     */
-    public apiV1DashboardExamGet(options?: RawAxiosRequestConfig) {
-        return DashboardApiFp(this.configuration).apiV1DashboardExamGet(options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @param {*} [options] Override http request option.
@@ -6136,12 +6033,13 @@ export const ExamApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @param {string} id 
+         * @param {string} [examName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1ExamCourseIdIdGet: async (id: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1ExamCourseIdIdGet: async (id: string, examName?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('apiV1ExamCourseIdIdGet', 'id', id)
             const localVarPath = `/api/v1/exam/courseId/{id}`
@@ -6156,6 +6054,10 @@ export const ExamApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (examName !== undefined) {
+                localVarQueryParameter['examName'] = examName;
+            }
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
@@ -6379,13 +6281,14 @@ export const ExamApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {string} id 
+         * @param {string} [examName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1ExamCourseIdIdGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BooleanPagingResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamCourseIdIdGet(id, page, size, options);
+        async apiV1ExamCourseIdIdGet(id: string, examName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BooleanPagingResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ExamCourseIdIdGet(id, examName, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['ExamApi.apiV1ExamCourseIdIdGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -6467,13 +6370,14 @@ export const ExamApiFactory = function (configuration?: Configuration, basePath?
         /**
          * 
          * @param {string} id 
+         * @param {string} [examName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1ExamCourseIdIdGet(id: string, page?: number, size?: number, options?: any): AxiosPromise<BooleanPagingResult> {
-            return localVarFp.apiV1ExamCourseIdIdGet(id, page, size, options).then((request) => request(axios, basePath));
+        apiV1ExamCourseIdIdGet(id: string, examName?: string, page?: number, size?: number, options?: any): AxiosPromise<BooleanPagingResult> {
+            return localVarFp.apiV1ExamCourseIdIdGet(id, examName, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6537,14 +6441,15 @@ export class ExamApi extends BaseAPI {
     /**
      * 
      * @param {string} id 
+     * @param {string} [examName] 
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ExamApi
      */
-    public apiV1ExamCourseIdIdGet(id: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
-        return ExamApiFp(this.configuration).apiV1ExamCourseIdIdGet(id, page, size, options).then((request) => request(this.axios, this.basePath));
+    public apiV1ExamCourseIdIdGet(id: string, examName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return ExamApiFp(this.configuration).apiV1ExamCourseIdIdGet(id, examName, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7367,12 +7272,13 @@ export const PaymentApiAxiosParamCreator = function (configuration?: Configurati
          * 
          * @param {string} [startDate] 
          * @param {string} [endDate] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1ThanhToanGet: async (startDate?: string, endDate?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiV1ThanhToanGet: async (startDate?: string, endDate?: string, centerName?: string, page?: number, size?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/thanh-toan`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7395,6 +7301,10 @@ export const PaymentApiAxiosParamCreator = function (configuration?: Configurati
                 localVarQueryParameter['endDate'] = (endDate as any instanceof Date) ?
                     (endDate as any).toISOString() :
                     endDate;
+            }
+
+            if (centerName !== undefined) {
+                localVarQueryParameter['centerName'] = centerName;
             }
 
             if (page !== undefined) {
@@ -7533,13 +7443,14 @@ export const PaymentApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} [startDate] 
          * @param {string} [endDate] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async apiV1ThanhToanGet(startDate?: string, endDate?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentViewModelListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ThanhToanGet(startDate, endDate, page, size, options);
+        async apiV1ThanhToanGet(startDate?: string, endDate?: string, centerName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentViewModelListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1ThanhToanGet(startDate, endDate, centerName, page, size, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PaymentApi.apiV1ThanhToanGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -7595,13 +7506,14 @@ export const PaymentApiFactory = function (configuration?: Configuration, basePa
          * 
          * @param {string} [startDate] 
          * @param {string} [endDate] 
+         * @param {string} [centerName] 
          * @param {number} [page] 
          * @param {number} [size] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        apiV1ThanhToanGet(startDate?: string, endDate?: string, page?: number, size?: number, options?: any): AxiosPromise<PaymentViewModelListResult> {
-            return localVarFp.apiV1ThanhToanGet(startDate, endDate, page, size, options).then((request) => request(axios, basePath));
+        apiV1ThanhToanGet(startDate?: string, endDate?: string, centerName?: string, page?: number, size?: number, options?: any): AxiosPromise<PaymentViewModelListResult> {
+            return localVarFp.apiV1ThanhToanGet(startDate, endDate, centerName, page, size, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -7645,14 +7557,15 @@ export class PaymentApi extends BaseAPI {
      * 
      * @param {string} [startDate] 
      * @param {string} [endDate] 
+     * @param {string} [centerName] 
      * @param {number} [page] 
      * @param {number} [size] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PaymentApi
      */
-    public apiV1ThanhToanGet(startDate?: string, endDate?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
-        return PaymentApiFp(this.configuration).apiV1ThanhToanGet(startDate, endDate, page, size, options).then((request) => request(this.axios, this.basePath));
+    public apiV1ThanhToanGet(startDate?: string, endDate?: string, centerName?: string, page?: number, size?: number, options?: RawAxiosRequestConfig) {
+        return PaymentApiFp(this.configuration).apiV1ThanhToanGet(startDate, endDate, centerName, page, size, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

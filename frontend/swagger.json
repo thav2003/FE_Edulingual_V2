@@ -303,11 +303,10 @@
             }
           },
           {
-            "name": "centerId",
+            "name": "centerName",
             "in": "query",
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           },
           {
@@ -1589,55 +1588,6 @@
         }
       }
     },
-    "/api/v1/dashboard/exam": {
-      "get": {
-        "tags": [
-          "Dashboard"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ReportDataDtoResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/v1/dashboard/teacher": {
       "get": {
         "tags": [
@@ -1856,6 +1806,13 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "examName",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -2475,6 +2432,13 @@
             "schema": {
               "type": "string",
               "format": "date-time"
+            }
+          },
+          {
+            "name": "centerName",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           },
           {
@@ -3925,57 +3889,6 @@
         },
         "additionalProperties": false
       },
-      "CourseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "updatedBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "isDeleted": {
-            "type": "boolean"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "duration": {
-            "type": "string",
-            "nullable": true
-          },
-          "tuitionfee": {
-            "type": "number",
-            "format": "double"
-          },
-          "status": {
-            "$ref": "#/components/schemas/CourseStatus"
-          },
-          "isHighlighted": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
       "CourseFeedback": {
         "type": "object",
         "properties": {
@@ -4742,6 +4655,10 @@
           "courseId": {
             "type": "string",
             "format": "uuid"
+          },
+          "examName": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -4997,7 +4914,7 @@
             "format": "double"
           },
           "course": {
-            "$ref": "#/components/schemas/CourseDto"
+            "$ref": "#/components/schemas/CourseViewModel"
           },
           "user": {
             "$ref": "#/components/schemas/UserDto"
@@ -5182,11 +5099,31 @@
       "ReportDataDto": {
         "type": "object",
         "properties": {
-          "dataThisMonth": {
+          "dataInMonday": {
             "type": "number",
             "format": "double"
           },
-          "dataLastMonth": {
+          "dataInTuesday": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataInWednesday": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataInThursday": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataInFriday": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataInSaturday": {
+            "type": "number",
+            "format": "double"
+          },
+          "dataInSunday": {
             "type": "number",
             "format": "double"
           }
