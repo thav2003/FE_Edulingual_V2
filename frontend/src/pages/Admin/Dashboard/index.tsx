@@ -94,39 +94,39 @@ const DashboardPage: React.FC = () => {
           }
         }}
       >
-        <div className='h-full p-10 bg-[#FFFFFF]'>
+        <div className='h-full px-10 bg-[#FFFFFF]'>
           <Row gutter={[32, 32]}>
             <Col span={24}>
               <Typography.Title>Teacher</Typography.Title>
               <Card bordered>
                 <Column
                   {...{
+                    height: 400,
                     data: resultTeachers,
                     xField: 'day',
                     yField: 'value',
                     label: {
-                      text: (d) => `${formatCurrencyVND(d.value)}`,
+                      text: (d) => `${d.value} người`,
                       textBaseline: 'bottom'
                     },
+                    tooltip: {
+                      title: 'Người',
 
-                    legend: false
-                  }}
-                />
-              </Card>
-            </Col>
-            <Col span={24}>
-              <Typography.Title>Finance</Typography.Title>
-              <Card bordered>
-                <Column
-                  {...{
-                    data: resultFinance,
-                    xField: 'day',
-                    yField: 'value',
-                    label: {
-                      text: (d) => `${formatCurrencyVND(d.value)}`,
-                      textBaseline: 'bottom'
+                      items: [{ channel: 'y', field: 'value', name: 'Người' }]
                     },
-
+                    axis: {
+                      y: {
+                        labelFormatter: (v) => {
+                          {
+                            if (v % 1 === 0) {
+                              return `${v} Người`
+                            } else {
+                              return ''
+                            }
+                          }
+                        }
+                      }
+                    },
                     legend: false
                   }}
                 />
@@ -137,14 +137,68 @@ const DashboardPage: React.FC = () => {
               <Card bordered>
                 <Column
                   {...{
-                    data: responseUsers,
+                    height: 400,
+                    data: resultUsers,
+                    xField: 'day',
+                    yField: 'value',
+                    label: {
+                      text: (d) => `${d.value} người`,
+                      textBaseline: 'bottom'
+                    },
+                    tooltip: {
+                      title: 'Người',
+
+                      items: [{ channel: 'y', field: 'value', name: 'Người' }]
+                    },
+                    axis: {
+                      y: {
+                        labelFormatter: (v) => {
+                          {
+                            if (v % 1 === 0) {
+                              return `${v} Người`
+                            } else {
+                              return ''
+                            }
+                          }
+                        }
+                      }
+                    },
+                    legend: false
+                  }}
+                />
+              </Card>
+            </Col>
+            <Col span={24}>
+              <Typography.Title>Finance</Typography.Title>
+              <Card bordered>
+                <Column
+                  {...{
+                    height: 400,
+                    data: resultFinance,
                     xField: 'day',
                     yField: 'value',
                     label: {
                       text: (d) => `${formatCurrencyVND(d.value)}`,
                       textBaseline: 'bottom'
                     },
+                    axis: {
+                      y: {
+                        labelFormatter: (v) => {
+                          {
+                            if (v % 1 === 0) {
+                              return `${v} VNĐ`
+                            } else {
+                              return ''
+                            }
+                          }
+                        }
+                      }
+                    },
+                    tooltip: {
+                      title: 'VNĐ',
 
+                      items: [{ channel: 'y', field: 'value', name: 'VNĐ' }]
+                    },
                     legend: false
                   }}
                 />
