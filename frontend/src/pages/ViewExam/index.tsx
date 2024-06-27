@@ -306,12 +306,7 @@ const ViewExamPage: React.FC = () => {
               </Radio.Group>
               {selectedCourseId && mode === 1 && (
                 <Flex align='center' className='self-end' gap={20}>
-                  <Input.Search
-                    size='large'
-                    placeholder='Tìm bài kiểm tra'
-                    value={searchExam}
-                    onChange={(e) => setSearcExam(e.target.value)}
-                  />
+                  <Input.Search size='large' placeholder='Tìm bài kiểm tra' />
                 </Flex>
               )}
               {selectedCourseId && mode === 2 && (
