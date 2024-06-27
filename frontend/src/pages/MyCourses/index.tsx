@@ -698,103 +698,106 @@ const MyCoursesPage: React.FC = () => {
                     handleSearchCourses(e.target.value)
                   }}
                 />
-                <Select
-                  size='large'
-                  className='!text-left'
-                  allowClear
-                  optionLabelProp='label'
-                  onChange={(status) => {
-                    const queryParams = new URLSearchParams({
-                      page: searchParams.get('page') || '1',
-                      size: searchParams.get('size') || '5'
-                    })
-                    if (searchParams.get('title')) {
-                      queryParams.set('title', searchParams.get('title')!)
-                    }
-                    if (status !== undefined) queryParams.set('status', status)
 
-                    setSearchParams(queryParams.toString())
-                  }}
-                  placeholder={
-                    <Space>
-                      <svg
-                        className='inline'
-                        width='18'
-                        height='13'
-                        viewBox='0 0 18 13'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          clipRule='evenodd'
-                          d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                          fill='#A5A9AD'
-                        />
-                      </svg>
-                      Lọc theo
-                      <Text strong>Trạng thái</Text>
-                    </Space>
-                  }
-                  style={{ width: 250 }}
-                >
-                  <Select.Option
-                    value={0}
-                    label={
-                      <Space className='text-[#00000040]'>
-                        <svg
-                          className='inline'
-                          width='18'
-                          height='13'
-                          viewBox='0 0 18 13'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                            fill='#A5A9AD'
-                          />
-                        </svg>
-                        Lọc theo
-                        <Text strong>Chờ duyệt</Text>
-                      </Space>
-                    }
-                  >
-                    Chờ duyệt
-                  </Select.Option>
-                  <Select.Option
-                    value={1}
-                    label={
-                      <Space className='text-[#00000040]'>
-                        <svg
-                          className='inline'
-                          width='18'
-                          height='13'
-                          viewBox='0 0 18 13'
-                          fill='none'
-                          xmlns='http://www.w3.org/2000/svg'
-                        >
-                          <path
-                            fillRule='evenodd'
-                            clipRule='evenodd'
-                            d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
-                            fill='#A5A9AD'
-                          />
-                        </svg>
-                        Lọc theo
-                        <Text strong>Hoạt động</Text>
-                      </Space>
-                    }
-                  >
-                    Hoạt động
-                  </Select.Option>
-                </Select>
                 {userRole === Role.TEACHER && (
-                  <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
-                    Thêm khóa học
-                  </Button>
+                  <>
+                    <Select
+                      size='large'
+                      className='!text-left'
+                      allowClear
+                      optionLabelProp='label'
+                      onChange={(status) => {
+                        const queryParams = new URLSearchParams({
+                          page: searchParams.get('page') || '1',
+                          size: searchParams.get('size') || '5'
+                        })
+                        if (searchParams.get('title')) {
+                          queryParams.set('title', searchParams.get('title')!)
+                        }
+                        if (status !== undefined) queryParams.set('status', status)
+
+                        setSearchParams(queryParams.toString())
+                      }}
+                      placeholder={
+                        <Space>
+                          <svg
+                            className='inline'
+                            width='18'
+                            height='13'
+                            viewBox='0 0 18 13'
+                            fill='none'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path
+                              fillRule='evenodd'
+                              clipRule='evenodd'
+                              d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                              fill='#A5A9AD'
+                            />
+                          </svg>
+                          Lọc theo
+                          <Text strong>Trạng thái</Text>
+                        </Space>
+                      }
+                      style={{ width: 250 }}
+                    >
+                      <Select.Option
+                        value={0}
+                        label={
+                          <Space className='text-[#00000040]'>
+                            <svg
+                              className='inline'
+                              width='18'
+                              height='13'
+                              viewBox='0 0 18 13'
+                              fill='none'
+                              xmlns='http://www.w3.org/2000/svg'
+                            >
+                              <path
+                                fillRule='evenodd'
+                                clipRule='evenodd'
+                                d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                                fill='#A5A9AD'
+                              />
+                            </svg>
+                            Lọc theo
+                            <Text strong>Chờ duyệt</Text>
+                          </Space>
+                        }
+                      >
+                        Chờ duyệt
+                      </Select.Option>
+                      <Select.Option
+                        value={1}
+                        label={
+                          <Space className='text-[#00000040]'>
+                            <svg
+                              className='inline'
+                              width='18'
+                              height='13'
+                              viewBox='0 0 18 13'
+                              fill='none'
+                              xmlns='http://www.w3.org/2000/svg'
+                            >
+                              <path
+                                fillRule='evenodd'
+                                clipRule='evenodd'
+                                d='M0 1.54004C0 0.987759 0.44772 0.540039 1 0.540039H17C17.5523 0.540039 18 0.987759 18 1.54004C18 2.09232 17.5523 2.54004 17 2.54004H1C0.44772 2.54004 0 2.09232 0 1.54004ZM3 6.54004C3 5.98774 3.44772 5.54004 4 5.54004H14C14.5523 5.54004 15 5.98774 15 6.54004C15 7.09234 14.5523 7.54004 14 7.54004H4C3.44772 7.54004 3 7.09234 3 6.54004ZM6 11.54C6 10.9877 6.44772 10.54 7 10.54H11C11.5523 10.54 12 10.9877 12 11.54C12 12.0923 11.5523 12.54 11 12.54H7C6.44772 12.54 6 12.0923 6 11.54Z'
+                                fill='#A5A9AD'
+                              />
+                            </svg>
+                            Lọc theo
+                            <Text strong>Hoạt động</Text>
+                          </Space>
+                        }
+                      >
+                        Hoạt động
+                      </Select.Option>
+                    </Select>
+                    <Button type='primary' size='large' onClick={() => setOpenModalCourse(true)}>
+                      Thêm khóa học
+                    </Button>
+                  </>
                 )}
               </Flex>
             </Flex>

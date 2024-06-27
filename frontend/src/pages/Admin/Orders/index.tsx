@@ -8,6 +8,7 @@ import { useAppStore } from '~/stores'
 import debounce from '~/utils'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 import dayjs from 'dayjs'
+import { EditOutlined } from '@ant-design/icons'
 const { Text } = Typography
 const { RangePicker } = DatePicker
 interface DataType {
@@ -75,11 +76,11 @@ const AdminOrderPage: React.FC = () => {
       render: (item, record, index) => <Text>{++index}</Text>
     },
     {
-      title: 'Học sinh',
+      title: 'Tên',
       // dataIndex: 'name',
       key: 'student',
-      render: (_, { user }) => {
-        return user?.fullName
+      render: (_, { fullName }) => {
+        return fullName
       }
     },
     {
@@ -169,6 +170,7 @@ const AdminOrderPage: React.FC = () => {
                 <Input.Search
                   size='large'
                   value={searchQuery}
+                  placeholder='Tìm theo trung tâm'
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
                     handleSearchCenter(e.target.value)
@@ -206,7 +208,6 @@ const AdminOrderPage: React.FC = () => {
                     setSearchParams(queryParams.toString())
                   }}
                 />
-                <Input.Search size='large' placeholder='Tìm trung tâm' />
               </Flex>
             </Flex>
             <Table

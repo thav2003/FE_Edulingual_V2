@@ -266,17 +266,17 @@ const AdminStudentPage: React.FC = () => {
         >
           <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
             <Form.Item<FieldType> name='userName' label='Tài khoản'>
-              <Input placeholder='Tài khoản' />
+              <Input placeholder='Tài khoản' disabled />
             </Form.Item>
             <Form.Item<FieldType> name='fullName' label='Tên'>
-              <Input placeholder='Tên' />
+              <Input placeholder='Tên' disabled />
             </Form.Item>
             <Form.Item<FieldType> name='email' label='Email'>
-              <Input placeholder='Email' />
+              <Input placeholder='Email' disabled />
             </Form.Item>
             <Form.Item<FieldType> name='description' label='Mô tả'>
               {/* <EditorComponent /> */}
-              <Input placeholder='Mô tả' />
+              <Input placeholder='Mô tả' disabled />
             </Form.Item>
             <Form.Item>
               <Button loading={loading} type='primary' htmlType='submit'>

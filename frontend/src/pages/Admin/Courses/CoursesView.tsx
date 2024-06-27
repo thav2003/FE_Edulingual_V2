@@ -702,7 +702,7 @@ const CoursesView: React.FC = () => {
           />
           <Input.Search
             size='large'
-            placeholder='Tìm theo trum tâm'
+            placeholder='Tìm theo trung tâm'
             value={searchCenterQuery}
             onChange={(e) => {
               setSearchCenterQuery(e.target.value)

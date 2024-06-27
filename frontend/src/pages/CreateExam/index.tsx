@@ -13,7 +13,8 @@ import {
   Select,
   App,
   Table,
-  Input
+  Input,
+  Flex
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
@@ -152,12 +153,16 @@ const CreateExamPage: React.FC = () => {
   const data_courses = responseCourses?.data?.data.items as Course[]
   console.log(responseCourses)
   const fetchExams = () => {
-    if (selectedCourseId) return examApi.apiV1ExamCourseIdIdGet(selectedCourseId, 1, 10000)
+    if (selectedCourseId) return examApi.apiV1ExamCourseIdIdGet(selectedCourseId, '', 1, 10000)
     else return Promise.resolve()
   }
   const [loadingExams, errorExams, responseExams] = useFetchData(fetchExams, selectedCourseId)
 
   const data_exams = responseExams?.data?.data?.items
+  const total_exams = responseExams?.data?.totalCount
+
+  console.log(data_exams)
+
   const handleDelete = async (id: string) => {
     console.log(id)
     try {
@@ -249,13 +254,6 @@ const CreateExamPage: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
-              <Input
-                size='large'
-                className='w-full mb-5'
-                placeholder='Search exam'
-                value={searchExam}
-                onChange={(e) => setSearcExam(e.target.value)}
-              />
               <Dragger {...props}>
                 <Button type='primary' size='large'>
                   Chọn tài liệu
@@ -269,14 +267,26 @@ const CreateExamPage: React.FC = () => {
 
             <div>
               {selectedCourseId && (
-                <Table
-                  pagination={{
-                    position: ['bottomCenter'],
-                    pageSize: 5
-                  }}
-                  columns={columns}
-                  dataSource={filteredData}
-                />
+                <Space className='w-full' direction='vertical'>
+                  <Flex align='center' justify='space-between' gap={20} wrap>
+                    <Text strong>{total_exams} bài kiểm tra</Text>
+                    <Flex align='center' gap={20}>
+                      <Input.Search
+                        placeholder='Search exam'
+                        value={searchExam}
+                        onChange={(e) => setSearcExam(e.target.value)}
+                      />
+                    </Flex>
+                  </Flex>
+                  <Table
+                    pagination={{
+                      position: ['bottomCenter'],
+                      pageSize: 5
+                    }}
+                    columns={columns}
+                    dataSource={data_exams}
+                  />
+                </Space>
               )}
             </div>
           </Space>
