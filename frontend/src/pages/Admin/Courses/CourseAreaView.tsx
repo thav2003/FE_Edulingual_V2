@@ -57,8 +57,8 @@ const CourseAreaView: React.FC = () => {
       await courseAreaApi.apiV1KhuVucIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({ message: error?.response?.data?.Error || 'Sorry! Something went wrong. App server error' })
     }
   }
 
@@ -69,8 +69,13 @@ const CourseAreaView: React.FC = () => {
       await courseAreaApi.apiV1KhuVucPost(values)
       refetchApp()
       notification.info({ message: 'Tạo thành công' })
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setCreateCourseAreaLoading(false)
     }
@@ -82,8 +87,8 @@ const CourseAreaView: React.FC = () => {
       setUpdateCourseAreaLoading(true)
       //await courseAreaApi.apiV1KhoaHocIdPut(selectedCourseArea!.id, values)
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({ message: error?.response?.data?.Error || 'Sorry! Something went wrong. App server error' })
     } finally {
       setUpdateCourseAreaLoading(false)
     }
@@ -141,7 +146,6 @@ const CourseAreaView: React.FC = () => {
             }}
             icon={<EditOutlined />}
           />
-          <Button danger type='primary' onClick={() => handleDelete(record.id)} icon={<DeleteOutlined />} />
         </Space>
       ) // Nút hành động
     }

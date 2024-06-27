@@ -25,8 +25,13 @@ const ExamDetailPage: React.FC = () => {
       await examApi.apiV1ExamResultPost(values)
       notification.success({ message: 'Bạn đã hoàn thành bài thi' })
       navigate('/account/viewexam')
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
 

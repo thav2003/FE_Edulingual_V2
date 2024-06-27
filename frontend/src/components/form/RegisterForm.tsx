@@ -22,14 +22,14 @@ const RegisterForm: React.FC = () => {
   const onFinish: FormProps<FieldType>['onFinish'] = async (values) => {
     console.log('Success:', values)
     values.email = values.userName
-    values.description = 'description'
+    values.description = 'This is ' + values.userName
     try {
       await authenticationApi.apiV1RegisterPut(values)
       navigate('/login')
       notification.success({ message: 'Bạn đã đăng kí thành công' })
     } catch (error) {
       console.log(error)
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+      notification.error({ message: error?.response?.data?.Error || 'Sorry! Something went wrong. App server error' })
     }
   }
 
@@ -41,7 +41,7 @@ const RegisterForm: React.FC = () => {
     <div className='mt-2'>
       <Space direction='vertical' className='w-full'>
         <Title className='drop-shadow-lg'>
-          Chào mứng đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
+          Chào mừng đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
         </Title>
 
         <Form
@@ -53,16 +53,16 @@ const RegisterForm: React.FC = () => {
           autoComplete='off'
         >
           <Form.Item<FieldType>
-            label={<Text strong>Nhập Email</Text>}
+            label={<Text strong>Nhập tài khoản</Text>}
             name='userName'
-            rules={[{ required: true, message: 'Please input your email!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
-            <Input size='large' placeholder='Email address' />
+            <Input size='large' placeholder='Tài khoản' />
           </Form.Item>
           <Form.Item<FieldType>
-            label={<Text strong>Nhập tên của bạn</Text>}
+            label={<Text strong>Nhập tên</Text>}
             name='fullName'
-            rules={[{ required: true, message: 'Please input your full name!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
           >
             <Input size='large' placeholder='Full Name' />
           </Form.Item>
@@ -71,7 +71,7 @@ const RegisterForm: React.FC = () => {
             label={<Text strong>Mật khẩu</Text>}
             name='password'
             rules={[
-              { required: true, message: 'Please input your password!' },
+              { required: true, message: 'Vui lòng nhập mật khẩu!' },
               {
                 pattern: /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/,
                 message:
@@ -88,13 +88,13 @@ const RegisterForm: React.FC = () => {
             dependencies={['password']}
             hasFeedback
             rules={[
-              { required: true, message: 'Please confirm your password!' },
+              { required: true, message: 'vui lòng nhập lại mật khẩu!' },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve()
                   }
-                  return Promise.reject(new Error('The two passwords do not match!'))
+                  return Promise.reject(new Error('Mật khẩu không khớp!'))
                 }
               })
             ]}

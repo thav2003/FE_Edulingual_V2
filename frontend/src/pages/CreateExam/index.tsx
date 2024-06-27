@@ -23,6 +23,7 @@ import useFetchData from '~/hooks/useFetch'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 import { useNavigate } from 'react-router-dom'
 const { Dragger } = Upload
+const { Text } = Typography
 
 interface Course {
   courseArea: {
@@ -181,14 +182,8 @@ const CreateExamPage: React.FC = () => {
     },
     {
       title: 'Số câu',
-      // dataIndex: 'tuitionfee',
-      key: 'numberOfQuestions',
-      render: (item, record, index) => <Typography.Text>{record?.questions?.length}</Typography.Text>
-    },
-    {
-      title: 'Tạo bởi',
-      dataIndex: 'createdBy',
-      key: 'createdBy'
+      dataIndex: 'totalQuestion',
+      key: 'totalQuestion'
     },
     {
       title: 'Ngày tạo',
@@ -243,7 +238,7 @@ const CreateExamPage: React.FC = () => {
               <Select
                 value={selectedCourseId}
                 onChange={setSelectedCourseId}
-                placeholder='Khóa học'
+                placeholder='Chọn khóa học để tạo bài kiểm tra'
                 size='large'
                 allowClear
                 className='w-full mb-5'
@@ -266,7 +261,7 @@ const CreateExamPage: React.FC = () => {
                   Chọn tài liệu
                 </Button>
                 <p className='ant-upload-text'>Hoặc kéo và thả tập tin vào đây</p>
-                <p className='ant-upload-hint'>Các định dạng được hỗ trợ: PDF, JPG, PNG,...</p>
+                <p className='ant-upload-hint'>Các định dạng được hỗ trợ: XLS (Excel)</p>
 
                 {progress > 0 ? <Progress percent={progress} /> : null}
               </Dragger>

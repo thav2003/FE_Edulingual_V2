@@ -129,10 +129,10 @@ const AdminLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
                     items: [
                       {
                         key: 'dashboard',
-                        label: <Link to={'/admin/dashboard'}>Dashboard</Link>
+                        label: <Link to={'/admin/dashboard'}>Bảng điều khiển</Link>
                       },
                       {
-                        key: 'students',
+                        key: 'courses',
                         label: <Link to={'/admin/courses'}>Khóa học</Link>
                       },
                       {

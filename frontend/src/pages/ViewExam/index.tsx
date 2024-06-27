@@ -22,6 +22,8 @@ import {
   List,
   Image,
   Input
+  Image,
+  Input
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
@@ -258,7 +260,7 @@ const ViewExamPage: React.FC = () => {
             <Select
               value={selectedCourseId}
               onChange={setSelectedCourseId}
-              placeholder='Khóa học'
+              placeholder='Chọn khóa học'
               size='large'
               allowClear
               className='w-full mb-5'
@@ -269,38 +271,45 @@ const ViewExamPage: React.FC = () => {
                 </Select.Option>
               ))}
             </Select>
-            <Radio.Group buttonStyle={'solid'} value={mode} onChange={(e) => setMode(e.target.value)}>
-              <Space size={'middle'}>
-                <Radio.Button
-                  value={1}
-                  type='primary'
-                  style={{
-                    borderRadius: 30,
-                    paddingLeft: 25,
-                    paddingRight: 25,
-                    height: 45,
-                    lineHeight: '45px',
-                    borderWidth: 1
-                  }}
-                >
-                  Kiểm tra
-                </Radio.Button>
-                <Radio.Button
-                  value={2}
-                  type='primary'
-                  style={{
-                    borderRadius: 30,
-                    paddingLeft: 25,
-                    paddingRight: 25,
-                    height: 45,
-                    lineHeight: '45px',
-                    borderWidth: 1
-                  }}
-                >
-                  Kết quả
-                </Radio.Button>
-              </Space>
-            </Radio.Group>
+            <Space className='flex justify-between items-center'>
+              <Radio.Group buttonStyle={'solid'} value={mode} onChange={(e) => setMode(e.target.value)}>
+                <Space size={'middle'}>
+                  <Radio.Button
+                    value={1}
+                    type='primary'
+                    style={{
+                      borderRadius: 30,
+                      paddingLeft: 25,
+                      paddingRight: 25,
+                      height: 45,
+                      lineHeight: '45px',
+                      borderWidth: 1
+                    }}
+                  >
+                    Kiểm tra
+                  </Radio.Button>
+                  <Radio.Button
+                    value={2}
+                    type='primary'
+                    style={{
+                      borderRadius: 30,
+                      paddingLeft: 25,
+                      paddingRight: 25,
+                      height: 45,
+                      lineHeight: '45px',
+                      borderWidth: 1
+                    }}
+                  >
+                    Kết quả
+                  </Radio.Button>
+                </Space>
+              </Radio.Group>
+              {selectedCourseId && (
+                <Flex align='center' className='self-end' gap={20}>
+                  <Input.Search size='large' placeholder='Tìm bài kiểm tra' />
+                </Flex>
+              )}
+            </Space>
 
             {mode === 1 && (
               <>
@@ -358,10 +367,9 @@ const ViewExamPage: React.FC = () => {
                             </Space>
 
                             <Flex align='center' gap={10}>
-                              <Avatar size={64} icon={<UserOutlined />} />
+                              <Avatar size={64} icon={<UserOutlined />} src={item.center?.imageUrl} />
                               <Space direction='vertical'>
-                                <Text strong>Hằng</Text>
-                                <Text>English Teacher</Text>
+                                <Text strong>{item.center?.fullName}</Text>
                               </Space>
                             </Flex>
                           </Flex>

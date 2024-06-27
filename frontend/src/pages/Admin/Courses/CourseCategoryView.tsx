@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Space, Modal, Input, Select, Button, Flex, Table, Form, App, Typography, Tag } from 'antd'
 import type { FormProps, TableProps } from 'antd'
 import { useState } from 'react'
@@ -85,8 +85,13 @@ const CourseCategoryView: React.FC = () => {
       await courseCategoryApi.apiV1LoaiKhoaHocIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const columns_courseCategory: TableProps<CourseCategory>['columns'] = [
@@ -131,7 +136,13 @@ const CourseCategoryView: React.FC = () => {
       key: 'actions',
       render: (_, { id }) => (
         <Space>
-          <Button danger type='primary' onClick={() => handleDelete(id)} icon={<DeleteOutlined />} />
+          <Button
+            // onClick={() => {
+            //   setOpenModalCourseAreaDetail(true)
+            //   setSelectedCourseArea(record)
+            // }}
+            icon={<EditOutlined />}
+          />
         </Space>
       ) // Nút hành động
     }
@@ -144,8 +155,13 @@ const CourseCategoryView: React.FC = () => {
       await courseCategoryApi.apiV1LoaiKhoaHocPost(values)
       refetchApp()
       notification.info({ message: 'Tạo thành công' })
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setCreateCourseCategoryLoading(false)
     }

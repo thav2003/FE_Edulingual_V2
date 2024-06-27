@@ -41,6 +41,7 @@ interface DataType {
   }
 }
 type FieldType = {
+  email: string
   userName: string
   password: string
   fullName: string
@@ -68,10 +69,15 @@ const AdminStudentPage: React.FC = () => {
   const handleDelete = async (id: string) => {
     try {
       await userApi.apiV1UsersIdDelete(id)
-      notification.info({ message: 'Delete thành công' })
+      notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const columns: TableProps<DataType>['columns'] = [
@@ -143,8 +149,13 @@ const AdminStudentPage: React.FC = () => {
       await userApi.apiV1UsersIdPut(selected!.id, values)
       notification.info({ message: 'Cập nhật thành công' })
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setLoading(false)
     }
@@ -254,19 +265,18 @@ const AdminStudentPage: React.FC = () => {
           footer={null}
         >
           <Form layout={'vertical'} form={updateForm} onFinish={onFinishUpdate} onFinishFailed={onFinishFailedUpdate}>
-            <Form.Item<FieldType> name='userName' label='Email'>
+            <Form.Item<FieldType> name='userName' label='Tài khoản'>
+              <Input placeholder='Tài khoản' />
+            </Form.Item>
+            <Form.Item<FieldType> name='fullName' label='Tên'>
+              <Input placeholder='Tên' />
+            </Form.Item>
+            <Form.Item<FieldType> name='email' label='Email'>
               <Input placeholder='Email' />
             </Form.Item>
-
-            <Form.Item<FieldType> name='password' label='Password'>
-              <Input.Password placeholder='Password' />
-            </Form.Item>
-            <Form.Item<FieldType> name='fullName' label='Full Name'>
-              <Input placeholder='Full Name' />
-            </Form.Item>
-            <Form.Item<FieldType> name='description' label='Description'>
+            <Form.Item<FieldType> name='description' label='Mô tả'>
               {/* <EditorComponent /> */}
-              <Input placeholder='Description' />
+              <Input placeholder='Mô tả' />
             </Form.Item>
             <Form.Item>
               <Button loading={loading} type='primary' htmlType='submit'>

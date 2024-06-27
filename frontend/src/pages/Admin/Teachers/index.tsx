@@ -69,8 +69,13 @@ const AdminTeacherPage: React.FC = () => {
       await userApi.apiV1UsersIdDelete(id)
       notification.info({ message: 'Xóa thành công' })
       refetchApp()
-    } catch (e) {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (error) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     }
   }
   const columns: TableProps<DataType>['columns'] = [
@@ -154,8 +159,13 @@ const AdminTeacherPage: React.FC = () => {
       })
       notification.info({ message: 'Tạo thành công' })
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (eror) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setLoading(false)
     }
@@ -171,8 +181,13 @@ const AdminTeacherPage: React.FC = () => {
       await userApi.apiV1UsersIdPut(selected!.id, values)
       notification.info({ message: 'Cập nhật thành công' })
       refetchApp()
-    } catch {
-      notification.error({ message: 'Sorry! Something went wrong. App server error' })
+    } catch (eror) {
+      notification.error({
+        message:
+          error?.response?.data?.message ||
+          error?.response?.data?.Error ||
+          'Sorry! Something went wrong. App server error'
+      })
     } finally {
       setLoading(false)
     }

@@ -107,6 +107,14 @@ const AdminOrderPage: React.FC = () => {
       }
     },
     {
+      title: 'Trung tâm',
+      // dataIndex: 'note',
+      key: 'center',
+      render: (_, { course }) => {
+        return course.center?.fullName
+      }
+    },
+    {
       title: 'Ngày tạo',
       // dataIndex: 'key',
       key: 'createdAt',
@@ -126,7 +134,17 @@ const AdminOrderPage: React.FC = () => {
       // title: 'Trạng thái',
       key: 'actions',
       // dataIndex: 'isDone',
-      render: (_, { isDone }) => <Button type='primary'>Chi tiết</Button>
+      render: (_, { isDone }) => (
+        <Space>
+          <Button
+            // onClick={() => {
+            //   setOpenModalCourseAreaDetail(true)
+            //   setSelectedCourseArea(record)
+            // }}
+            icon={<EditOutlined />}
+          />
+        </Space>
+      )
     }
   ]
 
@@ -188,6 +206,7 @@ const AdminOrderPage: React.FC = () => {
                     setSearchParams(queryParams.toString())
                   }}
                 />
+                <Input.Search size='large' placeholder='Tìm trung tâm' />
               </Flex>
             </Flex>
             <Table
