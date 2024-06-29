@@ -68,7 +68,7 @@ const eChart = {
     tooltip: {
       y: {
         formatter: function (val) {
-          return val + ' Người'
+          return val + ' VNĐ'
         }
       }
     }

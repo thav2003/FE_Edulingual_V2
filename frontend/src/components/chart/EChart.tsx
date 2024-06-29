@@ -14,13 +14,13 @@ import ReactApexChart from 'react-apexcharts'
 import { Row, Col, Typography } from 'antd'
 import eChart from './configs/eChart'
 
-const EChart: React.FC<{ data?: any }> = ({ data }) => {
+const EChart: React.FC<{ data?: any; settings?: any }> = ({ data, settings }) => {
   return (
     <>
       <div id='chart'>
         <ReactApexChart
           className='bar-chart'
-          options={eChart.options}
+          options={settings ? settings : eChart.options}
           series={data ? data : eChart.series}
           type='bar'
           height={220}

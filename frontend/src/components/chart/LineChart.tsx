@@ -15,22 +15,19 @@ import { Typography } from 'antd'
 import { MinusOutlined } from '@ant-design/icons'
 import lineChart from './configs/lineChart'
 
-const LineChart: React.FC = () => {
+const LineChart: React.FC<{ data?: any }> = ({ data }) => {
   const { Title, Paragraph } = Typography
 
   return (
     <>
       <div className='linechart'>
         <div>
-          <Title level={5}>Active Users</Title>
-          <Paragraph className='lastweek'>
-            than last week <span className='bnb2'>+30%</span>
-          </Paragraph>
+          <Title level={5}>Người dùng hoạt động</Title>
         </div>
         <div className='sales'>
           <ul>
-            <li>{<MinusOutlined />} Traffic</li>
-            <li>{<MinusOutlined />} Sales</li>
+            <li>{<MinusOutlined style={{ color: '#008FFB' }} />} Giáo viên</li>
+            <li>{<MinusOutlined style={{ color: '#00E396' }} />} Học sinh</li>
           </ul>
         </div>
       </div>
@@ -38,7 +35,7 @@ const LineChart: React.FC = () => {
       <ReactApexChart
         className='full-width'
         options={lineChart.options}
-        series={lineChart.series}
+        series={data ? data : lineChart.series}
         type='area'
         height={350}
         width={'100%'}

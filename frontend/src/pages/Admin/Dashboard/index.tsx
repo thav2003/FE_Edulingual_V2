@@ -220,6 +220,7 @@ import { Card, Col, Row, Typography } from 'antd'
 import Echart from '~/components/chart/EChart'
 import { DashboardApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
+import LineChart from '~/components/chart/LineChart'
 const dashboardApi = new DashboardApi()
 const Dashboard: React.FC = () => {
   const { Title, Text } = Typography
@@ -229,9 +230,6 @@ const Dashboard: React.FC = () => {
   const fetchTeachers = () => {
     return dashboardApi.apiV1DashboardTeacherGet()
   }
-  // const fetchExams = () => {
-  //   return dashboardApi.apiV1DashboardExamGet()
-  // }
   const fetchFinances = () => {
     return dashboardApi.apiV1DashboardFinanceGet()
   }
@@ -269,6 +267,7 @@ const Dashboard: React.FC = () => {
   console.log(resultUsers)
   console.log(resultTeachers)
   console.log(resultFinance)
+
   const dollor = [
     <svg width='22' height='22' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg' key={0}>
       <path
@@ -326,32 +325,23 @@ const Dashboard: React.FC = () => {
   ]
   const count = [
     {
-      today: 'Today’s Sales',
-      title: '$53,000',
-      persent: '+30%',
+      today: 'Doanh thu hôm nay',
+      title: '53,000',
+      //{formatCurrencyVND()}
       icon: dollor,
       bnb: 'bnb2'
     },
     {
-      today: 'Today’s Users',
+      today: 'Giao dịch hôm nay',
       title: '3,200',
-      persent: '+20%',
       icon: profile,
       bnb: 'bnb2'
     },
     {
-      today: 'New Clients',
+      today: 'Hoa hồng hôm nay',
       title: '+1,200',
-      persent: '-20%',
       icon: heart,
       bnb: 'redtext'
-    },
-    {
-      today: 'New Orders',
-      title: '$13,200',
-      persent: '10%',
-      icon: cart,
-      bnb: 'bnb2'
     }
   ]
 
@@ -360,18 +350,18 @@ const Dashboard: React.FC = () => {
       <div className='layout-content p-10'>
         <Row className='rowgap-vbox' gutter={[24, 0]}>
           {count.map((c, index) => (
-            <Col key={index} xs={24} sm={24} md={12} lg={6} xl={6} className='mb-24'>
+            <Col key={index} xs={24} sm={24} md={12} lg={12} xl={8} className='mb-24'>
               <Card bordered={false} className='criclebox '>
                 <div className='number'>
                   <Row align='middle' gutter={[24, 0]}>
                     <Col xs={18}>
                       <span>{c.today}</span>
-                      <Title level={3}>
-                        {c.title} <small className={c.bnb}>{c.persent}</small>
-                      </Title>
+                      <Title level={3}>{c.title}</Title>
                     </Col>
                     <Col xs={6}>
-                      <div className='icon-box'>{c.icon}</div>
+                      <div className='icon-box' style={{ background: '#53B748' }}>
+                        {c.icon}
+                      </div>
                     </Col>
                   </Row>
                 </div>
@@ -381,44 +371,126 @@ const Dashboard: React.FC = () => {
         </Row>
 
         <Row gutter={[24, 0]}>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} className='mb-24'>
+          <Col xs={24} sm={24} md={24} lg={24} xl={10} className='mb-24'>
             <Card bordered={false} className='criclebox h-full'>
-              <Text strong>Users</Text>
-
-              <Echart
-                data={[
-                  {
-                    name: 'Người',
-                    data: resultUsers.map((e) => e.value),
-                    color: '#fff'
-                  }
-                ]}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} className='mb-24'>
-            <Card bordered={false} className='criclebox h-full'>
-              <Text strong>Teachers</Text>
-              <Echart
-                data={[
-                  {
-                    name: 'Người',
-                    data: resultTeachers.map((e) => e.value),
-                    color: '#fff'
-                  }
-                ]}
-              />
-            </Card>
-          </Col>
-          <Col xs={24} sm={24} md={8} lg={8} xl={8} className='mb-24'>
-            <Card bordered={false} className='criclebox h-full'>
-              <Text strong>Finance</Text>
+              <div className='mb-3 font-semibold'>Doanh thu trong tuần</div>
               <Echart
                 data={[
                   {
                     name: 'VNĐ',
                     data: resultFinance.map((e) => e.value),
                     color: '#fff'
+                  }
+                ]}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={14} className='mb-24'>
+            <Card bordered={false} className='criclebox h-full'>
+              <div className='mb-3 font-semibold'>Doanh thu theo tháng</div>
+              <Echart
+                data={[
+                  {
+                    name: 'VNĐ',
+                    data: resultFinance.map((e) => e.value),
+                    color: '#fff'
+                  }
+                ]}
+                settings={{
+                  chart: {
+                    type: 'bar',
+                    width: '100%',
+                    height: 'auto',
+
+                    toolbar: {
+                      show: false
+                    }
+                  },
+                  plotOptions: {
+                    bar: {
+                      horizontal: false,
+                      columnWidth: '55%',
+                      borderRadius: 5
+                    }
+                  },
+                  dataLabels: {
+                    enabled: false
+                  },
+                  stroke: {
+                    show: true,
+                    width: 1,
+                    colors: ['transparent']
+                  },
+                  grid: {
+                    show: true,
+                    borderColor: '#ccc',
+                    strokeDashArray: 2
+                  },
+                  xaxis: {
+                    categories: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+                    labels: {
+                      show: true,
+                      align: 'right',
+                      minWidth: 0,
+                      maxWidth: 160,
+                      style: {
+                        colors: [
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff',
+                          '#fff'
+                        ]
+                      }
+                    }
+                  },
+                  yaxis: {
+                    labels: {
+                      show: true,
+                      align: 'right',
+                      minWidth: 0,
+                      maxWidth: 160,
+                      style: {
+                        colors: ['#fff', '#fff', '#fff', '#fff', '#fff', '#fff', '#fff']
+                      },
+
+                      formatter: function (value) {
+                        return Math.floor(value) // Chuyển đổi các giá trị thành số nguyên
+                      }
+                    }
+                  },
+
+                  tooltip: {
+                    y: {
+                      formatter: function (val) {
+                        return val + ' VNĐ'
+                      }
+                    }
+                  }
+                }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24} className='mb-24'>
+            <Card bordered={false} className='criclebox h-full'>
+              <LineChart
+                data={[
+                  {
+                    name: 'Giáo viên',
+                    data: resultTeachers.map((e) => e.value),
+                    offsetY: 0
+                  },
+                  {
+                    name: 'Học sinh',
+                    data: resultUsers.map((e) => e.value),
+                    offsetY: 0
                   }
                 ]}
               />
