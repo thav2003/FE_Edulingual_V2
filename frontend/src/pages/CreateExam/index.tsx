@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { DeleteOutlined, EditOutlined, EyeOutlined, InboxOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EyeOutlined, InfoCircleFilled } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
 import {
   message,
@@ -14,7 +14,8 @@ import {
   App,
   Table,
   Input,
-  Flex
+  Flex,
+  Modal
 } from 'antd'
 import type { FormProps } from 'antd'
 import axios from 'axios'
@@ -23,6 +24,10 @@ import { ExamApi, UserApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
 import { useNavigate } from 'react-router-dom'
+import step1 from '../../assets/images/step-1.png'
+import step2 from '../../assets/images/step-2.png'
+import step3 from '../../assets/images/step-3.png'
+import step4 from '../../assets/images/step-4.png'
 const { Dragger } = Upload
 const { Text } = Typography
 
@@ -96,6 +101,8 @@ const CreateExamPage: React.FC = () => {
   const [searchExam, setSearcExam] = useState('')
   const [dataExam, setDataExam] = useState([])
   const [filteredData, setFilteredData] = useState([])
+  const [open, setOpen] = useState(false)
+
   const props: UploadProps = {
     name: 'file',
     multiple: false,
@@ -110,7 +117,7 @@ const CreateExamPage: React.FC = () => {
       fmData.append('file', file)
       try {
         const res = await axios.post(
-          `http://35.198.226.22:10000/api/v1/exam/upload?teacherId=${userId}&courseId=${selectedCourseId}`,
+          `https://localhost:44315/api/v1/exam/upload?teacherId=${userId}&courseId=${selectedCourseId}`,
           fmData,
           {
             headers: { 'content-type': 'multipart/form-data' },
@@ -130,9 +137,9 @@ const CreateExamPage: React.FC = () => {
         notification.success({ message: 'Tạo thành công' })
         console.log('server res: ', res)
       } catch (err) {
-        console.log('Eroor: ', err)
+        console.log('Error: ', err)
         const error = new Error('Some error')
-        notification.error({ message: 'Tạo thất bại' })
+        notification.error({ message: err?.response?.data?.Error || 'Tạo thất bại' })
         onError({ err })
       } finally {
         setDefaultFileList([])
@@ -238,8 +245,52 @@ const CreateExamPage: React.FC = () => {
       >
         <div className='h-full w-full p-10 bg-[#FFFFFF]'>
           <Space className='w-full' direction='vertical'>
+            <Modal
+              className='my-7'
+              bodyStyle={{ overflowY: 'auto', maxHeight: 'calc(100vh - 150px)' }}
+              title='Tạo đề thi từ File XLS (Excel)'
+              open={open}
+              onOk={() => setOpen(false)}
+              onCancel={() => setOpen(false)}
+              width={850}
+              centered
+              footer={null}
+            >
+              <div className='flex flex-col pr-2'>
+                <Text style={{ color: '#6b707f', marginBottom: '20px', fontSize: '16px' }}>
+                  Bước 1: Tại “Tạo bộ đề”, chọn khóa học để tạo bài kiểm tra
+                </Text>
+                <img src={step1} alt='hero image' />
+                <Text style={{ color: '#6b707f', margin: '20px 0px', fontSize: '16px' }}>
+                  Bước 2: Mẫu bài kiểm tra phải theo định dạng như sau (Lưu ý: Tổng số điểm các câu phải bằng 10)
+                </Text>
+                <img src={step2} alt='hero image' />
+                <Text style={{ color: '#6b707f', margin: '20px 0px', fontSize: '16px' }}>
+                  Bước 3: Click chuột vào ô “Chọn tài liệu Hoặc kéo và thả tập tin vào đây” để tải lên File đề Excel
+                </Text>
+                <img src={step3} alt='hero image' />
+                <Text style={{ color: '#6b707f', margin: '20px 0px', fontSize: '16px' }}>
+                  Bước 4: Kiểm tra lại toàn bộ đề
+                </Text>
+                <img src={step4} alt='hero image' />
+              </div>
+            </Modal>
             <div>
-              <Typography.Title level={3}>Chuyển đổi tài liệu sang bộ đề trực tuyến</Typography.Title>
+              <div className='flex items-center justify-between'>
+                <Typography.Title level={3}>Chuyển đổi tài liệu sang bộ đề trực tuyến</Typography.Title>
+                <Button
+                  className='self-end mb-1'
+                  style={{ paddingRight: '0' }}
+                  size='large'
+                  type='link'
+                  onClick={() => setOpen(true)}
+                >
+                  <span className='text-base flex items-center'>
+                    Hướng dẫn sử dụng <InfoCircleFilled />
+                  </span>
+                </Button>
+              </div>
+
               <Select
                 value={selectedCourseId}
                 onChange={setSelectedCourseId}
@@ -254,6 +305,7 @@ const CreateExamPage: React.FC = () => {
                   </Select.Option>
                 ))}
               </Select>
+
               <Dragger {...props}>
                 <Button type='primary' size='large'>
                   Chọn tài liệu

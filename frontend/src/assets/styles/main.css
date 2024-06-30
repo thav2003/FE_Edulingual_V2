@@ -855,7 +855,6 @@ button.ant-btn.bell strong {
 .listpage {
   padding-top: 15px;
 }
-/* #538132 0%, #53b748 53%, rgb(133, 252, 196) 100% */
 .bar-chart {
   background: transparent linear-gradient(62deg, #538132 0%, #53b748 53%, #6ebd9c 100%) 0% 0% no-repeat padding-box;
   box-shadow: 0px 4px 6px #0000001f;
