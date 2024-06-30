@@ -34,15 +34,13 @@ const LoginForm: React.FC = () => {
     console.log('Failed:', errorInfo)
   }
   return (
-    <div className='mt-2'>
-      <Space direction='vertical' className='w-full'>
+    <div>
+      <Space direction='vertical' className='w-full 100vh'>
         <Title className='drop-shadow-lg'>
-          Chào mừng đến với <br />
+          Chào mừng bạn đến với <br />
           <span className='drop-shadow-lg !text-primary'>Edu Lingual</span>
         </Title>
-
         <Text className='text-[#171618] text-[18px]'>Where the best begin your journey</Text>
-
         <Form
           layout='vertical'
           name='login_form'
@@ -85,7 +83,7 @@ const LoginForm: React.FC = () => {
             name='username'
             rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
-            <Input size='large' placeholder='Tài khoản' />
+            <Input size='small' placeholder='Tài khoản' style={{ color: 'black' }} />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -94,11 +92,11 @@ const LoginForm: React.FC = () => {
             style={{ position: 'relative' }}
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
-            <Input.Password size='large' placeholder='Password' />
+            <Input.Password size='small' placeholder='Mật khẩu' />
           </Form.Item>
-          <Form.Item>
+          <Form.Item style={{}}>
             <Link className='float-right text-primary' to='/forgetpassword'>
-              Forgot password
+              Forgot your password?
             </Link>
           </Form.Item>
           <Form.Item>

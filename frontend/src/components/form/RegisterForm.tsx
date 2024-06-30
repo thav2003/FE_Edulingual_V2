@@ -41,7 +41,7 @@ const RegisterForm: React.FC = () => {
     <div className='mt-2'>
       <Space direction='vertical' className='w-full'>
         <Title className='drop-shadow-lg'>
-          Chào mừng đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
+          Chào mừng bạn đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
         </Title>
 
         <Form
@@ -57,14 +57,14 @@ const RegisterForm: React.FC = () => {
             name='userName'
             rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
-            <Input size='large' placeholder='Tài khoản' />
+            <Input size='small' placeholder='Tài khoản' />
           </Form.Item>
           <Form.Item<FieldType>
             label={<Text strong>Nhập tên</Text>}
             name='fullName'
             rules={[{ required: true, message: 'Vui lòng nhập tên!' }]}
           >
-            <Input size='large' placeholder='Full Name' />
+            <Input size='small' placeholder='Full Name' />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -79,7 +79,7 @@ const RegisterForm: React.FC = () => {
               }
             ]}
           >
-            <Input.Password size='large' placeholder='Password' />
+            <Input.Password size='small' placeholder='Password' />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -99,7 +99,7 @@ const RegisterForm: React.FC = () => {
               })
             ]}
           >
-            <Input.Password size='large' placeholder='Confirm Password' />
+            <Input.Password size='small' placeholder='Confirm Password' />
           </Form.Item>
 
           <Form.Item>
