@@ -2698,6 +2698,58 @@ export interface ReportDataDtoResult {
 /**
  * 
  * @export
+ * @interface ReportDataTodayDto
+ */
+export interface ReportDataTodayDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataTodayDto
+     */
+    'revenue'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataTodayDto
+     */
+    'totalPayments'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ReportDataTodayDto
+     */
+    'profit'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ReportDataTodayDtoResult
+ */
+export interface ReportDataTodayDtoResult {
+    /**
+     * 
+     * @type {HttpStatusCode}
+     * @memberof ReportDataTodayDtoResult
+     */
+    'statusCode'?: HttpStatusCode;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportDataTodayDtoResult
+     */
+    'message'?: string | null;
+    /**
+     * 
+     * @type {ReportDataTodayDto}
+     * @memberof ReportDataTodayDtoResult
+     */
+    'data'?: ReportDataTodayDto;
+}
+
+
+/**
+ * 
+ * @export
  * @interface ResultExamDto
  */
 export interface ResultExamDto {
@@ -5822,8 +5874,66 @@ export const DashboardApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        apiV1DashboardFinanceByMonthGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/dashboard/finance-by-month`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         apiV1DashboardFinanceGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/v1/dashboard/finance`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1DashboardGet: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/v1/dashboard`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5919,10 +6029,32 @@ export const DashboardApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async apiV1DashboardFinanceByMonthGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportDataTodayDtoResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1DashboardFinanceByMonthGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.apiV1DashboardFinanceByMonthGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async apiV1DashboardFinanceGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportDataDtoResult>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1DashboardFinanceGet(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DashboardApi.apiV1DashboardFinanceGet']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async apiV1DashboardGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ReportDataTodayDtoResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiV1DashboardGet(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DashboardApi.apiV1DashboardGet']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5962,8 +6094,24 @@ export const DashboardApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        apiV1DashboardFinanceByMonthGet(options?: any): AxiosPromise<ReportDataTodayDtoResult> {
+            return localVarFp.apiV1DashboardFinanceByMonthGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         apiV1DashboardFinanceGet(options?: any): AxiosPromise<ReportDataDtoResult> {
             return localVarFp.apiV1DashboardFinanceGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        apiV1DashboardGet(options?: any): AxiosPromise<ReportDataTodayDtoResult> {
+            return localVarFp.apiV1DashboardGet(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5997,8 +6145,28 @@ export class DashboardApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof DashboardApi
      */
+    public apiV1DashboardFinanceByMonthGet(options?: RawAxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).apiV1DashboardFinanceByMonthGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
     public apiV1DashboardFinanceGet(options?: RawAxiosRequestConfig) {
         return DashboardApiFp(this.configuration).apiV1DashboardFinanceGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DashboardApi
+     */
+    public apiV1DashboardGet(options?: RawAxiosRequestConfig) {
+        return DashboardApiFp(this.configuration).apiV1DashboardGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
