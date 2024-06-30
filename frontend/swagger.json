@@ -1686,6 +1686,104 @@
         }
       }
     },
+    "/api/v1/dashboard": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard/finance-by-month": {
+      "get": {
+        "tags": [
+          "Dashboard"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDataTodayDtoResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/exam/upload": {
       "post": {
         "tags": [
@@ -5140,6 +5238,40 @@
           },
           "data": {
             "$ref": "#/components/schemas/ReportDataDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportDataTodayDto": {
+        "type": "object",
+        "properties": {
+          "revenue": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalPayments": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "profit": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReportDataTodayDtoResult": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "$ref": "#/components/schemas/HttpStatusCode"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ReportDataTodayDto"
           }
         },
         "additionalProperties": false
