@@ -256,7 +256,7 @@ const CreateExamPage: React.FC = () => {
               centered
               footer={null}
             >
-              <div className='flex flex-col pr-2'>
+              <div className='flex flex-col p-3'>
                 <Text style={{ color: '#6b707f', marginBottom: '20px', fontSize: '16px' }}>
                   Bước 1: Tại “Tạo bộ đề”, chọn khóa học để tạo bài kiểm tra
                 </Text>

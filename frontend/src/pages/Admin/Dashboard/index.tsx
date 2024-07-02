@@ -6,6 +6,8 @@ import Echart from '~/components/chart/EChart'
 import { DashboardApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import LineChart from '~/components/chart/LineChart'
+import { formatCurrencyVND } from '~/utils/numberUtils'
+//import '../../../assets/styles/main.css'
 const dashboardApi = new DashboardApi()
 const Dashboard: React.FC = () => {
   const { Title, Text } = Typography
@@ -139,19 +141,18 @@ const Dashboard: React.FC = () => {
   const count = [
     {
       today: 'Doanh thu hôm nay',
-      title: responseDashboard?.data.data.revenue,
-      //{formatCurrencyVND()}
+      title: formatCurrencyVND(responseDashboard?.data.data.revenue),
       icon: dollor,
       bnb: 'bnb2'
     },
     {
       today: 'Lợi nhuận hôm nay',
-      title: responseDashboard?.data.data.profit,
+      title: '+' + formatCurrencyVND(responseDashboard?.data.data.profit),
       icon: profile,
       bnb: 'bnb2'
     },
     {
-      today: 'Tổng tiền hôm nay',
+      today: 'Giao dịch hôm nay',
       title: responseDashboard?.data.data.totalPayments,
       icon: heart,
       bnb: 'redtext'
@@ -160,7 +161,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <div className='layout-content p-10'>
+      <div className='dashboard layout-content p-10'>
         <Row className='rowgap-vbox' gutter={[24, 0]}>
           {count.map((c, index) => (
             <Col key={index} xs={24} sm={24} md={12} lg={12} xl={8} className='mb-24'>

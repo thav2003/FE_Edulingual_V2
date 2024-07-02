@@ -83,7 +83,7 @@ const LoginForm: React.FC = () => {
             name='username'
             rules={[{ required: true, message: 'Vui lòng nhập tài khoản!' }]}
           >
-            <Input size='small' placeholder='Tài khoản' style={{ color: 'black' }} />
+            <Input size='large' placeholder='Tài khoản' style={{ color: 'black' }} />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -92,9 +92,9 @@ const LoginForm: React.FC = () => {
             style={{ position: 'relative' }}
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
-            <Input.Password size='small' placeholder='Mật khẩu' />
+            <Input.Password size='large' placeholder='Mật khẩu' />
           </Form.Item>
-          <Form.Item style={{}}>
+          <Form.Item>
             <Link className='float-right text-primary' to='/forgetpassword'>
               Forgot your password?
             </Link>
