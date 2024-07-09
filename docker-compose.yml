@@ -1,0 +1,17 @@
+version: '3'
+services:
+  nginx:
+      image: nginx:latest
+      restart: unless-stopped
+      tty: true
+      volumes:
+        - ./nginx.conf:/etc/nginx/conf.d/my-app.conf
+      ports:
+        - "80:80"
+      depends_on:
+        - edu-app
+  edu-app:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    tty: true
