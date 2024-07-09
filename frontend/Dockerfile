@@ -10,7 +10,7 @@ COPY frontend/package.json /app/package.json
 
 RUN pnpm install
 
-COPY frontend /app
+COPY . /app
 
 EXPOSE 3000
 
