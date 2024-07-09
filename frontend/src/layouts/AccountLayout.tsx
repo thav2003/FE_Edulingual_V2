@@ -106,7 +106,7 @@ const AccountLayout: React.FC = () => {
         const data = {
           file: options.file
         }
-        const response = await axios.post('http://35.198.226.22:10000/api/v1/upload', convertToFormData(data), {
+        const response = await axios.post('http://35.240.183.27:10000/api/v1/upload', convertToFormData(data), {
           headers: {
             'content-type': 'multipart/form-data'
           }
