@@ -13,10 +13,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           colorPrimary: '#58CC02',
           colorPrimaryActive: '#58CC02',
           colorPrimaryHover: '#58CC02'
-        },
-        components: {
-          Button: {},
-          Input: {}
         }
       }}
     >
