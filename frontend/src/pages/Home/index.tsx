@@ -198,7 +198,7 @@ const HomePage: React.FC = () => {
                   }
                 }}
               >
-                <Flex justify='space-between' wrap className='bg-[#FFFFFF] p-2 rounded-lg'>
+                <Flex align='center' justify='space-between' wrap className='bg-[#FFFFFF] p-2 rounded-lg'>
                   <Select
                     size='large'
                     className='!text-left'
@@ -329,7 +329,7 @@ const HomePage: React.FC = () => {
         <Space direction='vertical' className='w-full' size={'large'}>
           <div className='text-center'>
             <Title>
-              Những khoá học <span className='!text-primary'>nổi bật</span>
+              NHỮNG KHÓA HỌC <span className='!text-primary'>NỔI BẬT</span>
             </Title>
           </div>
 
@@ -493,7 +493,7 @@ const HomePage: React.FC = () => {
         <Space direction='vertical' className='w-full' size={'large'}>
           <div className='text-center'>
             <Title>
-              Đa dạng <span className='!text-primary'>ngôn ngữ</span>
+              ĐA DẠNG <span className='!text-primary'>NGÔN NGỮ</span>
             </Title>
           </div>
           <Flex align='center' justify='center'>
@@ -541,7 +541,7 @@ const HomePage: React.FC = () => {
         <Space direction='vertical' className='w-full' size={'large'}>
           <div className='text-center'>
             <Title>
-              Giáo viên <span className='!text-primary'>được đánh giá cao</span>
+              GIÁO VIÊN <span className='!text-primary'>ĐƯỢC ĐÁNH GIÁ CAO</span>
             </Title>
           </div>
           <Card hoverable className='p-5 py-10 rounded-3xl'>
@@ -1096,7 +1096,7 @@ const HomePage: React.FC = () => {
         <Space direction='vertical' className='w-full' size={'large'}>
           <div className='text-center'>
             <Title>
-              Học ngôn ngữ <Title className='!text-primary'>không còn là mối lo</Title>
+              HỌC NGÔN NGỮ <Title className='!text-primary'>KHÔNG CÒN LÀ MỐI LO</Title>
             </Title>
           </div>
           <div className='bg-white dark:bg-gray-900' style={{ marginTop: '-100px' }}>
@@ -1171,7 +1171,7 @@ const HomePage: React.FC = () => {
         <Space direction='vertical' className='w-full' size={'large'}>
           <div className='text-center'>
             <Title>
-              Tham gia <span className='!text-primary'>Blog</span>
+              THAM GIA <span className='!text-primary'>BLOG</span>
             </Title>
           </div>
           <ConfigProvider

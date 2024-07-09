@@ -109,7 +109,8 @@ const CommonLayout: React.FC<CommonLayoutTypes> = ({ children }) => {
             position: 'sticky',
             top: 0,
             zIndex: 1,
-            width: '100%'
+            width: '100%',
+            alignItems: 'center'
           }}
         >
           <Flex align='center' justify='space-between'>

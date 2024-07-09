@@ -41,7 +41,7 @@ const RegisterForm: React.FC = () => {
     <div className='mt-2'>
       <Space direction='vertical' className='w-full'>
         <Title className='drop-shadow-lg'>
-          Chào mừng đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
+          Chào mừng bạn đến với <Title className='drop-shadow-lg !text-primary'>Edu Lingual</Title>
         </Title>
 
         <Form
