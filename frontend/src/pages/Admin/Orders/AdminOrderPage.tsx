@@ -1,16 +1,16 @@
-import { Button, ConfigProvider, Flex, Input, Space, Table } from 'antd'
-import type { TableProps } from 'antd'
+import { Button, ConfigProvider, Flex, Input, Space, Table, Typography, DatePicker } from 'antd'
 import { useSearchParams } from 'react-router-dom'
+import { PaymentApi } from '~/api'
 import useFetchData from '~/hooks/useFetch'
 import { useAppStore } from '~/stores'
 import { formatDateToDDMMYYWithTime } from '~/utils/dateUtils'
-import { paymentApi, DataType } from '.'
 
+const { Text } = Typography
+const { RangePicker } = DatePicker
+const paymentApi = new PaymentApi()
 export const AdminOrderPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const refetchApp = useAppStore((state) => state.refetchApp)
 
-  const options = ['option 1', 'options 2']
   const fetchPayments = () => {
     return paymentApi.apiV1ThanhToanGet(
       undefined,
@@ -22,12 +22,13 @@ export const AdminOrderPage: React.FC = () => {
   }
   const [loadingPayments, errorPayments, responsePayments] = useFetchData(
     fetchPayments,
+    searchParams.get('page'),
     searchParams.get('size'),
     searchParams.get('title')
   )
   const data_payments = responsePayments?.data?.data?.items as any[]
   const data_total_data_payments = responsePayments?.data?.data.total as number
-  const columns: TableProps<DataType>['columns'] = [
+  const columns = [
     {
       title: 'STT',
       dataIndex: 'id',
@@ -125,7 +126,7 @@ export const AdminOrderPage: React.FC = () => {
                   page: pagination.current!.toString(),
                   size: pagination.pageSize!.toString()
                 })
-
+                console.log(queryParams.toString())
                 setSearchParams(queryParams.toString())
               }}
               columns={columns}

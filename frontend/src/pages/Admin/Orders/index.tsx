@@ -41,6 +41,7 @@ const AdminOrderPage: React.FC = () => {
     searchParams.get('from'),
     searchParams.get('to'),
     searchParams.get('center'),
+    searchParams.get('page'),
     searchParams.get('size'),
     searchParams.get('title')
   )
